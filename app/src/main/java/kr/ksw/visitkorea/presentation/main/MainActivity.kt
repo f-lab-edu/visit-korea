@@ -16,7 +16,6 @@ import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             VisitKoreaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

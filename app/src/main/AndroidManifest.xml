@@ -10,10 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.VisitKorea"
-        tools:targetApi="31">
+        android:theme="@style/Theme.VisitKorea">
         <activity
-            android:name=".presentation.main.MainActivity"
+            android:name=".presentation.splash.SplashActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.VisitKorea">
