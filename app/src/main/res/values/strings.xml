@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">VisitKorea</string>
+
+    <string name="location_permission_denied_toast">위치 기반으로 검색하기 위해선 권한이 필요합니다.</string>
 </resources>
