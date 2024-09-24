@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.ui.theme
+package kr.ksw.visitkorea.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
