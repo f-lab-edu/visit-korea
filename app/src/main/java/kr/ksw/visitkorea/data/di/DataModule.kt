@@ -1,9 +1,12 @@
 package kr.ksw.visitkorea.data.di
 
+import android.app.Application
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.ksw.visitkorea.data.local.databases.AreaCodeDatabase
 import kr.ksw.visitkorea.data.remote.api.AreaCodeApi
 import kr.ksw.visitkorea.data.remote.api.RetrofitInterceptor
 import kr.ksw.visitkorea.data.repository.AreaCodeRepository
@@ -35,6 +38,16 @@ object DataModule {
             .baseUrl(BASE_URL)
             .client(client)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAreaCodeDatabase(application: Application): AreaCodeDatabase {
+        return Room.databaseBuilder(
+            application,
+            AreaCodeDatabase::class.java,
+            "area_code.db"
+        ).build()
     }
 
     @Provides
