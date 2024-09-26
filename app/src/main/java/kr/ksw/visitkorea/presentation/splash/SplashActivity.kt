@@ -1,13 +1,11 @@
 package kr.ksw.visitkorea.presentation.splash
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,26 +14,18 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.R
 import kr.ksw.visitkorea.presentation.main.MainActivity
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
+@AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
 
-    private val locationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissionMap ->
-        if(permissionMap[Manifest.permission.ACCESS_COARSE_LOCATION] != true &&
-            permissionMap[Manifest.permission.ACCESS_FINE_LOCATION] != true) {
-            Toast.makeText(
-                this@SplashActivity,
-                getString(R.string.location_permission_denied_toast),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        startMainActivity()
-    }
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,20 +45,26 @@ class SplashActivity : ComponentActivity() {
                 }
             }
         }
-        checkPermission()
+        observeSideEffect()
+        viewModel.checkPermission(this)
     }
 
-    private fun checkPermission() {
-        if(ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED) {
-            startMainActivity()
-        } else {
-            locationPermissionLauncher.launch(arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ))
+    private fun observeSideEffect() {
+        lifecycleScope.launch {
+            viewModel.sideEffect.collectLatest { effect ->
+                when(effect) {
+                    SplashSideEffect.PermissionDenied -> {
+                        Toast.makeText(
+                            this@SplashActivity,
+                            getString(R.string.location_permission_denied_toast),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    SplashSideEffect.StartMainActivity -> {
+                        startMainActivity()
+                    }
+                }
+            }
         }
     }
 
