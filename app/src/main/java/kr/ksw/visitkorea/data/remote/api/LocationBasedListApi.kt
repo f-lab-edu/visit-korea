@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface LocationBasedListApi {
-    @GET("areaCode1")
+    @GET("locationBasedList1")
     suspend fun getLocationBasedListByContentType(
         @Query("radius") radius: String = "5000",
         @Query("numOfRows") numOfRows: Int,
