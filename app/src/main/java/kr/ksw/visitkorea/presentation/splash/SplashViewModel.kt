@@ -3,7 +3,6 @@ package kr.ksw.visitkorea.presentation.splash
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -12,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -62,11 +60,6 @@ class SplashViewModel @Inject constructor(
                 WorkManager
                     .getInstance(context)
                     .enqueue(workRequest)
-            } else {
-                Log.d("SplashViewModel", areaCodeItems.toString())
-                areaCodeItems.forEach {
-                    Log.d("SplashViewModel", areaCodeDatabase.areaCodeDao.getSigunguCodeByAreaCode(it.code).toString())
-                }
             }
         }
     }
