@@ -9,6 +9,7 @@ interface LocationBasedListApi {
     @GET("locationBasedList1")
     suspend fun getLocationBasedListByContentType(
         @Query("radius") radius: String = "5000",
+        @Query("arrange") arrange: String = "S",
         @Query("numOfRows") numOfRows: Int,
         @Query("pageNo") pageNo: Int,
         @Query("mapX") mapX: String,

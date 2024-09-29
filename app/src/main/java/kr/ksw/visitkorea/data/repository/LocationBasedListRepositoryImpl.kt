@@ -18,7 +18,7 @@ class LocationBasedListRepositoryImpl @Inject constructor(
         locationBasedListApi.getLocationBasedListByContentType(
             numOfRows = numOfRows,
             pageNo = pageNo,
-            mapX = mapY,
+            mapX = mapX,
             mapY = mapY,
             contentTypeId = contentTypeId
         ).toItems()
