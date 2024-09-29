@@ -1,6 +1,5 @@
 package kr.ksw.visitkorea.presentation.home.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +23,7 @@ class HomeViewModel @Inject constructor(
         getTouristSpot()
     }
 
-    fun getTouristSpot() {
+    private fun getTouristSpot() {
         viewModelScope.launch {
             val items = getTouristSpotForHomeUseCase(
                 "126.9817290217",

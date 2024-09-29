@@ -14,12 +14,13 @@ fun SingleLineText(
     text: String,
     fontSize: TextUnit,
     fontWeight: FontWeight = FontWeight.Normal,
-    color: Color,
+    color: Color = Color.Black,
 ) {
     Text(
         modifier = modifier,
         text = text,
         fontSize = fontSize,
+        fontWeight = fontWeight,
         color = color,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
