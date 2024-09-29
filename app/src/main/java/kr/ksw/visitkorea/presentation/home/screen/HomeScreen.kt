@@ -1,6 +1,5 @@
 package kr.ksw.visitkorea.presentation.home.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,11 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -92,14 +89,14 @@ fun HomeScreen(
                     contentDescription = "Main Content",
                     contentScale = ContentScale.Crop,
                 )
-                if(homeState.touristSpoList.isNotEmpty()) {
+                if(homeState.touristSpotList.isNotEmpty()) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
                     ) {
                         Text(
-                            text = homeState.touristSpoList[0].title,
+                            text = homeState.touristSpotList[0].title,
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color.White
@@ -113,7 +110,7 @@ fun HomeScreen(
                                 tint = Color.White
                             )
                             Text(
-                                text = homeState.touristSpoList[0].address,
+                                text = homeState.touristSpotList[0].address,
                                 fontSize = 16.sp,
                                 color = Color.White
                             )
@@ -139,15 +136,77 @@ fun HomeScreen(
                     contentPadding = PaddingValues(horizontal = 16.dp)
                 ) {
                     items(
-                        count = homeState.touristSpoList.size,
+                        count = homeState.touristSpotList.size,
                         key = { it }
                     ) { index ->
-                        val touristSpot = homeState.touristSpoList[index]
+                        val touristSpot = homeState.touristSpotList[index]
                         TouristSpotCard(
                             touristSpot.title,
                             touristSpot.address,
                             touristSpot.dist,
                             touristSpot.firstImage
+                        )
+                    }
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, bottom = 20.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 16.dp, bottom = 10.dp),
+                    text = "문화시설",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp)
+                ) {
+                    items(
+                        count = homeState.cultureCenterList.size,
+                        key = { it }
+                    ) { index ->
+                        val cultureCenter = homeState.cultureCenterList[index]
+                        CultureCard(
+                            cultureCenter.title,
+                            cultureCenter.address,
+                            cultureCenter.firstImage
+                        )
+                    }
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, bottom = 20.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 16.dp, bottom = 10.dp),
+                    text = "음식점",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp)
+                ) {
+                    items(
+                        count = homeState.restaurantList.size,
+                        key = { it }
+                    ) { index ->
+                        val restaurant = homeState.restaurantList[index]
+                        RestaurantCard(
+                            restaurant.title,
+                            restaurant.address,
+                            restaurant.dist,
+                            restaurant.category,
+                            restaurant.firstImage
                         )
                     }
                 }
