@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.domain.usecase.home.GetCultureCenterForHomeUseCase
+import kr.ksw.visitkorea.domain.usecase.home.GetLeisureSportsForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetRestaurantForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetTouristSpotForHomeUseCase
 import javax.inject.Inject
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getTouristSpotForHomeUseCase: GetTouristSpotForHomeUseCase,
     private val getCultureCenterForHomeUseCase: GetCultureCenterForHomeUseCase,
+    private val getLeisureSportsForHomeUseCase: GetLeisureSportsForHomeUseCase,
     private val getRestaurantForHomeUseCase: GetRestaurantForHomeUseCase
 ): ViewModel() {
     private val _homeState = MutableStateFlow(HomeState())
@@ -26,6 +28,7 @@ class HomeViewModel @Inject constructor(
     init {
         getTouristSpot()
         getCultureCenter()
+        getLeisureSports()
         getRestaurant()
     }
 
@@ -72,6 +75,22 @@ class HomeViewModel @Inject constructor(
                 _homeState.update {
                     it.copy(
                         restaurantList = items
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getLeisureSports() {
+        viewModelScope.launch {
+            val items = getLeisureSportsForHomeUseCase(
+                "126.9817290217",
+                "37.5678958128"
+            ).getOrNull()
+            if(items != null) {
+                _homeState.update {
+                    it.copy(
+                        leisureSportsList = items
                     )
                 }
             }

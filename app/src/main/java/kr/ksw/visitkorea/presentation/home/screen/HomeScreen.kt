@@ -126,7 +126,7 @@ fun HomeScreen(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(start = 16.dp, bottom = 10.dp),
+                        .padding(start = 16.dp, bottom = 20.dp),
                     text = "관광지",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Medium
@@ -175,6 +175,36 @@ fun HomeScreen(
                             cultureCenter.title,
                             cultureCenter.address,
                             cultureCenter.firstImage
+                        )
+                    }
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, bottom = 20.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 16.dp, bottom = 10.dp),
+                    text = "레포츠",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp)
+                ) {
+                    items(
+                        count = homeState.leisureSportsList.size,
+                        key = { it }
+                    ) { index ->
+                        val leisureSports = homeState.leisureSportsList[index]
+                        CultureCard(
+                            leisureSports.title,
+                            leisureSports.address,
+                            leisureSports.firstImage
                         )
                     }
                 }

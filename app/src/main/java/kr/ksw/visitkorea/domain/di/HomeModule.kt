@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import kr.ksw.visitkorea.domain.usecase.home.GetCultureCenterForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetCultureCenterForHomeUseCaseImpl
+import kr.ksw.visitkorea.domain.usecase.home.GetLeisureSportsForHomeUseCase
+import kr.ksw.visitkorea.domain.usecase.home.GetLeisureSportsForHomeUseCaseImpl
 import kr.ksw.visitkorea.domain.usecase.home.GetRestaurantForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetRestaurantForHomeUseCaseImpl
 import kr.ksw.visitkorea.domain.usecase.home.GetTouristSpotForHomeUseCase
@@ -29,4 +31,8 @@ abstract class HomeModule {
         getRestaurantForHomeUseCase: GetRestaurantForHomeUseCaseImpl
     ): GetRestaurantForHomeUseCase
 
+    @Binds
+    abstract fun bindGetLeisureSportsForHomeCase(
+        getLeisureSportsForHomeUseCase: GetLeisureSportsForHomeUseCaseImpl
+    ): GetLeisureSportsForHomeUseCase
 }

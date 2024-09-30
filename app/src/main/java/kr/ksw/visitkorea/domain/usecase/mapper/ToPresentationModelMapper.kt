@@ -2,6 +2,7 @@ package kr.ksw.visitkorea.domain.usecase.mapper
 
 import kr.ksw.visitkorea.data.remote.dto.LocationBasedDTO
 import kr.ksw.visitkorea.domain.usecase.model.CultureCenter
+import kr.ksw.visitkorea.domain.usecase.model.LeisureSports
 import kr.ksw.visitkorea.domain.usecase.model.Restaurant
 import kr.ksw.visitkorea.domain.usecase.model.TouristSpot
 import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
@@ -17,6 +18,12 @@ fun LocationBasedDTO.toTouristSpotModel(): TouristSpot = TouristSpot(
 )
 
 fun LocationBasedDTO.toCultureCenterModel(): CultureCenter = CultureCenter(
+    address,
+    firstImage.toImageUrl(),
+    title
+)
+
+fun LocationBasedDTO.toLeisureSportsModel(): LeisureSports = LeisureSports(
     address,
     firstImage.toImageUrl(),
     title
