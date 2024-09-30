@@ -1,7 +1,7 @@
-package kr.ksw.visitkorea
+package kr.ksw.visitkorea.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App : Application()
+class VisitKoreaApp : Application()

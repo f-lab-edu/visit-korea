@@ -4,5 +4,5 @@ data class CommonBody<T>(
     val numOfRows: Int,
     val pageNo: Int,
     val totalCount: Int,
-    val items: CommonItem<T>
+    val items: CommonItem<T>,
 )
