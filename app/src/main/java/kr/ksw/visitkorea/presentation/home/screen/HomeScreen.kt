@@ -172,9 +172,10 @@ fun HomeScreen(
                     ) { index ->
                         val cultureCenter = homeState.cultureCenterList[index]
                         CultureCard(
-                            cultureCenter.title,
-                            cultureCenter.address,
-                            cultureCenter.firstImage
+                            Modifier.fillParentMaxWidth(0.5f),
+                            title = cultureCenter.title,
+                            address = cultureCenter.address,
+                            image = cultureCenter.firstImage
                         )
                     }
                 }
@@ -202,9 +203,10 @@ fun HomeScreen(
                     ) { index ->
                         val leisureSports = homeState.leisureSportsList[index]
                         CultureCard(
-                            leisureSports.title,
-                            leisureSports.address,
-                            leisureSports.firstImage
+                            Modifier.fillParentMaxWidth(0.5f),
+                            title = leisureSports.title,
+                            address = leisureSports.address,
+                            image = leisureSports.firstImage
                         )
                     }
                 }
