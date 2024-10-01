@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import kr.ksw.visitkorea.presentation.home.screen.HomeScreen
+import kr.ksw.visitkorea.presentation.hotel.screen.HotelScreen
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
@@ -28,12 +29,7 @@ fun MainNavHost(
             HomeScreen()
         }
         composable(route = MainRoute.HOTEL.route) {
-            SampleScreen {
-                Text(
-                    text = "HOTEL",
-                    fontSize = 32.sp
-                )
-            }
+            HotelScreen()
         }
         composable(route = MainRoute.EVENT.route) {
             SampleScreen {
