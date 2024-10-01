@@ -10,10 +10,13 @@ import kr.ksw.visitkorea.data.local.databases.AreaCodeDatabase
 import kr.ksw.visitkorea.data.remote.api.AreaCodeApi
 import kr.ksw.visitkorea.data.remote.api.LocationBasedListApi
 import kr.ksw.visitkorea.data.remote.api.RetrofitInterceptor
+import kr.ksw.visitkorea.data.remote.api.SearchFestivalApi
 import kr.ksw.visitkorea.data.repository.AreaCodeRepository
 import kr.ksw.visitkorea.data.repository.AreaCodeRepositoryImpl
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepository
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepositoryImpl
+import kr.ksw.visitkorea.data.repository.SearchFestivalRepository
+import kr.ksw.visitkorea.data.repository.SearchFestivalRepositoryImpl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -71,5 +74,15 @@ object DataModule {
     @Singleton
     fun provideLocationBasedListRepository(locationBasedListApi: LocationBasedListApi): LocationBasedListRepository {
         return LocationBasedListRepositoryImpl(locationBasedListApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchFestivalApi(retrofit: Retrofit): SearchFestivalApi = retrofit.create(SearchFestivalApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSearchFestivalRepository(searchFestivalApi: SearchFestivalApi): SearchFestivalRepository {
+        return SearchFestivalRepositoryImpl(searchFestivalApi)
     }
 }
