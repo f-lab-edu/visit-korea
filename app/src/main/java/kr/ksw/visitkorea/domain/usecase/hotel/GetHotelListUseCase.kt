@@ -6,7 +6,7 @@ import kr.ksw.visitkorea.data.remote.dto.LocationBasedDTO
 
 interface GetHotelListUseCase {
     suspend operator fun invoke(
-        forceFetch: Boolean = false,
+        forceFetch: Boolean,
         mapX: String,
         mapY: String
     ): Result<Flow<PagingData<LocationBasedDTO>>>

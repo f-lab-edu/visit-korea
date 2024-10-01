@@ -28,6 +28,7 @@ class GetHotelListUseCaseImpl @Inject constructor(
         Pager(
             config = PagingConfig(
                 pageSize = 10,
+                initialLoadSize = 10
             ),
             pagingSourceFactory = {
                 LocationBasedPagingSource(
