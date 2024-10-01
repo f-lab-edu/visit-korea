@@ -1,9 +1,12 @@
 package kr.ksw.visitkorea.domain.usecase.mapper
 
 import kr.ksw.visitkorea.data.remote.dto.LocationBasedDTO
+import kr.ksw.visitkorea.data.remote.dto.SearchFestivalDTO
 import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
+import kr.ksw.visitkorea.domain.usecase.model.Festival
 import kr.ksw.visitkorea.domain.usecase.model.Restaurant
 import kr.ksw.visitkorea.domain.usecase.model.TouristSpot
+import kr.ksw.visitkorea.domain.usecase.util.toDateString
 import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
 import kr.ksw.visitkorea.domain.usecase.util.toImageUrl
 
@@ -21,6 +24,15 @@ fun LocationBasedDTO.toCommonCardModel(): CommonCardModel = CommonCardModel(
     firstImage.toImageUrl(),
     title,
     contentId
+)
+
+fun SearchFestivalDTO.toFestival(): Festival = Festival(
+    address,
+    firstImage.toImageUrl(),
+    title,
+    contentId,
+    eventStartDate.toDateString(),
+    eventEndDate.toDateString()
 )
 
 val restaurantMap = mapOf(
