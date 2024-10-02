@@ -1,5 +1,6 @@
 package kr.ksw.visitkorea.presentation.home.screen
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,11 +16,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,11 +42,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import kotlinx.coroutines.flow.collectLatest
 import kr.ksw.visitkorea.presentation.home.component.CultureCard
+import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
 import kr.ksw.visitkorea.presentation.home.component.TouristSpotCard
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeState
+import kr.ksw.visitkorea.presentation.home.viewmodel.HomeUiEffect
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeViewModel
+import kr.ksw.visitkorea.presentation.more.MoreActivity
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
@@ -50,14 +58,32 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val homeState by homeViewModel.homeState.collectAsState()
+    val context = LocalContext.current
+    LaunchedEffect(homeViewModel.homeUiEffect) {
+        homeViewModel.homeUiEffect.collectLatest { effect ->
+            when(effect) {
+                is HomeUiEffect.StartHomeActivity -> {
+                    context.startActivity(Intent(
+                        context,
+                        MoreActivity::class.java
+                    ).apply {
+                        putExtra("contentTypeId", effect.contentTypeId)
+                    })
+                }
+            }
+        }
+    }
+
     HomeScreen(
-        homeState = homeState
+        homeState = homeState,
+        onMoreClick = homeViewModel::startMoreActivity
     )
 }
 
 @Composable
 fun HomeScreen(
-    homeState: HomeState
+    homeState: HomeState,
+    onMoreClick: (String) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Surface {
@@ -125,15 +151,24 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
+                    .padding(top = 16.dp, bottom = 20.dp)
             ) {
-                Text(
+                Row(
                     modifier = Modifier
-                        .padding(start = 16.dp, bottom = 20.dp),
-                    text = "관광지",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "관광지",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    MoreButton {
+                        onMoreClick("12")
+                    }
+                }
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp)
@@ -158,13 +193,22 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp, bottom = 20.dp)
             ) {
-                Text(
+                Row(
                     modifier = Modifier
-                        .padding(start = 16.dp, bottom = 10.dp),
-                    text = "문화시설",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "문화시설",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    MoreButton {
+                        onMoreClick("14")
+                    }
+                }
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp)
@@ -189,13 +233,22 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp, bottom = 20.dp)
             ) {
-                Text(
+                Row(
                     modifier = Modifier
-                        .padding(start = 16.dp, bottom = 10.dp),
-                    text = "레포츠",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "레포츠",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    MoreButton {
+                        onMoreClick("28")
+                    }
+                }
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp)
@@ -220,13 +273,22 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp, bottom = 20.dp)
             ) {
-                Text(
+                Row(
                     modifier = Modifier
-                        .padding(start = 16.dp, bottom = 10.dp),
-                    text = "음식점",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "음식점",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    MoreButton {
+                        onMoreClick("39")
+                    }
+                }
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp)
@@ -257,7 +319,8 @@ fun HomeScreenPreview() {
         HomeScreen(
             homeState = HomeState(
                 mainImage = "https://tong.visitkorea.or.kr/cms/resource/11/3094511_image2_1.jpg"
-            )
+            ),
+            onMoreClick = {  }
         )
     }
 }

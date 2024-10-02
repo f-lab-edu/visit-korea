@@ -3,8 +3,11 @@ package kr.ksw.visitkorea.presentation.home.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,6 +27,10 @@ class HomeViewModel @Inject constructor(
     private val _homeState = MutableStateFlow(HomeState())
     val homeState: StateFlow<HomeState>
         get() = _homeState.asStateFlow()
+
+    private val _homeUiEffect = MutableSharedFlow<HomeUiEffect>(replay = 0)
+    val homeUiEffect: SharedFlow<HomeUiEffect>
+        get() = _homeUiEffect.asSharedFlow()
 
     init {
         getTouristSpot()
@@ -94,6 +101,12 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    fun startMoreActivity(contentTypeId: String) {
+        viewModelScope.launch {
+            _homeUiEffect.emit(HomeUiEffect.StartHomeActivity(contentTypeId))
         }
     }
 }

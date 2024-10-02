@@ -4,6 +4,7 @@ import kr.ksw.visitkorea.data.remote.dto.LocationBasedDTO
 import kr.ksw.visitkorea.data.remote.dto.SearchFestivalDTO
 import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
 import kr.ksw.visitkorea.domain.usecase.model.Festival
+import kr.ksw.visitkorea.domain.usecase.model.MoreCardModel
 import kr.ksw.visitkorea.domain.usecase.model.Restaurant
 import kr.ksw.visitkorea.domain.usecase.model.TouristSpot
 import kr.ksw.visitkorea.domain.usecase.util.toDateString
@@ -51,4 +52,13 @@ fun LocationBasedDTO.toRestaurantModel(): Restaurant = Restaurant(
     firstImage.toImageUrl(),
     title,
     restaurantMap[cat3] ?: ""
+)
+
+fun LocationBasedDTO.toMoreCardModel(): MoreCardModel = MoreCardModel(
+    address,
+    firstImage.toImageUrl(),
+    title,
+    dist.toDistForUi(),
+    contentId,
+    restaurantMap[cat3]
 )
