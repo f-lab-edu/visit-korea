@@ -89,6 +89,9 @@ dependencies {
     ksp(libs.androidx.hilt.compiler)
     androidTestImplementation(libs.androidx.core.testing)
 
+    // workmanager
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.work)
 
     // test
     testImplementation(libs.junit)

@@ -29,6 +29,7 @@ class SplashActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.initAreaCode(applicationContext)
         setContent {
             VisitKoreaTheme {
                 Surface {
