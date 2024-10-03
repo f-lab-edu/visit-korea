@@ -40,10 +40,10 @@ fun RestaurantCard(
     dist: String,
     category: String,
     image: String,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
-            .width(300.dp),
+        modifier = modifier,
         elevation = CardDefaults.elevatedCardElevation(6.dp),
     ) {
         Row(

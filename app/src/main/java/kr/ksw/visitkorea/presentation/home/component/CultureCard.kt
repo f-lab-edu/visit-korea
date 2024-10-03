@@ -35,14 +35,13 @@ import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 @Composable
 fun CultureCard(
     modifier: Modifier = Modifier,
-    ratio: Float = 0.7f,
     title: String,
     address: String,
     image: String,
 ) {
     Card (
         modifier = modifier
-            .aspectRatio(ratio),
+            .aspectRatio(0.7f),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 4.dp
