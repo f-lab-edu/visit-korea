@@ -23,19 +23,24 @@ class LocationBasedPagingSource (
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LocationBasedDTO> {
         val page = params.key ?: 1
         val loadSize = params.loadSize
-        val response = locationBasedListApi.getLocationBasedListByContentType(
-            numOfRows = loadSize,
-            pageNo =  page,
-            mapX = mapX,
-            mapY = mapY,
-            contentTypeId = contentTypeId
-        )
-        val data = response.toItems()
+        val data = try {
+            locationBasedListApi.getLocationBasedListByContentType(
+                numOfRows = loadSize,
+                pageNo = page,
+                mapX = mapX,
+                mapY = mapY,
+                contentTypeId = contentTypeId
+            ).toItems()
+        } catch (e: Exception) {
+            emptyList()
+        }
         return LoadResult.Page(
             data = data,
-            prevKey = if(page == 1) null else page - 1,
-            nextKey = if(data.size == loadSize) page + 1 else null
+            prevKey = if(page == 1 || data.isEmpty()) null else page - 1,
+            nextKey = if(data.size == loadSize &&
+                data.isNotEmpty() &&
+                page * loadSize < 100
+            ) page + 1 else null
         )
     }
-
 }
