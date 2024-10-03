@@ -28,6 +28,11 @@ class MoreViewModel @Inject constructor(
         contentTypeId: String,
         forceFetch: Boolean = false
     ) {
+        if(forceFetch) {
+            _moreState.update {
+                it.copy(isRefreshing = true)
+            }
+        }
         viewModelScope.launch {
             val moreListFlow = getMoreListUseCase(
                 forceFetch,
@@ -35,19 +40,24 @@ class MoreViewModel @Inject constructor(
                 "37.5678958128",
                 contentTypeId
             ).getOrNull()
-            if(moreListFlow != null) {
-                val moreCardModelFlow = moreListFlow.map { pagingData ->
-                    pagingData.map {
-                        it.toMoreCardModel()
-                    }
-                }.cachedIn(viewModelScope)
+            if(moreListFlow == null) {
+                // Toast Effect
                 _moreState.update {
-                    it.copy(
-                        moreCardModelFlow = moreCardModelFlow
-                    )
+                    it.copy(isRefreshing = false)
                 }
+                return@launch
+            }
+            val moreCardModelFlow = moreListFlow.map { pagingData ->
+                pagingData.map {
+                    it.toMoreCardModel()
+                }
+            }.cachedIn(viewModelScope)
+            _moreState.update {
+                it.copy(
+                    moreCardModelFlow = moreCardModelFlow,
+                    isRefreshing = false
+                )
             }
         }
     }
-
 }
