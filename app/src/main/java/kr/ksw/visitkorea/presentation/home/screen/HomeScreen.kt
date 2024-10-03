@@ -44,6 +44,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.home.component.CultureCard
 import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
@@ -51,6 +52,7 @@ import kr.ksw.visitkorea.presentation.home.component.TouristSpotCard
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeState
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeUiEffect
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeViewModel
+import kr.ksw.visitkorea.presentation.main.MainRoute
 import kr.ksw.visitkorea.presentation.more.MoreActivity
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
@@ -68,7 +70,7 @@ fun HomeScreen(
                         context,
                         MoreActivity::class.java
                     ).apply {
-                        putExtra("contentTypeId", effect.contentTypeId)
+                        putExtra("contentType", effect.contentType)
                     })
                 }
             }
@@ -84,7 +86,7 @@ fun HomeScreen(
 @Composable
 fun HomeScreen(
     homeState: HomeState,
-    onMoreClick: (String) -> Unit
+    onMoreClick: (ContentType) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Surface {
@@ -167,7 +169,7 @@ fun HomeScreen(
                         fontWeight = FontWeight.Medium
                     )
                     MoreButton {
-                        onMoreClick("12")
+                        onMoreClick(ContentType.TOURIST)
                     }
                 }
                 LazyRow(
@@ -207,7 +209,7 @@ fun HomeScreen(
                         fontWeight = FontWeight.Medium
                     )
                     MoreButton {
-                        onMoreClick("14")
+                        onMoreClick(ContentType.CULTURE)
                     }
                 }
                 LazyRow(
@@ -247,7 +249,7 @@ fun HomeScreen(
                         fontWeight = FontWeight.Medium
                     )
                     MoreButton {
-                        onMoreClick("28")
+                        onMoreClick(ContentType.LEiSURE)
                     }
                 }
                 LazyRow(
@@ -287,7 +289,7 @@ fun HomeScreen(
                         fontWeight = FontWeight.Medium
                     )
                     MoreButton {
-                        onMoreClick("39")
+                        onMoreClick(ContentType.RESTAURANT)
                     }
                 }
                 LazyRow(

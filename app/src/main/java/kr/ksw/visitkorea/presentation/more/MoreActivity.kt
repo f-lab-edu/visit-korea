@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.more.screen.MoreScreen
 import kr.ksw.visitkorea.presentation.more.viewmodel.MoreViewModel
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
@@ -15,16 +16,17 @@ class MoreActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val contentType = (intent.getSerializableExtra("contentType") as? ContentType) ?: ContentType.TOURIST
         setContent {
             VisitKoreaTheme {
                 MoreScreen(
                     viewModel = viewModel,
-                    contentTypeId = intent.getStringExtra("contentTypeId") ?: ""
+                    contentType = contentType
                 ) {
                     finish()
                 }
             }
         }
-        viewModel.getMoreListByContentType(intent.getStringExtra("contentTypeId") ?: "")
+        viewModel.getMoreListByContentType(contentType.contentTypeId)
     }
 }
