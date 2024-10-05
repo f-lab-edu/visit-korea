@@ -9,5 +9,5 @@ data class SigunguCodeEntity(
     val id: Int? = null,
     val areaCode: String,
     val code: String,
-    val name: String
+    val name: String,
 )

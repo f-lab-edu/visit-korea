@@ -29,7 +29,6 @@ class SplashActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.initAreaCode(applicationContext)
         setContent {
             VisitKoreaTheme {
                 Surface {
@@ -48,6 +47,7 @@ class SplashActivity : ComponentActivity() {
         }
         observeSideEffect()
         viewModel.checkPermission(this)
+        viewModel.initAreaCode(applicationContext)
     }
 
     private fun observeSideEffect() {
