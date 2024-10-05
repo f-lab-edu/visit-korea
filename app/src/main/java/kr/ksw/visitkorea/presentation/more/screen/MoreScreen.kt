@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -83,33 +84,20 @@ fun MoreScreen(
                 isRefreshing = isRefreshing,
                 onRefresh = onRefresh,
             ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    items(
-                        count = moreCardModels.itemCount,
-                        key = { index ->
-                            moreCardModels[index]?.contentId?.toInt() ?: index
-                        }
-                    ) { index ->
-                        val model = moreCardModels[index]
-                        model?.run {
-                            when(contentType) {
-                                ContentType.TOURIST -> MoreTouristCard(
-                                    title = title,
-                                    address = address,
-                                    image = firstImage
-                                )
-                                ContentType.CULTURE,
-                                ContentType.LEiSURE -> CultureCard(
-                                    title = title,
-                                    address = address,
-                                    image = firstImage
-                                )
-                                else -> RestaurantCard(
+                if(contentType == ContentType.RESTAURANT) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(16.dp),
+                    ) {
+                        items(
+                            count = moreCardModels.itemCount,
+                            key = { index ->
+                                moreCardModels[index]?.contentId?.toInt() ?: index
+                            }
+                        ) { index ->
+                            val model = moreCardModels[index]
+                            model?.run {
+                                RestaurantCard(
                                     title = title,
                                     address = address,
                                     dist = dist,
@@ -117,6 +105,36 @@ fun MoreScreen(
                                     image = firstImage,
                                     modifier = Modifier.fillMaxWidth()
                                 )
+                            }
+                        }
+                    }
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        items(
+                            count = moreCardModels.itemCount,
+                            key = { index ->
+                                moreCardModels[index]?.contentId?.toInt() ?: index
+                            }
+                        ) { index ->
+                            val model = moreCardModels[index]
+                            model?.run {
+                                when(contentType) {
+                                    ContentType.TOURIST -> MoreTouristCard(
+                                        title = title,
+                                        address = address,
+                                        image = firstImage
+                                    )
+                                    else -> CultureCard(
+                                        title = title,
+                                        address = address,
+                                        image = firstImage
+                                    )
+                                }
                             }
                         }
                     }

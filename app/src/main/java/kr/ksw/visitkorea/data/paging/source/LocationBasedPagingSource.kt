@@ -37,10 +37,7 @@ class LocationBasedPagingSource (
         return LoadResult.Page(
             data = data,
             prevKey = if(page == 1 || data.isEmpty()) null else page - 1,
-            nextKey = if(data.size == loadSize &&
-                data.isNotEmpty() &&
-                page * loadSize < 100
-            ) page + 1 else null
+            nextKey = if(data.size == loadSize && data.isNotEmpty()) page + 1 else null
         )
     }
 }

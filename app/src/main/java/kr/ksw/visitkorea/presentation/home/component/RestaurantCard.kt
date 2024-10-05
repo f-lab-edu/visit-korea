@@ -75,6 +75,9 @@ fun RestaurantCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     SingleLineText(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 4.dp),
                         text = title,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium

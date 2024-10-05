@@ -36,7 +36,7 @@ class SearchFestivalPagingSource(
         return LoadResult.Page(
             data = data,
             prevKey = if(page == 1) null else page - 1,
-            nextKey = if(data.size == loadSize && page * loadSize < 50)
+            nextKey = if(data.size == loadSize)
                 page + 1
             else null
         )

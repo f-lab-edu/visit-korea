@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,12 +29,14 @@ class MoreViewModel @Inject constructor(
         contentTypeId: String,
         forceFetch: Boolean = false
     ) {
-        if(forceFetch) {
-            _moreState.update {
-                it.copy(isRefreshing = true)
-            }
-        }
         viewModelScope.launch {
+            if(forceFetch) {
+                _moreState.update {
+                    it.copy(isRefreshing = true)
+                }
+                delay(500)
+            }
+
             val moreListFlow = getMoreListUseCase(
                 forceFetch,
                 "126.9817290217",
