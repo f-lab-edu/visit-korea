@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -43,10 +44,23 @@ class SearchViewModel @Inject constructor(
 
     private fun getListByKeyword() {
         viewModelScope.launch {
+            _searchState.update {
+                it.copy(
+                    isLoadingImages = true
+                )
+            }
+
             val searchListFlow = getListByKeywordUseCase(
                 searchState.value.searchKeyword
             ).getOrNull()
+
+            delay(300)
             if(searchListFlow == null) {
+                _searchState.update {
+                    it.copy(
+                        isLoadingImages = false
+                    )
+                }
                 return@launch
             }
             val searchCardModelFlow = searchListFlow.map { pagingData ->
@@ -58,7 +72,8 @@ class SearchViewModel @Inject constructor(
             }.cachedIn(viewModelScope)
             _searchState.update {
                 it.copy(
-                    searchCardModelFlow = searchCardModelFlow
+                    searchCardModelFlow = searchCardModelFlow,
+                    isLoadingImages = false
                 )
             }
         }
