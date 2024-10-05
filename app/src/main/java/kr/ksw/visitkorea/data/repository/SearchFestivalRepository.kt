@@ -3,7 +3,7 @@ package kr.ksw.visitkorea.data.repository
 import kr.ksw.visitkorea.data.remote.dto.SearchFestivalDTO
 
 interface SearchFestivalRepository {
-    suspend operator fun invoke(
+    suspend fun searchFestival(
         numOfRows: Int,
         pageNo: Int,
         eventStartDate: String,
