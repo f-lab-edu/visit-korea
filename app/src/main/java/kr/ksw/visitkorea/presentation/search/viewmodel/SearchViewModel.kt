@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.domain.usecase.mapper.toCommonCardModel
 import kr.ksw.visitkorea.domain.usecase.search.GetListByKeywordUseCase
 import kr.ksw.visitkorea.presentation.common.ContentType
-import kr.ksw.visitkorea.presentation.more.viewmodel.SearchActions
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,7 +35,7 @@ class SearchViewModel @Inject constructor(
                     )
                 }
             }
-            SearchActions.SubmitSearchKeyword -> {
+            is SearchActions.SubmitSearchKeyword -> {
                 getListByKeyword()
             }
         }
@@ -49,12 +48,11 @@ class SearchViewModel @Inject constructor(
                     isLoadingImages = true
                 )
             }
-
             val searchListFlow = getListByKeywordUseCase(
                 searchState.value.searchKeyword
             ).getOrNull()
-
             delay(300)
+
             if(searchListFlow == null) {
                 _searchState.update {
                     it.copy(

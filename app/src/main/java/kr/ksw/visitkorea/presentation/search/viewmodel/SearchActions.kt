@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.presentation.more.viewmodel
+package kr.ksw.visitkorea.presentation.search.viewmodel
 
 sealed interface SearchActions {
     data object SubmitSearchKeyword : SearchActions
