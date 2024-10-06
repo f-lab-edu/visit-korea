@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.ksw.visitkorea.R
 import kr.ksw.visitkorea.domain.usecase.mapper.toMoreCardModel
 import kr.ksw.visitkorea.domain.usecase.more.GetMoreListUseCase
 import javax.inject.Inject
@@ -34,7 +33,6 @@ class MoreViewModel @Inject constructor(
                 _moreState.update {
                     it.copy(isRefreshing = true)
                 }
-                delay(500)
             }
 
             val moreListFlow = getMoreListUseCase(
@@ -43,6 +41,8 @@ class MoreViewModel @Inject constructor(
                 "37.5678958128",
                 contentTypeId
             ).getOrNull()
+            delay(300)
+
             if(moreListFlow == null) {
                 // Toast Effect
                 _moreState.update {

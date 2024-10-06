@@ -51,17 +51,15 @@ fun FestivalCard(
         Box(
             modifier = Modifier
                 .background(Color.White)
-                .padding(
-                    top = 8.dp,
-                    start = 8.dp,
-                    end = 8.dp
-                )
         ) {
             AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(2f)
-                    .clip(RoundedCornerShape(24.dp))
+                    .clip(RoundedCornerShape(
+                        topStart = 24.dp,
+                        topEnd = 24.dp
+                    ))
                     .background(color = Color.LightGray),
                 model = ImageRequest
                     .Builder(LocalContext.current)
@@ -115,38 +113,45 @@ fun FestivalCard(
                     letterSpacing = (-0.6).sp
                 )
             }
-            SingleLineText(
-                modifier = Modifier
-                    .padding(start = 16.dp, end = 16.dp, bottom = 10.dp)
-                    .align(Alignment.BottomEnd),
-                text = festival.title,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.White
-            )
         }
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(
-                    top = 8.dp,
-                    start = 10.dp,
-                    end = 10.dp,
-                    bottom = 10.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                modifier = Modifier
-                    .size(20.dp),
-                imageVector = Icons.Outlined.LocationOn,
-                contentDescription = null,
-            )
             SingleLineText(
-                text = festival.address,
-                fontSize = 16.sp,
+                modifier = Modifier
+                    .padding(
+                        top = 8.dp,
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 4.dp
+                    ),
+                text = festival.title,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium,
             )
+            Row(
+                modifier = Modifier
+                    .padding(
+                        top = 8.dp,
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 10.dp
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(20.dp),
+                    imageVector = Icons.Outlined.LocationOn,
+                    contentDescription = null,
+                )
+                SingleLineText(
+                    text = festival.address,
+                    fontSize = 16.sp,
+                )
+            }
         }
     }
 }
