@@ -15,6 +15,7 @@ interface DetailRepository {
     ): Result<DetailIntroDTO>
 
     suspend fun getDetailImage(
-        contentId: String
+        contentId: String,
+        imageYN: String
     ): Result<List<DetailImageDTO>>
 }

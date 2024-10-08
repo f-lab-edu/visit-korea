@@ -7,9 +7,13 @@ import javax.inject.Inject
 class GetDetailImageUseCaseUseCaseImpl @Inject constructor(
     private val detailRepository: DetailRepository
 ): GetDetailImageUseCase {
-    override suspend fun invoke(contentId: String): Result<List<DetailImageDTO>> {
+    override suspend fun invoke(
+        contentId: String,
+        imageYN: String
+    ): Result<List<DetailImageDTO>> {
         return detailRepository.getDetailImage(
-            contentId = contentId
+            contentId = contentId,
+            imageYN = imageYN
         )
     }
 }

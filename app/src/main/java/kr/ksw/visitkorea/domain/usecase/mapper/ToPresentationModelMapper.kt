@@ -51,10 +51,11 @@ val restaurantMap = mapOf(
 
 fun LocationBasedDTO.toRestaurantModel(): Restaurant = Restaurant(
     address,
+    contentId,
     dist.toDistForUi(),
     firstImage.toImageUrl(),
     title,
-    restaurantMap[category] ?: ""
+    restaurantMap[category] ?: "",
 )
 
 fun LocationBasedDTO.toMoreCardModel(): MoreCardModel = MoreCardModel(
