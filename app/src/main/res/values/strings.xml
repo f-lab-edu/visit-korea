@@ -2,4 +2,10 @@
     <string name="app_name">VisitKorea</string>
 
     <string name="location_permission_denied_toast">위치 기반으로 검색하기 위해선 권한이 필요합니다.</string>
+
+    <string name="main_tab_home_title">홈</string>
+    <string name="main_tab_hotel_title">숙박</string>
+    <string name="main_tab_event_title">행사</string>
+    <string name="main_tab_search_title">검색</string>
+    <string name="main_tab_favorite_title">즐겨찾기</string>
 </resources>
