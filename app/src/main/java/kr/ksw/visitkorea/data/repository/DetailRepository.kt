@@ -6,15 +6,15 @@ import kr.ksw.visitkorea.data.remote.dto.DetailIntroDTO
 
 interface DetailRepository {
     suspend fun getDetailCommon(
-        contentId: Int
+        contentId: String
     ): Result<DetailCommonDTO>
 
     suspend fun getDetailIntro(
-        contentId: Int,
-        contentTypeId: Int
+        contentId: String,
+        contentTypeId: String
     ): Result<DetailIntroDTO>
 
     suspend fun getDetailImage(
-        contentId: Int
+        contentId: String
     ): Result<List<DetailImageDTO>>
 }
