@@ -4,6 +4,7 @@ import kr.ksw.visitkorea.data.remote.dto.DetailImageDTO
 
 interface GetDetailImageUseCase {
     suspend operator fun invoke(
-        contentId: String
+        contentId: String,
+        imageYN: String
     ): Result<List<DetailImageDTO>>
 }

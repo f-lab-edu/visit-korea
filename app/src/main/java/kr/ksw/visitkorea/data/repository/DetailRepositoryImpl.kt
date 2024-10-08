@@ -29,7 +29,8 @@ class DetailRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDetailImage(
-        contentId: String
+        contentId: String,
+        imageYN: String,
     ): Result<List<DetailImageDTO>> = runCatching {
         detailApi.getDetailImage(
             contentId = contentId

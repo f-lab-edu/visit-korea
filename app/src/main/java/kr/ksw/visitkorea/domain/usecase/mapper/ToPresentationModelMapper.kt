@@ -54,7 +54,8 @@ fun LocationBasedDTO.toRestaurantModel(): Restaurant = Restaurant(
     dist.toDistForUi(),
     firstImage.toImageUrl(),
     title,
-    restaurantMap[cat3] ?: ""
+    restaurantMap[cat3] ?: "",
+    contentId
 )
 
 fun LocationBasedDTO.toMoreCardModel(): MoreCardModel = MoreCardModel(

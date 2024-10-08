@@ -16,6 +16,7 @@ import kr.ksw.visitkorea.domain.usecase.home.GetLeisureSportsForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetRestaurantForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetTouristSpotForHomeUseCase
 import kr.ksw.visitkorea.presentation.common.ContentType
+import kr.ksw.visitkorea.presentation.common.DetailParcel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -108,6 +109,12 @@ class HomeViewModel @Inject constructor(
     fun startMoreActivity(contentType: ContentType) {
         viewModelScope.launch {
             _homeUiEffect.emit(HomeUiEffect.StartHomeActivity(contentType))
+        }
+    }
+
+    fun startDetailActivity(data: DetailParcel) {
+        viewModelScope.launch {
+            _homeUiEffect.emit(HomeUiEffect.StartDetailActivity(data))
         }
     }
 }
