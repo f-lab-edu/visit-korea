@@ -10,15 +10,17 @@ import javax.inject.Inject
 class DetailRepositoryImpl @Inject constructor(
     private val detailApi: DetailApi
 ): DetailRepository {
-    override suspend fun getDetailCommon(contentId: Int): Result<DetailCommonDTO> = runCatching {
+    override suspend fun getDetailCommon(
+        contentId: String)
+    : Result<DetailCommonDTO> = runCatching {
         detailApi.getDetailCommon(
             contentId = contentId
         ).toItems().first()
     }
 
     override suspend fun getDetailIntro(
-        contentId: Int,
-        contentTypeId: Int
+        contentId: String,
+        contentTypeId: String
     ): Result<DetailIntroDTO> = runCatching {
         detailApi.getDetailIntro(
             contentId = contentId,
@@ -27,7 +29,7 @@ class DetailRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDetailImage(
-        contentId: Int
+        contentId: String
     ): Result<List<DetailImageDTO>> = runCatching {
         detailApi.getDetailImage(
             contentId = contentId

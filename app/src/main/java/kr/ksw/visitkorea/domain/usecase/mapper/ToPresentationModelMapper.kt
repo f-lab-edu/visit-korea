@@ -1,8 +1,10 @@
 package kr.ksw.visitkorea.domain.usecase.mapper
 
+import kr.ksw.visitkorea.data.remote.dto.DetailIntroDTO
 import kr.ksw.visitkorea.data.remote.dto.LocationBasedDTO
 import kr.ksw.visitkorea.data.remote.dto.SearchFestivalDTO
 import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
+import kr.ksw.visitkorea.domain.usecase.model.CommonDetail
 import kr.ksw.visitkorea.domain.usecase.model.Festival
 import kr.ksw.visitkorea.domain.usecase.model.MoreCardModel
 import kr.ksw.visitkorea.domain.usecase.model.Restaurant
@@ -10,6 +12,7 @@ import kr.ksw.visitkorea.domain.usecase.model.TouristSpot
 import kr.ksw.visitkorea.domain.usecase.util.toDateString
 import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
 import kr.ksw.visitkorea.domain.usecase.util.toImageUrl
+import kr.ksw.visitkorea.domain.common.*
 
 fun LocationBasedDTO.toTouristSpotModel(): TouristSpot = TouristSpot(
     address,
@@ -62,3 +65,34 @@ fun LocationBasedDTO.toMoreCardModel(): MoreCardModel = MoreCardModel(
     contentId,
     restaurantMap[cat3]
 )
+
+fun DetailIntroDTO.toCommonDetail(contentTypeId: String): CommonDetail = when(contentTypeId) {
+    TYPE_TOURIST_SPOT -> CommonDetail(
+        parking = parking,
+        time = useTime,
+        restDate = restDate
+    )
+    TYPE_CULTURE -> CommonDetail(
+        parking = parkingCulture,
+        time = useTimeCulture,
+        restDate = restDateCulture,
+        fee = useFee
+    )
+    TYPE_LEiSURE -> CommonDetail(
+        parking = parkingLeports,
+        time = useTimeLeports,
+        restDate = restDateLeports,
+        fee = useFeeLeports
+    )
+    TYPE_RESTAURANT -> CommonDetail(
+        parking = parkingFood,
+        time = openTimeFood,
+        restDate = restDateFood,
+        menus = firstMenu
+    )
+    else -> CommonDetail(
+        time = playTime,
+        fee = useTimeFestival,
+        place = eventPlace
+    )
+}

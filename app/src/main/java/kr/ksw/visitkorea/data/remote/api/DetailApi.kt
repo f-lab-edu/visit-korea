@@ -14,15 +14,15 @@ interface DetailApi {
         @Query("pageNo") pageNo: Int = 1,
         @Query("defaultYN") defaultYN: String = "Y",
         @Query("overviewYN") overviewYN: String = "Y",
-        @Query("contentId") contentId: Int
+        @Query("contentId") contentId: String
     ): ApiResponse<DetailCommonDTO>
 
     @GET("detailIntro1")
     suspend fun getDetailIntro(
         @Query("numOfRows") numOfRows: Int = 10,
         @Query("pageNo") pageNo: Int = 1,
-        @Query("contentId") contentId: Int,
-        @Query("contentTypeId") contentTypeId: Int
+        @Query("contentId") contentId: String,
+        @Query("contentTypeId") contentTypeId: String
     ): ApiResponse<DetailIntroDTO>
 /*
     @GET("detailInfo1")
@@ -39,6 +39,6 @@ interface DetailApi {
         @Query("pageNo") pageNo: Int = 1,
         @Query("subImageYN") subImageYN: String = "Y",
         @Query("imageYN") imageYN: String = "Y",
-        @Query("contentId") contentId: Int,
+        @Query("contentId") contentId: String,
     ): ApiResponse<DetailImageDTO>
 }
