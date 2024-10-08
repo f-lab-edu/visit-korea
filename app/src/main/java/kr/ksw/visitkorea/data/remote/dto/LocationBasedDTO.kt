@@ -23,5 +23,5 @@ data class LocationBasedDTO(
     @SerializedName("mapy")
     val mapY: String,
     val tel: String,
-    val title: String
+    val title: String,
 )
