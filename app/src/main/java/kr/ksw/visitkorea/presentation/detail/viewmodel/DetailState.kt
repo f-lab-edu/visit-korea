@@ -9,6 +9,7 @@ data class DetailState(
     val firstImage: String = "",
     val address: String = "",
     val dist: String? = null,
+    val contentTypeId: String = "",
     val detailCommon: DetailCommonDTO = DetailCommonDTO("",""),
     val detailIntro: CommonDetail = CommonDetail(),
     val images: List<DetailImageDTO> = emptyList()
