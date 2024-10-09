@@ -43,13 +43,11 @@ class DetailViewModel @Inject constructor(
             detailParcel.contentId,
             detailParcel.contentTypeId
         )
-        getDetailImage(
-            detailParcel.contentId,
-            if(detailParcel.contentTypeId == TYPE_RESTAURANT)
-                "N"
-            else
-                "Y"
-        )
+        if(detailParcel.contentTypeId == TYPE_RESTAURANT) {
+            getDetailMenuImage(detailParcel.contentId)
+        } else {
+            getDetailImage(detailParcel.contentId)
+        }
     }
 
     private fun getDetailCommon(contentId: String) {
@@ -83,16 +81,39 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun getDetailImage(
-        contentId: String,
-        imageYN: String
+        contentId: String
     ) {
         viewModelScope.launch {
             getDetailImageUseCase(
-                contentId, imageYN
+                contentId, "Y"
             ).getOrNull()?.run {
                 _detailState.update {
                     it.copy(
                         images = this.map { image ->
+                            image.copy(
+                                originImgUrl = image.originImgUrl.toImageUrl(),
+                                smallImageUrl = image.smallImageUrl.toImageUrl()
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getDetailMenuImage(
+        contentId: String
+    ) {
+        viewModelScope.launch {
+            val result = getDetailImageUseCase(
+                contentId, "N"
+            ).getOrNull()
+            if(result.isNullOrEmpty()) {
+                getDetailImage(contentId)
+            } else {
+                _detailState.update {
+                    it.copy(
+                        images = result.map { image ->
                             image.copy(
                                 originImgUrl = image.originImgUrl.toImageUrl(),
                                 smallImageUrl = image.smallImageUrl.toImageUrl()

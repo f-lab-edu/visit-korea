@@ -44,6 +44,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.domain.common.TYPE_CULTURE
+import kr.ksw.visitkorea.domain.common.TYPE_LEiSURE
+import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.common.DetailParcel
@@ -248,7 +251,15 @@ fun HomeScreen(
                             title = cultureCenter.title,
                             address = cultureCenter.address,
                             image = cultureCenter.firstImage
-                        )
+                        ) {
+                            onItemClick(DetailParcel(
+                                title = cultureCenter.title,
+                                address = cultureCenter.address,
+                                firstImage = cultureCenter.firstImage,
+                                contentId = cultureCenter.contentId,
+                                contentTypeId = TYPE_CULTURE
+                            ))
+                        }
                     }
                 }
             }
@@ -288,7 +299,15 @@ fun HomeScreen(
                             title = leisureSports.title,
                             address = leisureSports.address,
                             image = leisureSports.firstImage
-                        )
+                        ) {
+                            onItemClick(DetailParcel(
+                                title = leisureSports.title,
+                                address = leisureSports.address,
+                                firstImage = leisureSports.firstImage,
+                                contentId = leisureSports.contentId,
+                                contentTypeId = TYPE_LEiSURE
+                            ))
+                        }
                     }
                 }
             }
@@ -328,9 +347,18 @@ fun HomeScreen(
                             restaurant.address,
                             restaurant.dist,
                             restaurant.category,
-                            restaurant.firstImage,
+                            restaurant.firstImage2,
                             Modifier.width(300.dp)
-                        )
+                        ) {
+                            onItemClick(DetailParcel(
+                                title = restaurant.title,
+                                firstImage = restaurant.firstImage,
+                                address = restaurant.address,
+                                dist = restaurant.dist,
+                                contentId = restaurant.contentId,
+                                contentTypeId = TYPE_RESTAURANT
+                            ))
+                        }
                     }
                 }
             }

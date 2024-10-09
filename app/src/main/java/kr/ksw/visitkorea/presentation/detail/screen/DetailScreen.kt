@@ -58,6 +58,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.usecase.model.CommonDetail
+import kr.ksw.visitkorea.presentation.common.convertHtmlToString
 import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailState
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailViewModel
@@ -229,7 +230,7 @@ private fun OverView(
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = overView,
+            text = overView.convertHtmlToString(),
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             onTextLayout = { result ->
@@ -317,7 +318,6 @@ private fun DetailIntroContent(
     title: String,
     content: String
 ) {
-    val htmlContent = Html.fromHtml(content, Html.FROM_HTML_MODE_LEGACY)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -328,7 +328,9 @@ private fun DetailIntroContent(
             fontSize = 14.sp
         )
         Text(
-            text = htmlContent.toString().ifEmpty { "문의" },
+            text = content
+                .convertHtmlToString()
+                .ifEmpty { "문의" },
             fontSize = 14.sp
         )
     }

@@ -24,8 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kr.ksw.visitkorea.R
+import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.usecase.model.MoreCardModel
 import kr.ksw.visitkorea.presentation.common.ContentType
+import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.home.component.CultureCard
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
 import kr.ksw.visitkorea.presentation.more.component.MoreScreenHeader
@@ -104,7 +106,7 @@ fun MoreScreen(
                                     category = category ?: "",
                                     image = firstImage,
                                     modifier = Modifier.fillMaxWidth()
-                                )
+                                ) { }
                             }
                         }
                     }
@@ -133,7 +135,9 @@ fun MoreScreen(
                                         title = title,
                                         address = address,
                                         image = firstImage
-                                    )
+                                    ) {
+
+                                    }
                                 }
                             }
                         }
