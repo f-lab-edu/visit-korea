@@ -1,6 +1,7 @@
 package kr.ksw.visitkorea.presentation.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,10 +41,12 @@ fun RestaurantCard(
     dist: String,
     category: String,
     image: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: () -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier
+            .clickable(onClick = onItemClick),
         elevation = CardDefaults.elevatedCardElevation(6.dp),
     ) {
         Row(
@@ -122,7 +125,9 @@ fun RestaurantCardPreview() {
                 "188m",
                 "한식",
                 "https"
-            )
+            ) {
+                
+            }
         }
     }
 }

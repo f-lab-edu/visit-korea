@@ -85,7 +85,9 @@ fun HotelScreen(
                             title = hotel.title,
                             address = hotel.address,
                             image = hotel.firstImage
-                        )
+                        ) {
+
+                        }
                     }
                 }
             }
