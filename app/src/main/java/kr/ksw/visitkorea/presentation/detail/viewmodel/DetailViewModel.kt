@@ -12,6 +12,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailCommonUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailImageUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailIntroUseCase
+import kr.ksw.visitkorea.domain.usecase.util.toImageUrl
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import javax.inject.Inject
 
@@ -33,7 +34,8 @@ class DetailViewModel @Inject constructor(
                 title = detailParcel.title,
                 firstImage = detailParcel.firstImage,
                 address = detailParcel.address,
-                dist = detailParcel.dist
+                dist = detailParcel.dist,
+                contentTypeId = detailParcel.contentTypeId
             )
         }
         getDetailCommon(detailParcel.contentId)
@@ -90,7 +92,12 @@ class DetailViewModel @Inject constructor(
             ).getOrNull()?.run {
                 _detailState.update {
                     it.copy(
-                        images = this
+                        images = this.map { image ->
+                            image.copy(
+                                originImgUrl = image.originImgUrl.toImageUrl(),
+                                smallImageUrl = image.smallImageUrl.toImageUrl()
+                            )
+                        }
                     )
                 }
             }
