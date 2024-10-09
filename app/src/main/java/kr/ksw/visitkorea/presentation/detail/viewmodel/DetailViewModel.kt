@@ -12,6 +12,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailCommonUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailImageUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailIntroUseCase
+import kr.ksw.visitkorea.presentation.common.DetailParcel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,12 +26,28 @@ class DetailViewModel @Inject constructor(
         get() = _detailState.asStateFlow()
 
     fun initDetail(
-        contentId: String,
-        contentTypeId: String
+        detailParcel: DetailParcel
     ) {
-        getDetailCommon(contentId)
-        getDetailIntro(contentId, contentTypeId)
-        getDetailImage(contentId, if(contentTypeId == TYPE_RESTAURANT) "N" else "Y")
+        _detailState.update {
+            it.copy(
+                title = detailParcel.title,
+                firstImage = detailParcel.firstImage,
+                address = detailParcel.address,
+                dist = detailParcel.dist
+            )
+        }
+        getDetailCommon(detailParcel.contentId)
+        getDetailIntro(
+            detailParcel.contentId,
+            detailParcel.contentTypeId
+        )
+        getDetailImage(
+            detailParcel.contentId,
+            if(detailParcel.contentTypeId == TYPE_RESTAURANT)
+                "N"
+            else
+                "Y"
+        )
     }
 
     private fun getDetailCommon(contentId: String) {

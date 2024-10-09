@@ -80,7 +80,9 @@ fun HomeScreen(
                     context.startActivity(Intent(
                         context,
                         DetailActivity::class.java
-                    ))
+                    ).apply {
+                        putExtra("detail", effect.data)
+                    })
                 }
             }
         }
