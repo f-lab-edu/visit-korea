@@ -17,8 +17,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -55,10 +53,10 @@ import kr.ksw.visitkorea.presentation.home.component.CultureCard
 import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
 import kr.ksw.visitkorea.presentation.home.component.TouristSpotCard
+import kr.ksw.visitkorea.presentation.home.viewmodel.HomeActions
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeState
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeUiEffect
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeViewModel
-import kr.ksw.visitkorea.presentation.main.MainRoute
 import kr.ksw.visitkorea.presentation.more.MoreActivity
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
@@ -71,7 +69,7 @@ fun HomeScreen(
     LaunchedEffect(homeViewModel.homeUiEffect) {
         homeViewModel.homeUiEffect.collectLatest { effect ->
             when(effect) {
-                is HomeUiEffect.StartHomeActivity -> {
+                is HomeUiEffect.StartMoreActivity -> {
                     context.startActivity(Intent(
                         context,
                         MoreActivity::class.java
@@ -93,16 +91,16 @@ fun HomeScreen(
 
     HomeScreen(
         homeState = homeState,
-        onMoreClick = homeViewModel::startMoreActivity,
-        onItemClick = homeViewModel::startDetailActivity
+        onMoreClick = homeViewModel::onAction,
+        onItemClick = homeViewModel::onAction
     )
 }
 
 @Composable
 fun HomeScreen(
     homeState: HomeState,
-    onMoreClick: (ContentType) -> Unit,
-    onItemClick: (DetailParcel) -> Unit
+    onMoreClick: (HomeActions) -> Unit,
+    onItemClick: (HomeActions) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Surface {
@@ -185,7 +183,9 @@ fun HomeScreen(
                         fontWeight = FontWeight.Medium
                     )
                     MoreButton {
-                        onMoreClick(ContentType.TOURIST)
+                        onMoreClick(HomeActions.ClickMoreButton(
+                            ContentType.TOURIST
+                        ))
                     }
                 }
                 LazyRow(
@@ -203,14 +203,16 @@ fun HomeScreen(
                             touristSpot.dist,
                             touristSpot.firstImage
                         ) {
-                            onItemClick(DetailParcel(
-                                title = touristSpot.title,
-                                firstImage = touristSpot.firstImage,
-                                address = touristSpot.address,
-                                dist = touristSpot.dist,
-                                contentId = touristSpot.contentId,
-                                contentTypeId = TYPE_TOURIST_SPOT
-                            ))
+                            onItemClick(
+                                HomeActions.ClickCardItem(DetailParcel(
+                                    title = touristSpot.title,
+                                    firstImage = touristSpot.firstImage,
+                                    address = touristSpot.address,
+                                    dist = touristSpot.dist,
+                                    contentId = touristSpot.contentId,
+                                    contentTypeId = TYPE_TOURIST_SPOT
+                                ))
+                            )
                         }
                     }
                 }
@@ -234,7 +236,9 @@ fun HomeScreen(
                         fontWeight = FontWeight.Medium
                     )
                     MoreButton {
-                        onMoreClick(ContentType.CULTURE)
+                        onMoreClick(HomeActions.ClickMoreButton(
+                            ContentType.CULTURE
+                        ))
                     }
                 }
                 LazyRow(
@@ -252,12 +256,14 @@ fun HomeScreen(
                             address = cultureCenter.address,
                             image = cultureCenter.firstImage
                         ) {
-                            onItemClick(DetailParcel(
-                                title = cultureCenter.title,
-                                address = cultureCenter.address,
-                                firstImage = cultureCenter.firstImage,
-                                contentId = cultureCenter.contentId,
-                                contentTypeId = TYPE_CULTURE
+                            onItemClick(HomeActions.ClickCardItem(
+                                DetailParcel(
+                                    title = cultureCenter.title,
+                                    address = cultureCenter.address,
+                                    firstImage = cultureCenter.firstImage,
+                                    contentId = cultureCenter.contentId,
+                                    contentTypeId = TYPE_CULTURE
+                                )
                             ))
                         }
                     }
@@ -282,7 +288,9 @@ fun HomeScreen(
                         fontWeight = FontWeight.Medium
                     )
                     MoreButton {
-                        onMoreClick(ContentType.LEiSURE)
+                        onMoreClick(HomeActions.ClickMoreButton(
+                            ContentType.LEiSURE
+                        ))
                     }
                 }
                 LazyRow(
@@ -300,12 +308,14 @@ fun HomeScreen(
                             address = leisureSports.address,
                             image = leisureSports.firstImage
                         ) {
-                            onItemClick(DetailParcel(
-                                title = leisureSports.title,
-                                address = leisureSports.address,
-                                firstImage = leisureSports.firstImage,
-                                contentId = leisureSports.contentId,
-                                contentTypeId = TYPE_LEiSURE
+                            onItemClick(HomeActions.ClickCardItem(
+                                DetailParcel(
+                                    title = leisureSports.title,
+                                    address = leisureSports.address,
+                                    firstImage = leisureSports.firstImage,
+                                    contentId = leisureSports.contentId,
+                                    contentTypeId = TYPE_LEiSURE
+                                )
                             ))
                         }
                     }
@@ -330,7 +340,9 @@ fun HomeScreen(
                         fontWeight = FontWeight.Medium
                     )
                     MoreButton {
-                        onMoreClick(ContentType.RESTAURANT)
+                        onMoreClick(HomeActions.ClickMoreButton(
+                            ContentType.RESTAURANT
+                        ))
                     }
                 }
                 LazyRow(
@@ -350,13 +362,15 @@ fun HomeScreen(
                             restaurant.firstImage2,
                             Modifier.width(300.dp)
                         ) {
-                            onItemClick(DetailParcel(
-                                title = restaurant.title,
-                                firstImage = restaurant.firstImage,
-                                address = restaurant.address,
-                                dist = restaurant.dist,
-                                contentId = restaurant.contentId,
-                                contentTypeId = TYPE_RESTAURANT
+                            onItemClick(HomeActions.ClickCardItem(
+                                DetailParcel(
+                                    title = restaurant.title,
+                                    firstImage = restaurant.firstImage,
+                                    address = restaurant.address,
+                                    dist = restaurant.dist,
+                                    contentId = restaurant.contentId,
+                                    contentTypeId = TYPE_RESTAURANT
+                                )
                             ))
                         }
                     }
