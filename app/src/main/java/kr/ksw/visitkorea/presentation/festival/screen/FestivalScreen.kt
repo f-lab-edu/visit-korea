@@ -1,5 +1,6 @@
 package kr.ksw.visitkorea.presentation.festival.screen
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,10 +18,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,26 +31,50 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.usecase.model.Festival
+import kr.ksw.visitkorea.presentation.common.DetailParcel
+import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.festival.component.FestivalCard
+import kr.ksw.visitkorea.presentation.festival.viewmodel.FestivalActions
+import kr.ksw.visitkorea.presentation.festival.viewmodel.FestivalUiEffect
 import kr.ksw.visitkorea.presentation.festival.viewmodel.FestivalViewModel
-import kr.ksw.visitkorea.presentation.home.component.CultureCard
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
 fun FestivalScreen(
     viewModel: FestivalViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val hotelState by viewModel.festivalState.collectAsState()
     val lazyItem = hotelState.festivalModelFlow.collectAsLazyPagingItems()
+    LaunchedEffect(viewModel.festivalUiEffect) {
+        viewModel.festivalUiEffect.collectLatest { effect ->
+            when(effect) {
+                is FestivalUiEffect.StartDetailActivity -> {
+                    context.startActivity(
+                        Intent(
+                        context,
+                        DetailActivity::class.java
+                    ).apply {
+                        putExtra("detail", effect.data)
+                    })
+                }
+            }
+        }
+    }
+
     FestivalScreen(
-        lazyItem
+        lazyItem,
+        viewModel::onAction
     )
 }
 
 @Composable
 fun FestivalScreen(
     festivals: LazyPagingItems<Festival>,
+    onItemClick: (FestivalActions) -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -99,7 +126,19 @@ fun FestivalScreen(
                     val festival = festivals[index]
                     festival?.run {
                         val model = this
-                        FestivalCard(model)
+                        FestivalCard(model) {
+                            onItemClick(FestivalActions.ClickFestivalCardItem(
+                                DetailParcel(
+                                    title = festival.title,
+                                    address = festival.address,
+                                    firstImage = festival.firstImage,
+                                    contentId = festival.contentId,
+                                    contentTypeId = TYPE_FESTIVAL,
+                                    eventStartDate = festival.eventStartDate,
+                                    eventEndDate = festival.eventEndDate,
+                                )
+                            ))
+                        }
                     }
                 }
             }

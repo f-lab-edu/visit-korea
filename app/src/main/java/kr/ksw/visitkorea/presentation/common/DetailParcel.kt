@@ -10,5 +10,7 @@ data class DetailParcel(
     val address: String = "",
     val dist: String? = null,
     val contentId: String = "",
-    val contentTypeId: String = ""
+    val contentTypeId: String = "",
+    val eventStartDate: String? = null,
+    val eventEndDate: String? = null
 ): Parcelable

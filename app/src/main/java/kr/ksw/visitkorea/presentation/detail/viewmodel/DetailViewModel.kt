@@ -35,7 +35,9 @@ class DetailViewModel @Inject constructor(
                 firstImage = detailParcel.firstImage,
                 address = detailParcel.address,
                 dist = detailParcel.dist,
-                contentTypeId = detailParcel.contentTypeId
+                contentTypeId = detailParcel.contentTypeId,
+                eventStartDate = detailParcel.eventStartDate,
+                eventEndDate = detailParcel.eventEndDate
             )
         }
         getDetailCommon(detailParcel.contentId)

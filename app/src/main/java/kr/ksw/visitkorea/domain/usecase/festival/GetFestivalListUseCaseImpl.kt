@@ -29,8 +29,8 @@ class GetFestivalListUseCaseImpl @Inject constructor(
         }
         Pager(
             config = PagingConfig(
-                pageSize = 20,
-                initialLoadSize = 20
+                pageSize = 40,
+                initialLoadSize = 40
             ),
             pagingSourceFactory = {
                 SearchFestivalPagingSource(
