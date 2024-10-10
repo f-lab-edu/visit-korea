@@ -1,6 +1,7 @@
 package kr.ksw.visitkorea.presentation.more.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,10 +18,8 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,10 +44,12 @@ fun MoreTouristCard(
     title: String,
     address: String,
     image: String,
+    onItemClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
-            .aspectRatio(0.7f),
+            .aspectRatio(0.7f)
+            .clickable(onClick = onItemClick),
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.elevatedCardElevation(6.dp)
     ) {
@@ -130,7 +131,7 @@ fun MoreTouristCard() {
                 "수원화성",
                 "수원시 장안구 OOO",
                 ""
-            )
+            ) {}
         }
     }
 }

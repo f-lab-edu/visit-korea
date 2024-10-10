@@ -28,8 +28,8 @@ class GetMoreListUseCaseImpl @Inject constructor(
         }
         Pager(
             config = PagingConfig(
-                pageSize = 30,
-                initialLoadSize = 30
+                pageSize = 50,
+                initialLoadSize = 50
             ),
             pagingSourceFactory = {
                 LocationBasedPagingSource(
