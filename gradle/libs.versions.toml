@@ -29,6 +29,8 @@ coil-compose = "2.7.0"
 paging = "3.3.2"
 paging-compose = "3.3.2"
 
+gms-location = "21.3.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -64,6 +66,8 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging"}
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose"}
+
+google-android-gms-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "gms-location"}
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }

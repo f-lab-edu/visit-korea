@@ -8,5 +8,6 @@ import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
 
 @Immutable
 data class HotelState(
+    val isLoading: Boolean = true,
     val hotelCardModelFlow: Flow<PagingData<CommonCardModel>> = emptyFlow()
 )
