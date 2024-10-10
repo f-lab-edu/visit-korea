@@ -7,15 +7,21 @@ import androidx.paging.filter
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.domain.usecase.mapper.toCommonCardModel
 import kr.ksw.visitkorea.domain.usecase.search.GetListByKeywordUseCase
 import kr.ksw.visitkorea.presentation.common.ContentType
+import kr.ksw.visitkorea.presentation.common.DetailParcel
+import kr.ksw.visitkorea.presentation.home.viewmodel.HomeUiEffect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +31,10 @@ class SearchViewModel @Inject constructor(
     private val _searchState: MutableStateFlow<SearchState> = MutableStateFlow(SearchState())
     val searchState: StateFlow<SearchState>
         get() = _searchState.asStateFlow()
+
+    private val _searchUiEffect = MutableSharedFlow<SearchUiEffect>(replay = 0)
+    val searchUiEffect: SharedFlow<SearchUiEffect>
+        get() = _searchUiEffect.asSharedFlow()
 
     fun onAction(action: SearchActions) {
         when(action) {
@@ -38,6 +48,9 @@ class SearchViewModel @Inject constructor(
             is SearchActions.SubmitSearchKeyword -> {
                 getListByKeyword()
             }
+            is SearchActions.ClickCardItem -> {
+                startDetailActivity(action.data)
+            }
         }
     }
 
@@ -50,30 +63,27 @@ class SearchViewModel @Inject constructor(
             }
             val searchListFlow = getListByKeywordUseCase(
                 searchState.value.searchKeyword
-            ).getOrNull()
-            delay(300)
-
-            if(searchListFlow == null) {
-                _searchState.update {
-                    it.copy(
-                        isLoadingImages = false
-                    )
-                }
-                return@launch
-            }
-            val searchCardModelFlow = searchListFlow.map { pagingData ->
+            ).getOrNull()?.map { pagingData ->
                 pagingData.filter {
                     contentTypeFilter(it.contentTypeId)
                 }.map {
                     it.toCommonCardModel()
                 }
-            }.cachedIn(viewModelScope)
+            }?.cachedIn(viewModelScope) ?: emptyFlow()
+
+            delay(500)
             _searchState.update {
                 it.copy(
-                    searchCardModelFlow = searchCardModelFlow,
+                    searchCardModelFlow = searchListFlow,
                     isLoadingImages = false
                 )
             }
+        }
+    }
+
+    private fun startDetailActivity(data: DetailParcel) {
+        viewModelScope.launch {
+            _searchUiEffect.emit(SearchUiEffect.StartDetailActivity(data))
         }
     }
 

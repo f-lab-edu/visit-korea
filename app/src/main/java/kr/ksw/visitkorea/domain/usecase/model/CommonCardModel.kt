@@ -4,5 +4,7 @@ data class CommonCardModel(
     val address: String = "",
     val firstImage: String = "",
     val title: String = "",
-    val contentId: String = ""
+    val dist: String? = null,
+    val contentId: String = "",
+    val contentTypeId: String = "",
 )

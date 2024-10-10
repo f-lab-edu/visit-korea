@@ -99,10 +99,6 @@ private fun DetailScreen(
                         .data(detailState.firstImage)
                         .size(Size.ORIGINAL)
                         .build(),
-                    colorFilter = if(detailState.firstImage.isNotEmpty())
-                        ColorFilter.tint(Color.LightGray, blendMode = BlendMode.Darken)
-                    else
-                        null,
                     contentDescription = "Detail Image",
                     contentScale = ContentScale.Crop,
                 )
