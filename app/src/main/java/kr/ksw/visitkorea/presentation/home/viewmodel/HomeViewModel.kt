@@ -41,6 +41,17 @@ class HomeViewModel @Inject constructor(
         getRestaurant()
     }
 
+    fun onAction(action: HomeActions) {
+        when(action) {
+            is HomeActions.ClickMoreButton -> {
+                startMoreActivity(action.contentType)
+            }
+            is HomeActions.ClickCardItem -> {
+                startDetailActivity(action.data)
+            }
+        }
+    }
+
     private fun getTouristSpot() {
         viewModelScope.launch {
             val items = getTouristSpotForHomeUseCase(
@@ -106,13 +117,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun startMoreActivity(contentType: ContentType) {
+    private fun startMoreActivity(contentType: ContentType) {
         viewModelScope.launch {
-            _homeUiEffect.emit(HomeUiEffect.StartHomeActivity(contentType))
+            _homeUiEffect.emit(HomeUiEffect.StartMoreActivity(contentType))
         }
     }
 
-    fun startDetailActivity(data: DetailParcel) {
+    private fun startDetailActivity(data: DetailParcel) {
         viewModelScope.launch {
             _homeUiEffect.emit(HomeUiEffect.StartDetailActivity(data))
         }
