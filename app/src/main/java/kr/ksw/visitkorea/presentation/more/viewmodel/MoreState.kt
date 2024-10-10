@@ -8,6 +8,7 @@ import kr.ksw.visitkorea.domain.usecase.model.MoreCardModel
 
 @Immutable
 data class MoreState(
+    val isLoading: Boolean = true,
     val isRefreshing: Boolean = false,
     val moreCardModelFlow: Flow<PagingData<MoreCardModel>> = emptyFlow(),
 )

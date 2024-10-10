@@ -1,7 +1,12 @@
 package kr.ksw.visitkorea.presentation.home.viewmodel
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,12 +24,14 @@ import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import javax.inject.Inject
 
+@SuppressLint("MissingPermission")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getTouristSpotForHomeUseCase: GetTouristSpotForHomeUseCase,
     private val getCultureCenterForHomeUseCase: GetCultureCenterForHomeUseCase,
     private val getLeisureSportsForHomeUseCase: GetLeisureSportsForHomeUseCase,
     private val getRestaurantForHomeUseCase: GetRestaurantForHomeUseCase,
+    private val fusedLocationProviderClient: FusedLocationProviderClient
 ): ViewModel() {
     private val _homeState = MutableStateFlow(HomeState())
     val homeState: StateFlow<HomeState>
@@ -35,10 +42,17 @@ class HomeViewModel @Inject constructor(
         get() = _homeUiEffect.asSharedFlow()
 
     init {
-        getTouristSpot()
-        getCultureCenter()
-        getLeisureSports()
-        getRestaurant()
+        fusedLocationProviderClient.getCurrentLocation(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            CancellationTokenSource().token
+        ).addOnCompleteListener { task ->
+            val lat = task.result.latitude.run { if(this == 0.0) "37.5678958128" else this.toString() }
+            val lng = task.result.longitude.run { if(this == 0.0) "126.9817290217" else this.toString() }
+            getTouristSpot(lat, lng)
+            getCultureCenter(lat, lng)
+            getLeisureSports(lat, lng)
+            getRestaurant(lat, lng)
+        }
     }
 
     fun onAction(action: HomeActions) {
@@ -52,11 +66,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getTouristSpot() {
+    private fun getTouristSpot(
+        lat: String,
+        lng: String,
+    ) {
         viewModelScope.launch {
             val items = getTouristSpotForHomeUseCase(
-                "126.9817290217",
-                "37.5678958128"
+                lng,
+                lat
             ).getOrNull()
             if(items != null) {
                 _homeState.update {
@@ -69,11 +86,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getCultureCenter() {
+    private fun getCultureCenter(
+        lat: String,
+        lng: String,
+    ) {
         viewModelScope.launch {
             val items = getCultureCenterForHomeUseCase(
-                "126.9817290217",
-                "37.5678958128"
+                lng,
+                lat
             ).getOrNull()
             if(items != null) {
                 _homeState.update {
@@ -85,11 +105,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getRestaurant() {
+    private fun getRestaurant(
+        lat: String,
+        lng: String,
+    ) {
         viewModelScope.launch {
             val items = getRestaurantForHomeUseCase(
-                "126.9817290217",
-                "37.5678958128"
+                lng,
+                lat
             ).getOrNull()
             if(items != null) {
                 _homeState.update {
@@ -101,11 +124,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getLeisureSports() {
+    private fun getLeisureSports(
+        lat: String,
+        lng: String,
+    ) {
         viewModelScope.launch {
             val items = getLeisureSportsForHomeUseCase(
-                "126.9817290217",
-                "37.5678958128"
+                lng,
+                lat
             ).getOrNull()
             if(items != null) {
                 _homeState.update {
