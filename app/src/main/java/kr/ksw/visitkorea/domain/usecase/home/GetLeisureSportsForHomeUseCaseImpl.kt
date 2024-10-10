@@ -10,7 +10,7 @@ class GetLeisureSportsForHomeUseCaseImpl @Inject constructor(
 ): GetLeisureSportsForHomeUseCase {
     override suspend fun invoke(
         mapX: String,
-        mapY: String
+        mapY: String,
     ): Result<List<LeisureSports>> {
         return locationBasedListRepository.getLocationBasedListByContentType(
             10, 1, mapX, mapY, "28"

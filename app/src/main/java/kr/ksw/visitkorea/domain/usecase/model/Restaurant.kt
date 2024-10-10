@@ -5,5 +5,5 @@ data class Restaurant(
     val dist: String = "",
     val firstImage: String = "",
     val title: String = "",
-    val category: String = ""
+    val category: String = "",
 )

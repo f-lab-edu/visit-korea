@@ -8,7 +8,10 @@ import javax.inject.Inject
 class GetTouristSpotForHomeUseCaseImpl @Inject constructor(
     private val locationBasedListRepository: LocationBasedListRepository
 ): GetTouristSpotForHomeUseCase {
-    override suspend fun invoke(mapX: String, mapY: String): Result<List<TouristSpot>> = runCatching {
+    override suspend fun invoke(
+        mapX: String,
+        mapY: String,
+    ): Result<List<TouristSpot>> = runCatching {
         return locationBasedListRepository.getLocationBasedListByContentType(
             10, 1, mapX, mapY, "12"
         ).map { list ->

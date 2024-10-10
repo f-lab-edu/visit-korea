@@ -12,5 +12,5 @@ data class HomeState(
     val touristSpotList: List<TouristSpot> = emptyList(),
     val cultureCenterList: List<CultureCenter> = emptyList(),
     val leisureSportsList: List<LeisureSports> = emptyList(),
-    val restaurantList: List<Restaurant> = emptyList()
+    val restaurantList: List<Restaurant> = emptyList(),
 )

@@ -10,7 +10,7 @@ class GetCultureCenterForHomeUseCaseImpl @Inject constructor(
 ) : GetCultureCenterForHomeUseCase {
     override suspend fun invoke(
         mapX: String,
-        mapY: String
+        mapY: String,
     ): Result<List<CultureCenter>> {
         return locationBasedListRepository.getLocationBasedListByContentType(
             10, 1, mapX, mapY, "14"

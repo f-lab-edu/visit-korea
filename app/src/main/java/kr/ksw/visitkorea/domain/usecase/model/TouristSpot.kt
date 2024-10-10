@@ -9,5 +9,5 @@ data class TouristSpot(
     val dist: String = "",
     val firstImage: String = "",
     val firstImage2: String = "",
-    val title: String = ""
+    val title: String = "",
 )

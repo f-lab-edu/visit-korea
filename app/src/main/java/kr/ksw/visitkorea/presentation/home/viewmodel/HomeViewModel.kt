@@ -19,7 +19,7 @@ class HomeViewModel @Inject constructor(
     private val getTouristSpotForHomeUseCase: GetTouristSpotForHomeUseCase,
     private val getCultureCenterForHomeUseCase: GetCultureCenterForHomeUseCase,
     private val getLeisureSportsForHomeUseCase: GetLeisureSportsForHomeUseCase,
-    private val getRestaurantForHomeUseCase: GetRestaurantForHomeUseCase
+    private val getRestaurantForHomeUseCase: GetRestaurantForHomeUseCase,
 ): ViewModel() {
     private val _homeState = MutableStateFlow(HomeState())
     val homeState: StateFlow<HomeState>
