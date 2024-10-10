@@ -1,5 +1,6 @@
 package kr.ksw.visitkorea.presentation.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -65,7 +66,8 @@ fun MainBottomNavigation(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .background(color = Color.White),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         MainRoute.entries.forEach {

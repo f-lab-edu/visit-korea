@@ -13,7 +13,7 @@ class LocationBasedListRepositoryImpl @Inject constructor(
         pageNo: Int,
         mapX: String,
         mapY: String,
-        contentTypeId: String
+        contentTypeId: String,
     ): Result<List<LocationBasedDTO>> = runCatching {
         locationBasedListApi.getLocationBasedListByContentType(
             numOfRows = numOfRows,
