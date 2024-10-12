@@ -25,6 +25,17 @@ class DetailHotelViewModel @Inject constructor(
     val hotelDetailState: StateFlow<DetailHotelState>
         get() = _hotelDetailState.asStateFlow()
 
+    fun onAction(action: DetailHotelActions) {
+        when(action) {
+            DetailHotelActions.OnClickFacilityInfoButton -> {
+                showFacilityInfoState()
+            }
+            DetailHotelActions.OnClickRoomInfoButton -> {
+                showRoomInfoState()
+            }
+        }
+    }
+
     fun initDetail(
         detailParcel: DetailParcel
     ) {
@@ -85,6 +96,24 @@ class DetailHotelViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun showFacilityInfoState() {
+        _hotelDetailState.update {
+            it.copy(
+                showFacilityInfo = true,
+                showRoomDetail = false
+            )
+        }
+    }
+
+    private fun showRoomInfoState() {
+        _hotelDetailState.update {
+            it.copy(
+                showFacilityInfo = false,
+                showRoomDetail = true
+            )
         }
     }
 }
