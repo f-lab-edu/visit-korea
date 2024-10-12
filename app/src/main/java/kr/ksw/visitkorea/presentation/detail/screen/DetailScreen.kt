@@ -59,6 +59,9 @@ import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.usecase.model.CommonDetail
 import kr.ksw.visitkorea.presentation.common.convertHtmlToString
 import kr.ksw.visitkorea.presentation.component.SingleLineText
+import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
+import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
+import kr.ksw.visitkorea.presentation.detail.component.TitleView
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailState
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailViewModel
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
@@ -139,7 +142,7 @@ private fun DetailScreen(
                 detailIntro = detailState.detailIntro
             )
             Spacer(modifier = Modifier.height(16.dp))
-            ImageViews(detailState.images)
+            DetailImageRow(detailState.images)
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
@@ -194,75 +197,6 @@ private fun FestivalDateView(
             color = Color.White,
             letterSpacing = (-0.6).sp
         )
-    }
-}
-
-@Composable
-private fun TitleView(
-    title: String,
-    address: String,
-    dist: String?
-) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            SingleLineText(
-                modifier = Modifier
-                    .weight(1.0f),
-                text = title,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-            Text(
-                modifier = Modifier
-                    .border(
-                        width = 1.dp,
-                        color = Color.Black,
-                        shape = RoundedCornerShape(4.dp)
-                    )
-                    .padding(horizontal = 4.dp),
-                text = "지도보기",
-                fontSize = 12.sp
-            )
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Row(
-                modifier = Modifier
-                    .weight(1.0f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .size(20.dp),
-                    imageVector = Icons.Outlined.LocationOn,
-                    contentDescription = null
-                )
-                SingleLineText(
-                    text = address,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-            dist?.run {
-                Text(
-                    text = this,
-                    fontSize = 12.sp
-                )
-            }
-        }
     }
 }
 
@@ -365,69 +299,6 @@ private fun DetailIntroView(
             DetailIntroContent(
                 "행사장소",
                 it
-            )
-        }
-    }
-}
-
-@Composable
-private fun DetailIntroContent(
-    title: String,
-    content: String
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Text(
-            modifier = Modifier.width(76.dp),
-            text = title,
-            fontSize = 14.sp
-        )
-        Text(
-            text = content
-                .convertHtmlToString()
-                .ifEmpty { "문의" },
-            fontSize = 14.sp
-        )
-    }
-}
-
-@Composable
-private fun ImageViews(
-    images: List<DetailImageDTO>
-) {
-    Text(
-        modifier = Modifier
-            .padding(start = 16.dp),
-        text = "사진",
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Medium
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp)
-    ) {
-        items(
-            count = images.size,
-            key = {
-                images[it].originImgUrl
-            }
-        ) { index ->
-            val image = images[index].smallImageUrl
-            AsyncImage(
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(color = Color.LightGray),
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(image)
-                    .size(Size.ORIGINAL)
-                    .build(),
-                contentDescription = "Culture Spot Image",
-                contentScale = ContentScale.Crop,
             )
         }
     }
