@@ -38,5 +38,5 @@ fun LocationBasedDTO.toRestaurantModel(): Restaurant = Restaurant(
     dist.toDistForUi(),
     firstImage.toImageUrl(),
     title,
-    restaurantMap[cat3] ?: ""
+    restaurantMap[category] ?: ""
 )
