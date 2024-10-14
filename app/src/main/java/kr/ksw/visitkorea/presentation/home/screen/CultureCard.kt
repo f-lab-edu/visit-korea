@@ -36,14 +36,15 @@ import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
 fun CultureCard(
+    modifier: Modifier = Modifier,
+    ratio: Float = 0.7f,
     title: String,
     address: String,
     image: String,
 ) {
     Card (
-        modifier = Modifier
-            .width(160.dp)
-            .aspectRatio(0.78f),
+        modifier = modifier
+            .aspectRatio(ratio),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 4.dp
@@ -53,7 +54,7 @@ fun CultureCard(
             AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(144.dp)
+                    .aspectRatio(1f)
                     .background(color = Color.LightGray),
                 model = ImageRequest
                     .Builder(LocalContext.current)
@@ -104,9 +105,9 @@ fun CultureCardPreview() {
                 .padding(20.dp)
         ) {
             CultureCard(
-                "문화시설",
-                "문화시설 주소",
-                "https://ksw"
+                title = "문화시설",
+                address = "문화시설 주소",
+                image = "https://ksw"
             )
         }
     }
