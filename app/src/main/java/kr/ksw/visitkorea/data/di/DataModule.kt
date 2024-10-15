@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.ksw.visitkorea.data.local.databases.AreaCodeDatabase
+import kr.ksw.visitkorea.data.local.databases.FavoriteDatabase
 import kr.ksw.visitkorea.data.remote.api.AreaCodeApi
 import kr.ksw.visitkorea.data.remote.api.DetailApi
 import kr.ksw.visitkorea.data.remote.api.LocationBasedListApi
@@ -74,6 +75,16 @@ object DataModule {
     @Singleton
     fun provideAreaCodeRepository(areaCodeApi: AreaCodeApi): AreaCodeRepository {
         return AreaCodeRepositoryImpl(areaCodeApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteDatabase(application: Application): FavoriteDatabase {
+        return Room.databaseBuilder(
+            application,
+            FavoriteDatabase::class.java,
+            "favorite.db"
+        ).build()
     }
 
     @Provides
