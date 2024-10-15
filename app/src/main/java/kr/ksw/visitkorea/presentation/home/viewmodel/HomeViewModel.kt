@@ -1,6 +1,7 @@
 package kr.ksw.visitkorea.presentation.home.viewmodel
 
 import android.annotation.SuppressLint
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +23,8 @@ import kr.ksw.visitkorea.domain.usecase.home.GetRestaurantForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetTouristSpotForHomeUseCase
 import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.common.DetailParcel
+import kr.ksw.visitkorea.presentation.common.latitudeToStringOrDefault
+import kr.ksw.visitkorea.presentation.common.longitudeToStringOrDefault
 import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
@@ -46,12 +49,18 @@ class HomeViewModel @Inject constructor(
             Priority.PRIORITY_HIGH_ACCURACY,
             CancellationTokenSource().token
         ).addOnCompleteListener { task ->
-            val lat = task.result.latitude.run { if(this == 0.0) "37.5678958128" else this.toString() }
-            val lng = task.result.longitude.run { if(this == 0.0) "126.9817290217" else this.toString() }
-            getTouristSpot(lat, lng)
-            getCultureCenter(lat, lng)
-            getLeisureSports(lat, lng)
-            getRestaurant(lat, lng)
+            val result = try {
+                task.result.latitudeToStringOrDefault() to
+                        task.result.longitudeToStringOrDefault()
+            } catch (e: Exception) {
+                "37.5678958128" to "126.9817290217"
+            }
+            result.run {
+                getTouristSpot(first, second)
+                getCultureCenter(first, second)
+                getLeisureSports(first, second)
+                getRestaurant(first, second)
+            }
         }
     }
 

@@ -62,11 +62,17 @@ class MoreViewModel @Inject constructor(
             Priority.PRIORITY_HIGH_ACCURACY,
             CancellationTokenSource().token
         ).addOnCompleteListener { task ->
+            val result = try {
+                task.result.latitudeToStringOrDefault() to
+                        task.result.longitudeToStringOrDefault()
+            } catch (e: Exception) {
+                "37.5678958128" to "126.9817290217"
+            }
             getMoreListByContentType(
                 contentTypeId = contentTypeId,
                 forceFetch = forceFetch,
-                lat = task.result.latitudeToStringOrDefault(),
-                lng = task.result.longitudeToStringOrDefault()
+                lat = result.first,
+                lng = result.second
             )
         }
     }
