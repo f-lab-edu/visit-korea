@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -37,6 +38,9 @@ class FestivalViewModel @Inject constructor(
     private val _festivalUiEffect = MutableSharedFlow<FestivalUiEffect>(replay = 0)
     val festivalUiEffect: SharedFlow<FestivalUiEffect>
         get() = _festivalUiEffect.asSharedFlow()
+
+    // Favorite 상태를 관리하기 위한 StateFlow
+    private val addFavoriteStateFlow = MutableStateFlow(setOf<String>())
 
     init {
         getFestivalList()
@@ -70,17 +74,29 @@ class FestivalViewModel @Inject constructor(
                 val festivalModelFlow = hotelListFlow.map { pagingData ->
                     pagingData.map { data ->
                         if(existFavoriteEntityUseCase(data.contentId)) {
-                            data.toFestival().copy(
-                                isFavorite = true
-                            )
-                        } else {
-                            data.toFestival()
+                            addFavoriteStateFlow.update {
+                                it + data.contentId
+                            }
                         }
+                        data.toFestival()
                     }
                 }.cachedIn(viewModelScope)
+
                 _festivalState.update {
                     it.copy(
-                        festivalModelFlow = festivalModelFlow
+                        // flow의 combine 함수를 이용한 PagingData의 Favorite 상태관리
+                        festivalModelFlow = combine(
+                            festivalModelFlow,
+                            addFavoriteStateFlow
+                        ) { paging, favorites ->
+                            paging.map { festival ->
+                                if(favorites.contains(festival.contentId)) {
+                                    festival.copy(isFavorite = true)
+                                } else {
+                                    festival.copy(isFavorite = false)
+                                }
+                            }
+                        }
                     )
                 }
             }
@@ -96,12 +112,18 @@ class FestivalViewModel @Inject constructor(
     private fun upsertFavorite(favoriteEntity: FavoriteEntity) {
         viewModelScope.launch {
             upsertFavoriteEntityUseCase(favoriteEntity)
+            addFavoriteStateFlow.update {
+                it + favoriteEntity.contentId
+            }
         }
     }
 
     private fun deleteFavorite(favoriteEntity: FavoriteEntity) {
         viewModelScope.launch {
             deleteFavoriteEntityByContentIdUseCase(favoriteEntity.contentId)
+            addFavoriteStateFlow.update {
+                it - favoriteEntity.contentId
+            }
         }
     }
 }
