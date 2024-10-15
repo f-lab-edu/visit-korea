@@ -2,7 +2,7 @@ package kr.ksw.visitkorea.domain.usecase.home
 
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepository
 import kr.ksw.visitkorea.domain.usecase.mapper.toTouristSpotModel
-import kr.ksw.visitkorea.domain.usecase.model.TouristSpot
+import kr.ksw.visitkorea.domain.model.TouristSpot
 import javax.inject.Inject
 
 class GetTouristSpotForHomeUseCaseImpl @Inject constructor(

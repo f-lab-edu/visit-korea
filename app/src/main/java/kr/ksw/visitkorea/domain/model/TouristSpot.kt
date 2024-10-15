@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.domain.usecase.model
+package kr.ksw.visitkorea.domain.model
 
 /**
  * For Home Screen Card Model

@@ -2,7 +2,7 @@ package kr.ksw.visitkorea.domain.usecase.home
 
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepository
 import kr.ksw.visitkorea.domain.usecase.mapper.toRestaurantModel
-import kr.ksw.visitkorea.domain.usecase.model.Restaurant
+import kr.ksw.visitkorea.domain.model.Restaurant
 import javax.inject.Inject
 
 class GetRestaurantForHomeUseCaseImpl @Inject constructor(

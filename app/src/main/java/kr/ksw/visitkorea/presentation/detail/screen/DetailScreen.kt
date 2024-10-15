@@ -56,7 +56,7 @@ import kr.ksw.visitkorea.data.remote.dto.DetailImageDTO
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
-import kr.ksw.visitkorea.domain.usecase.model.CommonDetail
+import kr.ksw.visitkorea.domain.model.CommonDetail
 import kr.ksw.visitkorea.presentation.common.convertHtmlToString
 import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow

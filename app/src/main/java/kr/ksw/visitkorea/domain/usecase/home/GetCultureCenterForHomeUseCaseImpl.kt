@@ -2,7 +2,7 @@ package kr.ksw.visitkorea.domain.usecase.home
 
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepository
 import kr.ksw.visitkorea.domain.usecase.mapper.toCommonCardModel
-import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
+import kr.ksw.visitkorea.domain.model.CommonCardModel
 import javax.inject.Inject
 
 class GetCultureCenterForHomeUseCaseImpl @Inject constructor(

@@ -1,8 +1,8 @@
 package kr.ksw.visitkorea.presentation.detail.viewmodel
 
 import kr.ksw.visitkorea.data.remote.dto.DetailImageDTO
-import kr.ksw.visitkorea.domain.usecase.model.HotelDetail
-import kr.ksw.visitkorea.domain.usecase.model.HotelRoomDetail
+import kr.ksw.visitkorea.domain.model.HotelDetail
+import kr.ksw.visitkorea.domain.model.HotelRoomDetail
 
 data class DetailHotelState (
     val title: String = "",

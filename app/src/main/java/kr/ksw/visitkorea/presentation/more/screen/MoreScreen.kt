@@ -31,7 +31,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.collectLatest
 import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
-import kr.ksw.visitkorea.domain.usecase.model.MoreCardModel
+import kr.ksw.visitkorea.domain.model.MoreCardModel
 import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity

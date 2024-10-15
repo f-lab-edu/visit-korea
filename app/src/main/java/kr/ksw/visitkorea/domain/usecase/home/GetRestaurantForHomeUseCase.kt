@@ -1,6 +1,6 @@
 package kr.ksw.visitkorea.domain.usecase.home
 
-import kr.ksw.visitkorea.domain.usecase.model.Restaurant
+import kr.ksw.visitkorea.domain.model.Restaurant
 
 interface GetRestaurantForHomeUseCase {
     suspend operator fun invoke(

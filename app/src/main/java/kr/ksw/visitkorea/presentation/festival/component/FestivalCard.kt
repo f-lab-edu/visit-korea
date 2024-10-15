@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import kr.ksw.visitkorea.domain.usecase.model.Festival
+import kr.ksw.visitkorea.domain.model.Festival
 import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 

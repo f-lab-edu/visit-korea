@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.domain.usecase.model
+package kr.ksw.visitkorea.domain.model
 
 data class HotelDetail(
     val checkInTime: String? = null,

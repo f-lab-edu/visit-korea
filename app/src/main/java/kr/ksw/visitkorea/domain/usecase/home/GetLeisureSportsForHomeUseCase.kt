@@ -1,6 +1,6 @@
 package kr.ksw.visitkorea.domain.usecase.home
 
-import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
+import kr.ksw.visitkorea.domain.model.CommonCardModel
 
 interface GetLeisureSportsForHomeUseCase {
     suspend operator fun invoke(

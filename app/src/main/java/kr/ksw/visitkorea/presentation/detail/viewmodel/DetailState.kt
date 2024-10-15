@@ -2,7 +2,7 @@ package kr.ksw.visitkorea.presentation.detail.viewmodel
 
 import kr.ksw.visitkorea.data.remote.dto.DetailCommonDTO
 import kr.ksw.visitkorea.data.remote.dto.DetailImageDTO
-import kr.ksw.visitkorea.domain.usecase.model.CommonDetail
+import kr.ksw.visitkorea.domain.model.CommonDetail
 
 data class DetailState(
     val title: String = "",

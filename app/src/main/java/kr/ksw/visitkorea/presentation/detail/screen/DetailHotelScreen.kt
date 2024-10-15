@@ -40,8 +40,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import kotlinx.coroutines.launch
-import kr.ksw.visitkorea.domain.usecase.model.HotelDetail
-import kr.ksw.visitkorea.domain.usecase.model.HotelRoomDetail
+import kr.ksw.visitkorea.domain.model.HotelDetail
+import kr.ksw.visitkorea.domain.model.HotelRoomDetail
 import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow

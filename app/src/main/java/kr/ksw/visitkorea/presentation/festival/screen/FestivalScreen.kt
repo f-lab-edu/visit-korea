@@ -33,7 +33,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.collectLatest
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
-import kr.ksw.visitkorea.domain.usecase.model.Festival
+import kr.ksw.visitkorea.domain.model.Festival
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.festival.component.FestivalCard

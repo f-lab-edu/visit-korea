@@ -1,9 +1,9 @@
 package kr.ksw.visitkorea.presentation.home.viewmodel
 
 import androidx.compose.runtime.Immutable
-import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
-import kr.ksw.visitkorea.domain.usecase.model.Restaurant
-import kr.ksw.visitkorea.domain.usecase.model.TouristSpot
+import kr.ksw.visitkorea.domain.model.CommonCardModel
+import kr.ksw.visitkorea.domain.model.Restaurant
+import kr.ksw.visitkorea.domain.model.TouristSpot
 
 @Immutable
 data class HomeState(
