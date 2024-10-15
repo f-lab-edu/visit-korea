@@ -49,7 +49,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
-import kr.ksw.visitkorea.presentation.home.component.CultureCard
+import kr.ksw.visitkorea.presentation.component.CommonCard
 import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
 import kr.ksw.visitkorea.presentation.home.component.TouristSpotCard
@@ -250,7 +250,7 @@ fun HomeScreen(
                         key = { it }
                     ) { index ->
                         val cultureCenter = homeState.cultureCenterList[index]
-                        CultureCard(
+                        CommonCard(
                             Modifier.fillParentMaxWidth(0.5f),
                             title = cultureCenter.title,
                             address = cultureCenter.address,
@@ -302,7 +302,7 @@ fun HomeScreen(
                         key = { it }
                     ) { index ->
                         val leisureSports = homeState.leisureSportsList[index]
-                        CultureCard(
+                        CommonCard(
                             Modifier.fillParentMaxWidth(0.5f),
                             title = leisureSports.title,
                             address = leisureSports.address,

@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.presentation.home.component
+package kr.ksw.visitkorea.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,11 +30,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
-fun CultureCard(
+fun CommonCard(
     modifier: Modifier = Modifier,
     title: String,
     address: String,
@@ -98,13 +97,13 @@ fun CultureCard(
 
 @Composable
 @Preview(showBackground = true)
-fun CultureCardPreview() {
+fun CommonCardPreview() {
     VisitKoreaTheme {
         Surface(
             modifier = Modifier
                 .padding(20.dp)
         ) {
-            CultureCard(
+            CommonCard(
                 title = "문화시설",
                 address = "문화시설 주소",
                 image = "https://ksw"

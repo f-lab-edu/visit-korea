@@ -33,7 +33,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_HOTEL
 import kr.ksw.visitkorea.domain.model.CommonCardModel
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
-import kr.ksw.visitkorea.presentation.home.component.CultureCard
+import kr.ksw.visitkorea.presentation.component.CommonCard
 import kr.ksw.visitkorea.presentation.hotel.viewmodel.HotelActions
 import kr.ksw.visitkorea.presentation.hotel.viewmodel.HotelUiEffect
 import kr.ksw.visitkorea.presentation.hotel.viewmodel.HotelViewModel
@@ -121,7 +121,7 @@ fun HotelScreen(
                     ) { index ->
                         val hotel = hotelCardModels[index]
                         hotel?.run {
-                            CultureCard(
+                            CommonCard(
                                 title = hotel.title,
                                 address = hotel.address,
                                 image = hotel.firstImage
