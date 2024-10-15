@@ -89,6 +89,10 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun provideFavoriteDao(favoriteDatabase: FavoriteDatabase) = favoriteDatabase.favoriteDao
+
+    @Provides
+    @Singleton
     fun provideLocationBasedListRepository(locationBasedListApi: LocationBasedListApi): LocationBasedListRepository {
         return LocationBasedListRepositoryImpl(locationBasedListApi)
     }
