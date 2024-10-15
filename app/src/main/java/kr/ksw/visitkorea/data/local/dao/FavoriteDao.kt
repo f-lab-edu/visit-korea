@@ -16,8 +16,11 @@ interface FavoriteDao {
     fun deleteFavoriteEntity(favoriteEntity: FavoriteEntity)
 
     @Query("DELETE FROM favorite_table WHERE contentId = :contentId")
-    fun deleteFavoriteByContentId(contentId: String)
+    fun deleteFavoriteEntityByContentId(contentId: String)
 
     @Query("SELECT * FROM favorite_table")
-    fun getAllFavorite(): Flow<List<FavoriteEntity>>
+    fun getAllFavoriteEntity(): Flow<List<FavoriteEntity>>
+
+    @Query("SELECT EXISTS (SELECT * FROM favorite_table WHERE contentId = :contentId)")
+    fun existFavoriteEntity(contentId: String): Int
 }
