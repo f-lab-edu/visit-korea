@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.ksw.visitkorea.data.local.dao.FavoriteDao
 import kr.ksw.visitkorea.data.local.databases.AreaCodeDatabase
 import kr.ksw.visitkorea.data.local.databases.FavoriteDatabase
 import kr.ksw.visitkorea.data.remote.api.AreaCodeApi
@@ -18,6 +19,8 @@ import kr.ksw.visitkorea.data.repository.AreaCodeRepository
 import kr.ksw.visitkorea.data.repository.AreaCodeRepositoryImpl
 import kr.ksw.visitkorea.data.repository.DetailRepository
 import kr.ksw.visitkorea.data.repository.DetailRepositoryImpl
+import kr.ksw.visitkorea.data.repository.FavoriteRepository
+import kr.ksw.visitkorea.data.repository.FavoriteRepositoryImpl
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepository
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepositoryImpl
 import kr.ksw.visitkorea.data.repository.SearchFestivalRepository
@@ -90,6 +93,12 @@ object DataModule {
     @Provides
     @Singleton
     fun provideFavoriteDao(favoriteDatabase: FavoriteDatabase) = favoriteDatabase.favoriteDao
+
+    @Provides
+    @Singleton
+    fun provideFavoriteRepository(favoriteDao: FavoriteDao): FavoriteRepository {
+        return FavoriteRepositoryImpl(favoriteDao)
+    }
 
     @Provides
     @Singleton
