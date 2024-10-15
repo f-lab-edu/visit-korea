@@ -1,8 +1,8 @@
 package kr.ksw.visitkorea.domain.usecase.favorite
 
 import kotlinx.coroutines.flow.Flow
-import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
+import kr.ksw.visitkorea.domain.model.Favorite
 
 interface GetAllFavoriteEntityUseCase {
-    suspend operator fun invoke(): Flow<List<FavoriteEntity>>
+    suspend operator fun invoke(): Flow<List<Favorite>>
 }

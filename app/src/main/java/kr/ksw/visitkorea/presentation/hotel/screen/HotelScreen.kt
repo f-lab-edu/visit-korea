@@ -124,7 +124,8 @@ fun HotelScreen(
                             CommonCard(
                                 title = hotel.title,
                                 address = hotel.address,
-                                image = hotel.firstImage
+                                image = hotel.firstImage,
+                                contentTypeId = TYPE_HOTEL
                             ) {
                                 onItemClick(HotelActions.ClickCardItem(
                                     DetailParcel(

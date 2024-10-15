@@ -157,7 +157,8 @@ fun SearchScreen(
                             CommonCard(
                                 title = title,
                                 address = address,
-                                image = firstImage
+                                image = firstImage,
+                                contentTypeId = contentTypeId
                             ) {
                                 onAction(SearchActions.ClickCardItem(
                                     DetailParcel(

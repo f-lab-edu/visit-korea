@@ -3,6 +3,7 @@ package kr.ksw.visitkorea.presentation.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,6 +33,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
+import kr.ksw.visitkorea.domain.common.TYPE_LEiSURE
+import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
@@ -38,6 +44,9 @@ fun CommonCard(
     title: String,
     address: String,
     image: String,
+    contentTypeId: String,
+    favorite: Boolean = false,
+    onIconClick: () -> Unit = {},
     onItemClick: () -> Unit
 ) {
     Card (
@@ -50,19 +59,36 @@ fun CommonCard(
         )
     ) {
         Column {
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .background(color = Color.LightGray),
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(image)
-                    .size(Size.ORIGINAL)
-                    .build(),
-                contentDescription = "Culture Spot Image",
-                contentScale = ContentScale.Crop,
-            )
+            Box {
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .background(color = Color.LightGray),
+                    model = ImageRequest
+                        .Builder(LocalContext.current)
+                        .data(image)
+                        .size(Size.ORIGINAL)
+                        .build(),
+                    contentDescription = "Culture Spot Image",
+                    contentScale = ContentScale.Crop,
+                )
+                if(contentTypeId == TYPE_TOURIST_SPOT ||
+                    contentTypeId == TYPE_FESTIVAL) {
+                    Icon(
+                        if(favorite)
+                            Icons.Default.Favorite
+                        else Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favorite Icon",
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(10.dp)
+                            .size(24.dp)
+                            .clickable(onClick = onIconClick),
+                        tint = Color.Red
+                    )
+                }
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -106,7 +132,9 @@ fun CommonCardPreview() {
             CommonCard(
                 title = "문화시설",
                 address = "문화시설 주소",
-                image = "https://ksw"
+                image = "https://ksw",
+                contentTypeId = TYPE_TOURIST_SPOT,
+                favorite = true
             ) {
 
             }

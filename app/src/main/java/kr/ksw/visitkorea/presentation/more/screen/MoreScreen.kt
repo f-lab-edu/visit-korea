@@ -224,6 +224,7 @@ private fun CommonTypeGrid(
                         title = title,
                         address = address,
                         image = firstImage,
+                        contentTypeId = contentType.contentTypeId,
                         onItemClick = itemClick
                     )
                 }

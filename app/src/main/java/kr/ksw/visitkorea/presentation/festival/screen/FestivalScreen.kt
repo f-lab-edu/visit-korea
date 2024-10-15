@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.model.Festival
 import kr.ksw.visitkorea.presentation.common.DetailParcel
@@ -126,19 +127,23 @@ fun FestivalScreen(
                     val festival = festivals[index]
                     festival?.run {
                         val model = this
-                        FestivalCard(model) {
-                            onItemClick(FestivalActions.ClickFestivalCardItem(
-                                DetailParcel(
-                                    title = festival.title,
-                                    address = festival.address,
-                                    firstImage = festival.firstImage,
-                                    contentId = festival.contentId,
-                                    contentTypeId = TYPE_FESTIVAL,
-                                    eventStartDate = festival.eventStartDate,
-                                    eventEndDate = festival.eventEndDate,
-                                )
-                            ))
-                        }
+                        FestivalCard(
+                            festival = model,
+                            onIconClick = onItemClick,
+                            onItemClick = {
+                                onItemClick(FestivalActions.ClickFestivalCardItem(
+                                    DetailParcel(
+                                        title = festival.title,
+                                        address = festival.address,
+                                        firstImage = festival.firstImage,
+                                        contentId = festival.contentId,
+                                        contentTypeId = TYPE_FESTIVAL,
+                                        eventStartDate = festival.eventStartDate,
+                                        eventEndDate = festival.eventEndDate,
+                                    )
+                                ))
+                            }
+                        )
                     }
                 }
             }

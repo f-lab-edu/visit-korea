@@ -254,7 +254,8 @@ fun HomeScreen(
                             Modifier.fillParentMaxWidth(0.5f),
                             title = cultureCenter.title,
                             address = cultureCenter.address,
-                            image = cultureCenter.firstImage
+                            image = cultureCenter.firstImage,
+                            contentTypeId = cultureCenter.contentTypeId
                         ) {
                             onItemClick(HomeActions.ClickCardItem(
                                 DetailParcel(
@@ -306,7 +307,8 @@ fun HomeScreen(
                             Modifier.fillParentMaxWidth(0.5f),
                             title = leisureSports.title,
                             address = leisureSports.address,
-                            image = leisureSports.firstImage
+                            image = leisureSports.firstImage,
+                            contentTypeId = leisureSports.contentTypeId
                         ) {
                             onItemClick(HomeActions.ClickCardItem(
                                 DetailParcel(

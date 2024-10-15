@@ -8,6 +8,8 @@ class UpsertFavoriteEntityUseCaseImpl @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ): UpsertFavoriteEntityUseCase {
     override suspend fun invoke(favoriteEntity: FavoriteEntity) {
-        favoriteRepository.upsertFavoriteEntity(favoriteEntity)
+        if(favoriteRepository.existFavoriteEntity(favoriteEntity.contentId) == 0) {
+            favoriteRepository.upsertFavoriteEntity(favoriteEntity)
+        }
     }
 }
