@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -117,6 +118,15 @@ fun FestivalCard(
                     letterSpacing = (-0.6).sp
                 )
             }
+            Icon(
+                Icons.Outlined.FavoriteBorder,
+                contentDescription = "Favorite Icon",
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(10.dp)
+                    .size(24.dp),
+                tint = Color.Red
+            )
         }
         Column(
             modifier = Modifier
