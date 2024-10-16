@@ -7,4 +7,5 @@ data class MoreCardModel(
     val dist: String = "",
     val contentId: String = "",
     val category: String?,
+    val isFavorite: Boolean = false,
 )

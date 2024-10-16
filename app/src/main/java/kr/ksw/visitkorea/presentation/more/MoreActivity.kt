@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.more.screen.MoreScreen
 import kr.ksw.visitkorea.presentation.more.viewmodel.MoreViewModel
@@ -26,6 +27,9 @@ class MoreActivity : ComponentActivity() {
                     finish()
                 }
             }
+        }
+        if(contentType.contentTypeId == TYPE_TOURIST_SPOT) {
+            viewModel.getAllFavoriteEntity()
         }
         viewModel.getMoreListByContentType(contentType.contentTypeId)
     }

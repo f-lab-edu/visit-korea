@@ -16,10 +16,15 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
+import kr.ksw.visitkorea.domain.usecase.favorite.DeleteFavoriteEntityByContentIdUseCase
+import kr.ksw.visitkorea.domain.usecase.favorite.GetAllFavoriteEntityUseCase
+import kr.ksw.visitkorea.domain.usecase.favorite.UpsertFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.mapper.toMoreCardModel
 import kr.ksw.visitkorea.domain.usecase.more.GetMoreListUseCase
 import kr.ksw.visitkorea.presentation.common.DetailParcel
@@ -32,6 +37,9 @@ import javax.inject.Inject
 class MoreViewModel @Inject constructor(
     private val getMoreListUseCase: GetMoreListUseCase,
     private val fusedLocationProviderClient: FusedLocationProviderClient,
+    private val getAllFavoriteEntityUseCase: GetAllFavoriteEntityUseCase,
+    private val upsertFavoriteEntityUseCase: UpsertFavoriteEntityUseCase,
+    private val deleteFavoriteEntityByContentIdUseCase: DeleteFavoriteEntityByContentIdUseCase
 ): ViewModel() {
     private val _moreState = MutableStateFlow(MoreState())
     val moreState: StateFlow<MoreState>
@@ -41,10 +49,30 @@ class MoreViewModel @Inject constructor(
     val moreUiEffect: SharedFlow<MoreUiEffect>
         get() = _moreUiEffect.asSharedFlow()
 
+    private val favoriteIdFlow = MutableStateFlow(setOf<String>())
+
     fun onAction(action: MoreActions) {
         when(action) {
             is MoreActions.ClickCardItem -> {
                 startDetailActivity(action.data)
+            }
+            is MoreActions.ClickFavoriteIconUpsert -> {
+                upsertFavorite(action.favorite)
+            }
+            is MoreActions.ClickFavoriteIconDelete -> {
+                deleteFavorite(action.contentId)
+            }
+        }
+    }
+
+    fun getAllFavoriteEntity() {
+        viewModelScope.launch {
+            getAllFavoriteEntityUseCase().collect { entities ->
+                favoriteIdFlow.update {
+                    entities.map {
+                        it.contentId
+                    }.toSet()
+                }
             }
         }
     }
@@ -98,7 +126,18 @@ class MoreViewModel @Inject constructor(
             delay(500)
             _moreState.update {
                 it.copy(
-                    moreCardModelFlow = moreListFlow,
+                    moreCardModelFlow = combine(
+                        moreListFlow,
+                        favoriteIdFlow
+                    ) { paging, favorites ->
+                        paging.map { more ->
+                            if(favorites.contains(more.contentId)) {
+                                more.copy(isFavorite = true)
+                            } else {
+                                more.copy(isFavorite = false)
+                            }
+                        }
+                    },
                     isLoading = false,
                     isRefreshing = false
                 )
@@ -109,6 +148,18 @@ class MoreViewModel @Inject constructor(
     private fun startDetailActivity(data: DetailParcel) {
         viewModelScope.launch {
             _moreUiEffect.emit(MoreUiEffect.StartDetailActivity(data))
+        }
+    }
+
+    private fun upsertFavorite(favoriteEntity: FavoriteEntity) {
+        viewModelScope.launch {
+            upsertFavoriteEntityUseCase(favoriteEntity)
+        }
+    }
+
+    private fun deleteFavorite(contentId: String) {
+        viewModelScope.launch {
+            deleteFavoriteEntityByContentIdUseCase(contentId)
         }
     }
 }

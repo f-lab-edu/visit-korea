@@ -215,9 +215,8 @@ private fun CommonTypeGrid(
                 }
                 when(contentType) {
                     ContentType.TOURIST -> MoreTouristCard(
-                        title = title,
-                        address = address,
-                        image = firstImage,
+                        this,
+                        onIconClick = onItemClick,
                         onItemClick = itemClick
                     )
                     else -> CommonCard(
