@@ -1,5 +1,7 @@
 package kr.ksw.visitkorea.domain.usecase.favorite
 
-interface DeleteFavoriteEntityByContentIdUseCase {
-    suspend operator fun invoke(contentId: String)
+import kr.ksw.visitkorea.domain.model.Favorite
+
+interface DeleteFavoriteEntityUseCase {
+    suspend operator fun invoke(favorite: Favorite)
 }

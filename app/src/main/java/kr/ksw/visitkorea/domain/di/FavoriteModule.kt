@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import kr.ksw.visitkorea.domain.usecase.favorite.DeleteFavoriteEntityByContentIdUseCase
 import kr.ksw.visitkorea.domain.usecase.favorite.DeleteFavoriteEntityByContentIdUseCaseImpl
+import kr.ksw.visitkorea.domain.usecase.favorite.DeleteFavoriteEntityUseCase
+import kr.ksw.visitkorea.domain.usecase.favorite.DeleteFavoriteEntityUseCaseImpl
 import kr.ksw.visitkorea.domain.usecase.favorite.ExistFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.favorite.ExistFavoriteEntityUseCaseImpl
 import kr.ksw.visitkorea.domain.usecase.favorite.GetAllFavoriteEntityUseCase
@@ -32,7 +34,12 @@ abstract class FavoriteModule {
     ): ExistFavoriteEntityUseCase
 
     @Binds
-    abstract fun bindDeleteFavoriteEntityByContentId(
+    abstract fun bindDeleteFavoriteEntityByContentIdUseCase(
         deleteFavoriteEntityByContentIdUseCase: DeleteFavoriteEntityByContentIdUseCaseImpl
     ): DeleteFavoriteEntityByContentIdUseCase
+
+    @Binds
+    abstract fun bindDeleteFavoriteEntityUseCase(
+        deleteFavoriteEntityUseCase: DeleteFavoriteEntityUseCaseImpl
+    ): DeleteFavoriteEntityUseCase
 }

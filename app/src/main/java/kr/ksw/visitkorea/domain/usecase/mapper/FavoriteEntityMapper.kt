@@ -14,3 +14,15 @@ fun FavoriteEntity.toFavorite(): Favorite = Favorite(
     eventEndDate = eventStartDate,
     eventStartDate = eventEndDate
 )
+
+fun Favorite.toEntity(): FavoriteEntity = FavoriteEntity(
+    id = id,
+    title = title,
+    firstImage = firstImage ,
+    address = address,
+    dist = dist,
+    contentId = contentId,
+    contentTypeId = contentTypeId ,
+    eventStartDate = eventStartDate,
+    eventEndDate = eventEndDate,
+)
