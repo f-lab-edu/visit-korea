@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.domain.usecase.favorite.DeleteFavoriteEntityByContentIdUseCase
 import kr.ksw.visitkorea.domain.usecase.favorite.ExistFavoriteEntityUseCase
+import kr.ksw.visitkorea.domain.usecase.favorite.GetAllFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.favorite.UpsertFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.festival.GetFestivalListUseCase
 import kr.ksw.visitkorea.domain.usecase.mapper.toFestival
@@ -28,8 +29,8 @@ import javax.inject.Inject
 class FestivalViewModel @Inject constructor(
     private val getFestivalListUseCase: GetFestivalListUseCase,
     private val upsertFavoriteEntityUseCase: UpsertFavoriteEntityUseCase,
-    private val existFavoriteEntityUseCase: ExistFavoriteEntityUseCase,
-    private val deleteFavoriteEntityByContentIdUseCase: DeleteFavoriteEntityByContentIdUseCase
+    private val deleteFavoriteEntityByContentIdUseCase: DeleteFavoriteEntityByContentIdUseCase,
+    private val getAllFavoriteEntityUseCase: GetAllFavoriteEntityUseCase,
 ) : ViewModel() {
     private val _festivalState = MutableStateFlow(FestivalState())
     val festivalState: StateFlow<FestivalState>
@@ -39,11 +40,19 @@ class FestivalViewModel @Inject constructor(
     val festivalUiEffect: SharedFlow<FestivalUiEffect>
         get() = _festivalUiEffect.asSharedFlow()
 
-    // Favorite 상태를 관리하기 위한 StateFlow
-    private val addFavoriteStateFlow = MutableStateFlow(setOf<String>())
+    private val favoriteIdFlow = MutableStateFlow(setOf<String>())
 
     init {
         getFestivalList()
+        viewModelScope.launch {
+            getAllFavoriteEntityUseCase().collect { entities ->
+                favoriteIdFlow.update {
+                    entities.map {
+                        it.contentId
+                    }.toSet()
+                }
+            }
+        }
     }
 
     fun onAction(action: FestivalActions) {
@@ -73,11 +82,6 @@ class FestivalViewModel @Inject constructor(
             if(hotelListFlow != null) {
                 val festivalModelFlow = hotelListFlow.map { pagingData ->
                     pagingData.map { data ->
-                        if(existFavoriteEntityUseCase(data.contentId)) {
-                            addFavoriteStateFlow.update {
-                                it + data.contentId
-                            }
-                        }
                         data.toFestival()
                     }
                 }.cachedIn(viewModelScope)
@@ -87,7 +91,7 @@ class FestivalViewModel @Inject constructor(
                         // flow의 combine 함수를 이용한 PagingData의 Favorite 상태관리
                         festivalModelFlow = combine(
                             festivalModelFlow,
-                            addFavoriteStateFlow
+                            favoriteIdFlow
                         ) { paging, favorites ->
                             paging.map { festival ->
                                 if(favorites.contains(festival.contentId)) {
@@ -112,18 +116,12 @@ class FestivalViewModel @Inject constructor(
     private fun upsertFavorite(favoriteEntity: FavoriteEntity) {
         viewModelScope.launch {
             upsertFavoriteEntityUseCase(favoriteEntity)
-            addFavoriteStateFlow.update {
-                it + favoriteEntity.contentId
-            }
         }
     }
 
     private fun deleteFavorite(favoriteEntity: FavoriteEntity) {
         viewModelScope.launch {
             deleteFavoriteEntityByContentIdUseCase(favoriteEntity.contentId)
-            addFavoriteStateFlow.update {
-                it - favoriteEntity.contentId
-            }
         }
     }
 }
