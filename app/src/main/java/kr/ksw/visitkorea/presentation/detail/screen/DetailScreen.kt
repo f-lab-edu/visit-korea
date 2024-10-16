@@ -22,6 +22,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.HorizontalDivider
@@ -51,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.data.remote.dto.DetailCommonDTO
 import kr.ksw.visitkorea.data.remote.dto.DetailImageDTO
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
@@ -62,6 +64,7 @@ import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
 import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
 import kr.ksw.visitkorea.presentation.detail.component.TitleView
+import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailActions
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailState
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailViewModel
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
@@ -71,12 +74,16 @@ fun DetailScreen(
     viewModel: DetailViewModel
 ) {
     val detailState by viewModel.detailState.collectAsState()
-    DetailScreen(detailState)
+    DetailScreen(
+        detailState = detailState,
+        onIconClick = viewModel::onAction
+    )
 }
 
 @Composable
 private fun DetailScreen(
-    detailState: DetailState
+    detailState: DetailState,
+    onIconClick: (DetailActions) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Surface {
@@ -109,12 +116,34 @@ private fun DetailScreen(
                     TYPE_TOURIST_SPOT,
                     TYPE_FESTIVAL -> {
                         Icon(
-                            Icons.Outlined.FavoriteBorder,
+                            if(detailState.isFavorite)
+                                Icons.Default.Favorite
+                            else Icons.Outlined.FavoriteBorder,
                             contentDescription = "Favorite Icon",
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
                                 .padding(10.dp)
-                                .size(24.dp),
+                                .size(24.dp)
+                                .clickable {
+                                    if(detailState.isFavorite) {
+                                        onIconClick(DetailActions.ClickFavoriteIconDelete(
+                                            detailState.contentId
+                                        ))
+                                    } else {
+                                        onIconClick(DetailActions.ClickFavoriteIconUpsert(
+                                            FavoriteEntity(
+                                                title = detailState.title,
+                                                address = detailState.address,
+                                                dist = detailState.dist,
+                                                firstImage = detailState.firstImage,
+                                                contentId = detailState.contentId,
+                                                contentTypeId = detailState.contentTypeId,
+                                                eventStartDate = detailState.eventStartDate,
+                                                eventEndDate = detailState.eventEndDate
+                                            )
+                                        ))
+                                    }
+                                },
                             tint = Color.Red
                         )
                         if(detailState.contentTypeId == TYPE_FESTIVAL &&
@@ -322,10 +351,13 @@ fun DetailScreenPreview() {
                     time = "상시개방",
                     restDate = "연중무휴"
                 ),
+                isFavorite = true,
                 eventStartDate = "03.23",
                 eventEndDate = "12.15",
+                contentId = "1111",
                 contentTypeId = TYPE_FESTIVAL
-            )
+            ),
+            onIconClick = {}
         )
     }
 }

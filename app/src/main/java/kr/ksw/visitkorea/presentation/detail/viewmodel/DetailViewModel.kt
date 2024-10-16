@@ -8,10 +8,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailCommonUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailImageUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailIntroUseCase
+import kr.ksw.visitkorea.domain.usecase.favorite.DeleteFavoriteEntityByContentIdUseCase
+import kr.ksw.visitkorea.domain.usecase.favorite.ExistFavoriteEntityUseCase
+import kr.ksw.visitkorea.domain.usecase.favorite.UpsertFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.util.toImageUrl
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import javax.inject.Inject
@@ -20,25 +24,43 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val getDetailCommonUseCase: GetDetailCommonUseCase,
     private val getDetailIntroUseCase: GetDetailIntroUseCase,
-    private val getDetailImageUseCase: GetDetailImageUseCase
+    private val getDetailImageUseCase: GetDetailImageUseCase,
+    private val upsertFavoriteEntityUseCase: UpsertFavoriteEntityUseCase,
+    private val deleteFavoriteEntityByContentIdUseCase: DeleteFavoriteEntityByContentIdUseCase,
+    private val existFavoriteEntityUseCase: ExistFavoriteEntityUseCase,
 ): ViewModel() {
     private val _detailState = MutableStateFlow(DetailState())
     val detailState: StateFlow<DetailState>
         get() = _detailState.asStateFlow()
 
+    fun onAction(action: DetailActions) {
+        when(action) {
+            is DetailActions.ClickFavoriteIconUpsert -> {
+                upsertFavorite(action.favorite)
+            }
+            is DetailActions.ClickFavoriteIconDelete -> {
+                deleteFavorite(action.contentId)
+            }
+        }
+    }
+
     fun initDetail(
         detailParcel: DetailParcel
     ) {
-        _detailState.update {
-            it.copy(
-                title = detailParcel.title,
-                firstImage = detailParcel.firstImage,
-                address = detailParcel.address,
-                dist = detailParcel.dist,
-                contentTypeId = detailParcel.contentTypeId,
-                eventStartDate = detailParcel.eventStartDate,
-                eventEndDate = detailParcel.eventEndDate
-            )
+        viewModelScope.launch {
+            _detailState.update {
+                it.copy(
+                    title = detailParcel.title,
+                    firstImage = detailParcel.firstImage,
+                    address = detailParcel.address,
+                    dist = detailParcel.dist,
+                    contentId = detailParcel.contentId,
+                    contentTypeId = detailParcel.contentTypeId,
+                    eventStartDate = detailParcel.eventStartDate,
+                    eventEndDate = detailParcel.eventEndDate,
+                    isFavorite = existFavoriteEntityUseCase(detailParcel.contentId)
+                )
+            }
         }
         getDetailCommon(detailParcel.contentId)
         getDetailIntro(
@@ -123,6 +145,28 @@ class DetailViewModel @Inject constructor(
                         }
                     )
                 }
+            }
+        }
+    }
+
+    private fun upsertFavorite(favorite: FavoriteEntity) {
+        viewModelScope.launch {
+            upsertFavoriteEntityUseCase(favorite)
+            _detailState.update {
+                it.copy(
+                    isFavorite = true
+                )
+            }
+        }
+    }
+
+    private fun deleteFavorite(contentId: String) {
+        viewModelScope.launch {
+            deleteFavoriteEntityByContentIdUseCase(contentId)
+            _detailState.update {
+                it.copy(
+                    isFavorite = false
+                )
             }
         }
     }

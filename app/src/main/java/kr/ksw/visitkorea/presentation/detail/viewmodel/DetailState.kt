@@ -9,6 +9,8 @@ data class DetailState(
     val firstImage: String = "",
     val address: String = "",
     val dist: String? = null,
+    val isFavorite: Boolean = false,
+    val contentId: String = "",
     val contentTypeId: String = "",
     val eventStartDate: String? = null,
     val eventEndDate: String? = null,
