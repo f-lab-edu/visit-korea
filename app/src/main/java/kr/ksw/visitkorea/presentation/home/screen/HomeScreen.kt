@@ -38,6 +38,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import kr.ksw.visitkorea.presentation.home.component.CultureCard
+import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
+import kr.ksw.visitkorea.presentation.home.component.TouristSpotCard
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeState
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeViewModel
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme

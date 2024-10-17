@@ -1,13 +1,10 @@
-package kr.ksw.visitkorea.presentation.home.screen
+package kr.ksw.visitkorea.presentation.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -18,9 +15,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -35,26 +34,29 @@ import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
-fun CultureCard(
-    modifier: Modifier = Modifier,
-    ratio: Float = 0.7f,
+fun RestaurantCard(
     title: String,
     address: String,
+    dist: String,
+    category: String,
     image: String,
 ) {
-    Card (
-        modifier = modifier
-            .aspectRatio(ratio),
-        shape = RoundedCornerShape(24.dp),
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 4.dp
-        )
+    Card(
+        modifier = Modifier
+            .width(300.dp),
+        elevation = CardDefaults.elevatedCardElevation(6.dp),
     ) {
-        Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             AsyncImage(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
+                    .size(88.dp)
+                    .clip(RoundedCornerShape(16.dp))
                     .background(color = Color.LightGray),
                 model = ImageRequest
                     .Builder(LocalContext.current)
@@ -66,17 +68,23 @@ fun CultureCard(
             )
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White)
-                    .padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.Center
+                    .padding(start = 8.dp)
             ) {
-                SingleLineText(
-                    modifier = Modifier.padding(start = 2.dp),
-                    text = title,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    SingleLineText(
+                        text = title,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        text = category,
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                    )
+                }
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -88,9 +96,13 @@ fun CultureCard(
                     )
                     SingleLineText(
                         text = address,
-                        fontSize = 12.sp,
+                        fontSize = 14.sp
                     )
                 }
+                SingleLineText(
+                    text = dist,
+                    fontSize = 12.sp
+                )
             }
         }
     }
@@ -98,16 +110,15 @@ fun CultureCard(
 
 @Composable
 @Preview(showBackground = true)
-fun CultureCardPreview() {
+fun RestaurantCardPreview() {
     VisitKoreaTheme {
-        Surface(
-            modifier = Modifier
-                .padding(20.dp)
-        ) {
-            CultureCard(
-                title = "문화시설",
-                address = "문화시설 주소",
-                image = "https://ksw"
+        Surface {
+            RestaurantCard(
+                "음식점",
+                "음식점 주소",
+                "188m",
+                "한식",
+                "https"
             )
         }
     }

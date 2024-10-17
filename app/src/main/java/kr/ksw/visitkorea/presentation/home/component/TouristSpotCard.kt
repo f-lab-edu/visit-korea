@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.presentation.home.screen
+package kr.ksw.visitkorea.presentation.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

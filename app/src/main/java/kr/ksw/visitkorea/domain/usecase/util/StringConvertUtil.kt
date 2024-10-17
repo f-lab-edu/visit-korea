@@ -10,3 +10,8 @@ fun String.toDistForUi(): String {
         "${meters[0]}m"
     }
 }
+
+fun String.toDateString(): String {
+    val sb = StringBuilder(this.substring(4))
+    return sb.insert(2, ".").toString()
+}
