@@ -40,7 +40,6 @@ class HotelViewModel @Inject constructor(
                         it.toCommonCardModel()
                     }
                 }.cachedIn(viewModelScope)
-
                 _hotelState.update {
                     it.copy(
                         hotelCardModelFlow = hotelCardModelFlow

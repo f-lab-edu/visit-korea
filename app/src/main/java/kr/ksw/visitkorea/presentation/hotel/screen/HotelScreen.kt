@@ -1,6 +1,5 @@
 package kr.ksw.visitkorea.presentation.hotel.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,9 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
-import kr.ksw.visitkorea.presentation.home.screen.CultureCard
+import kr.ksw.visitkorea.presentation.home.component.CultureCard
 import kr.ksw.visitkorea.presentation.hotel.viewmodel.HotelViewModel
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 

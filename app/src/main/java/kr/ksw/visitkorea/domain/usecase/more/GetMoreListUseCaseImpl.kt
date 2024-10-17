@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.domain.usecase.hotel
+package kr.ksw.visitkorea.domain.usecase.more
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -10,15 +10,16 @@ import kr.ksw.visitkorea.data.remote.api.LocationBasedListApi
 import kr.ksw.visitkorea.data.remote.dto.LocationBasedDTO
 import javax.inject.Inject
 
-class GetHotelListUseCaseImpl @Inject constructor(
+class GetMoreListUseCaseImpl @Inject constructor(
     private val locationBasedListApi: LocationBasedListApi
-): GetHotelListUseCase {
+): GetMoreListUseCase {
     private var pagingSource: PagingSource<Int, LocationBasedDTO>? = null
 
     override suspend fun invoke(
         forceFetch: Boolean,
         mapX: String,
-        mapY: String
+        mapY: String,
+        contentTypeId: String
     ): Result<Flow<PagingData<LocationBasedDTO>>> = runCatching {
         if(forceFetch &&
             pagingSource != null &&
@@ -33,7 +34,7 @@ class GetHotelListUseCaseImpl @Inject constructor(
             pagingSourceFactory = {
                 LocationBasedPagingSource(
                     locationBasedListApi,
-                    "32",
+                    contentTypeId,
                     mapX,
                     mapY
                 ).also {

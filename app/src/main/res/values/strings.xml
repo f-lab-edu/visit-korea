@@ -8,4 +8,9 @@
     <string name="main_tab_event_title">행사</string>
     <string name="main_tab_search_title">검색</string>
     <string name="main_tab_favorite_title">즐겨찾기</string>
+
+    <string name="tourist_spot_title">관광지</string>
+    <string name="culture_center_title">문화시설</string>
+    <string name="leisure_sports_title">레포츠</string>
+    <string name="restaurant_title">음식점</string>
 </resources>
