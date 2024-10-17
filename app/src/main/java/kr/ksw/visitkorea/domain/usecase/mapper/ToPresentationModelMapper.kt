@@ -1,8 +1,7 @@
 package kr.ksw.visitkorea.domain.usecase.mapper
 
 import kr.ksw.visitkorea.data.remote.dto.LocationBasedDTO
-import kr.ksw.visitkorea.domain.usecase.model.CultureCenter
-import kr.ksw.visitkorea.domain.usecase.model.LeisureSports
+import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
 import kr.ksw.visitkorea.domain.usecase.model.Restaurant
 import kr.ksw.visitkorea.domain.usecase.model.TouristSpot
 import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
@@ -17,16 +16,11 @@ fun LocationBasedDTO.toTouristSpotModel(): TouristSpot = TouristSpot(
     title
 )
 
-fun LocationBasedDTO.toCultureCenterModel(): CultureCenter = CultureCenter(
+fun LocationBasedDTO.toCommonCardModel(): CommonCardModel = CommonCardModel(
     address,
     firstImage.toImageUrl(),
-    title
-)
-
-fun LocationBasedDTO.toLeisureSportsModel(): LeisureSports = LeisureSports(
-    address,
-    firstImage.toImageUrl(),
-    title
+    title,
+    contentId
 )
 
 val restaurantMap = mapOf(
@@ -44,5 +38,5 @@ fun LocationBasedDTO.toRestaurantModel(): Restaurant = Restaurant(
     dist.toDistForUi(),
     firstImage.toImageUrl(),
     title,
-    restaurantMap[cat3] ?: ""
+    restaurantMap[category] ?: ""
 )

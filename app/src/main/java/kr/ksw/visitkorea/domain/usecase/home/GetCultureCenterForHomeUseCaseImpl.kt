@@ -1,8 +1,8 @@
 package kr.ksw.visitkorea.domain.usecase.home
 
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepository
-import kr.ksw.visitkorea.domain.usecase.mapper.toCultureCenterModel
-import kr.ksw.visitkorea.domain.usecase.model.CultureCenter
+import kr.ksw.visitkorea.domain.usecase.mapper.toCommonCardModel
+import kr.ksw.visitkorea.domain.usecase.model.CommonCardModel
 import javax.inject.Inject
 
 class GetCultureCenterForHomeUseCaseImpl @Inject constructor(
@@ -10,13 +10,12 @@ class GetCultureCenterForHomeUseCaseImpl @Inject constructor(
 ) : GetCultureCenterForHomeUseCase {
     override suspend fun invoke(
         mapX: String,
-        mapY: String,
-    ): Result<List<CultureCenter>> {
+        mapY: String,): Result<List<CommonCardModel>> {
         return locationBasedListRepository.getLocationBasedListByContentType(
             10, 1, mapX, mapY, "14"
         ).map { list ->
             list.map { dto ->
-                dto.toCultureCenterModel()
+                dto.toCommonCardModel()
             }
         }
     }
