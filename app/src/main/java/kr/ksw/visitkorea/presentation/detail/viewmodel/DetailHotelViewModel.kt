@@ -1,5 +1,6 @@
 package kr.ksw.visitkorea.presentation.detail.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.ksw.visitkorea.domain.usecase.detail.GetDetailCommonUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailImageUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetHotelDetailUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetHotelRoomDetailUseCase
@@ -17,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailHotelViewModel @Inject constructor(
+    private val getDetailCommonUseCase: GetDetailCommonUseCase,
     private val getHotelDetailUseCase: GetHotelDetailUseCase,
     private val getHotelRoomDetailUseCase: GetHotelRoomDetailUseCase,
     private val getDetailImageUseCase: GetDetailImageUseCase,
@@ -61,6 +64,9 @@ class DetailHotelViewModel @Inject constructor(
                             hotelDetail = this
                         )
                     }
+                    if(reservationUrl.isNullOrEmpty()) {
+                        getDetailCommon(contentId)
+                    }
                 }
         }
     }
@@ -96,6 +102,22 @@ class DetailHotelViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun getDetailCommon(contentId: String) {
+        viewModelScope.launch {
+            getDetailCommonUseCase(contentId)
+                .getOrNull()?.run {
+                    if(homepage.isNotEmpty()) {
+                        Log.d("DetailHotelViewModel", homepage)
+                        _hotelDetailState.update {
+                            it.copy(
+                                homePage = homepage
+                            )
+                        }
+                    }
+                }
         }
     }
 

@@ -1,22 +1,16 @@
 package kr.ksw.visitkorea.presentation.detail.component
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -44,7 +38,11 @@ fun DetailHotelCard(
 ) {
     Card(
         modifier = Modifier
-            .padding(horizontal = 16.dp),
+            .padding(
+                start = 16.dp,
+                end = 16.dp,
+                bottom = 8.dp
+            ),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 4.dp
@@ -156,30 +154,6 @@ fun DetailHotelCard(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun HotelOptionItem(
-    @DrawableRes icon: Int,
-    title: String,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            modifier = Modifier
-                .size(20.dp),
-            imageVector = ImageVector.vectorResource(icon),
-            contentDescription = "Option Icon"
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = title,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
-        )
-        Spacer(modifier = Modifier.width(20.dp))
     }
 }
 

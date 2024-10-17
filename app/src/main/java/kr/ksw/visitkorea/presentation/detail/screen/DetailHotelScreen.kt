@@ -1,6 +1,5 @@
 package kr.ksw.visitkorea.presentation.detail.screen
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,17 +16,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,15 +39,14 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.domain.model.HotelDetail
 import kr.ksw.visitkorea.domain.model.HotelRoomDetail
 import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelCard
+import kr.ksw.visitkorea.presentation.detail.component.DetailHotelImageCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
 import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
-import kr.ksw.visitkorea.presentation.detail.component.TitleView
+import kr.ksw.visitkorea.presentation.detail.component.DetailTitleView
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelActions
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelState
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelViewModel
@@ -104,14 +100,26 @@ private fun DetailHotelScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 stickyHeader {
-                    TitleView(
-                        hotelDetailState.title,
-                        hotelDetailState.address,
-                        hotelDetailState.dist?.toDistForUi()
-                    )
-                    InfoButtonHeader(
-                        onAction = onAction
-                    )
+                    Column(
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.surface
+                            )
+                    ) {
+                        DetailTitleView(
+                            hotelDetailState.title,
+                            hotelDetailState.address,
+                            hotelDetailState.dist?.toDistForUi(),
+                            if(hotelDetailState.hotelDetail.reservationUrl.isNullOrEmpty())
+                                hotelDetailState.homePage
+                            else hotelDetailState.hotelDetail.reservationUrl,
+                            hotelDetailState.hotelDetail.tel ?: ""
+                        )
+                        InfoButtonHeader(
+                            onAction = onAction
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
                 if(hotelDetailState.showFacilityInfo) {
                     item {
@@ -137,18 +145,15 @@ private fun DetailHotelScreen(
                             )
                         }
                     } else {
-                        item {
-                            Spacer(modifier = Modifier.height(16.dp))
-                        }
                         items(
                             count = hotelDetailState.hotelRoomDetail.size,
                             key = { it }
                         ) { index ->
                             val roomDetail = hotelDetailState.hotelRoomDetail[index]
                             if(roomDetail.roomImages.isEmpty()) {
-                                DetailHotelCard(hotelDetailState.hotelRoomDetail[index])
+                                DetailHotelCard(roomDetail)
                             } else {
-
+                                DetailHotelImageCard(roomDetail)
                             }
                         }
                         item {
@@ -229,7 +234,6 @@ private fun DetailIntroView(
     Column(
         modifier = Modifier
             .padding(
-                top = 16.dp,
                 start = 16.dp,
                 end = 16.dp
             )

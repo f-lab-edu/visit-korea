@@ -9,25 +9,35 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kr.ksw.visitkorea.presentation.common.convertHtmlToString
 import kr.ksw.visitkorea.presentation.component.SingleLineText
+import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
-fun TitleView(
+fun DetailTitleView(
     title: String,
     address: String,
-    dist: String?
+    dist: String?,
+    homePage: String = "",
+    tel: String = "",
 ) {
     Column(
         modifier = Modifier
@@ -88,6 +98,58 @@ fun TitleView(
                     fontSize = 12.sp
                 )
             }
+        }
+        if(homePage.isNotEmpty() || tel.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(16.dp))
+            if(homePage.isNotEmpty()) {
+                SubInfoView(
+                    icon = Icons.Outlined.Info,
+                    content = homePage.convertHtmlToString()
+                )
+            }
+            if(tel.isNotEmpty()) {
+                SubInfoView(
+                    icon = Icons.Outlined.Phone,
+                    content = tel
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SubInfoView(
+    icon: ImageVector,
+    content: String,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier
+                .size(20.dp),
+            imageVector = icon,
+            contentDescription = null
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = content
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun TitlePreview() {
+    VisitKoreaTheme {
+        Surface {
+            DetailTitleView(
+                title = "숙박업체 이름",
+                address = "숙박업체 주소",
+                dist = "600m",
+                homePage = "https://www.hotel.com",
+                tel = "02-0000-0000"
+            )
         }
     }
 }

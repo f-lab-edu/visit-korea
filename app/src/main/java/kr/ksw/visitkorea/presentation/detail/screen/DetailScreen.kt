@@ -3,12 +3,9 @@ package kr.ksw.visitkorea.presentation.detail.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,14 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -39,9 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -54,16 +47,14 @@ import coil.request.ImageRequest
 import coil.size.Size
 import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.data.remote.dto.DetailCommonDTO
-import kr.ksw.visitkorea.data.remote.dto.DetailImageDTO
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.model.CommonDetail
 import kr.ksw.visitkorea.presentation.common.convertHtmlToString
-import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
 import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
-import kr.ksw.visitkorea.presentation.detail.component.TitleView
+import kr.ksw.visitkorea.presentation.detail.component.DetailTitleView
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailActions
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailState
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailViewModel
@@ -158,10 +149,10 @@ private fun DetailScreen(
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            TitleView(
+            DetailTitleView(
                 detailState.title,
                 detailState.address,
-                detailState.dist
+                detailState.dist,
             )
             Spacer(modifier = Modifier.height(16.dp))
             OverView(detailState.detailCommon.overview)

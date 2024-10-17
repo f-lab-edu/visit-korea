@@ -53,5 +53,7 @@ data class DetailIntroDTO(
     @SerializedName("subfacility")
     val subFacility: String?,
     @SerializedName("reservationurl")
-    val reservationUrl: String?
+    val reservationUrl: String?,
+    @SerializedName("reservationlodging")
+    val reservationLodging: String?,
 )

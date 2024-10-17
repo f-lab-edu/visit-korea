@@ -9,6 +9,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.model.CommonDetail
 import kr.ksw.visitkorea.domain.model.HotelDetail
 import kr.ksw.visitkorea.domain.model.HotelRoomDetail
+import kr.ksw.visitkorea.domain.usecase.util.toImageUrl
 
 fun DetailIntroDTO.toCommonDetail(contentTypeId: String): CommonDetail = when(contentTypeId) {
     TYPE_TOURIST_SPOT -> CommonDetail(
@@ -45,13 +46,15 @@ fun DetailIntroDTO.toHotelDetail(): HotelDetail = HotelDetail(
     checkInTime = checkInTime,
     checkOutTime = checkOutTime,
     subFacility = subFacility,
-    reservationUrl = reservationUrl,
+    reservationUrl = reservationUrl ?: reservationLodging,
     tel = infoCenterLodging
 )
 
 fun DetailInfoDTO.toHotelRoomDetail(): HotelRoomDetail {
     val images = listOf(roomImg1, roomImg2, roomImg3, roomImg4, roomImg5).filterNot {
         it.isEmpty()
+    }.map {
+        it.toImageUrl()
     }
     return HotelRoomDetail(
         roomTitle = roomTitle,
