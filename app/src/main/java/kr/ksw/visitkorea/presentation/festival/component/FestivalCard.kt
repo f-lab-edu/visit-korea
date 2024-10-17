@@ -22,10 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,9 +48,6 @@ fun FestivalCard(
     onIconClick: (FestivalActions) -> Unit,
     onItemClick: () -> Unit
 ) {
-    var isFavorite by remember {
-        mutableStateOf(festival.isFavorite)
-    }
     Card(
         modifier = Modifier
             .clickable(onClick = onItemClick),
@@ -129,7 +122,7 @@ fun FestivalCard(
                 )
             }
             Icon(
-                if(isFavorite)
+                if(festival.isFavorite)
                     Icons.Default.Favorite
                 else Icons.Outlined.FavoriteBorder,
                 contentDescription = "Favorite Icon",
@@ -149,9 +142,8 @@ fun FestivalCard(
                                 eventStartDate = festival.eventStartDate,
                                 eventEndDate = festival.eventEndDate
                             ),
-                            isFavorite = isFavorite
+                            isFavorite = festival.isFavorite
                         ))
-                        isFavorite = !isFavorite
                     },
                 tint = Color.Red
             )
