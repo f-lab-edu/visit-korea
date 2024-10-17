@@ -40,10 +40,10 @@ fun RestaurantCard(
     dist: String,
     category: String,
     image: String,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
-            .width(300.dp),
+        modifier = modifier,
         elevation = CardDefaults.elevatedCardElevation(6.dp),
     ) {
         Row(
@@ -75,6 +75,9 @@ fun RestaurantCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     SingleLineText(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 4.dp),
                         text = title,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium
