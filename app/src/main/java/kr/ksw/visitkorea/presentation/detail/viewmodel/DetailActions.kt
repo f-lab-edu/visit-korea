@@ -9,4 +9,8 @@ sealed interface DetailActions {
     data class ClickFavoriteIconDelete(
         val contentId: String,
     ) : DetailActions
+    data class ClickDetailImages(
+        val selectedImage: Int,
+    ) : DetailActions
+    data object ClickBackButtonWhenViewPagerOpened : DetailActions
 }

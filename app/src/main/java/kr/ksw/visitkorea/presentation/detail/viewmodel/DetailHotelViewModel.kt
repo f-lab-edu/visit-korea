@@ -36,6 +36,27 @@ class DetailHotelViewModel @Inject constructor(
             DetailHotelActions.OnClickRoomInfoButton -> {
                 showRoomInfoState()
             }
+            is DetailHotelActions.ClickDetailImages -> {
+                openImageViewPager(
+                    selectedImage = action.selectedImage,
+                    images = _hotelDetailState.value.images.map { imageDTO ->
+                        imageDTO.originImgUrl
+                    }
+                )
+            }
+            DetailHotelActions.ClickBackButtonWhenViewPagerOpened -> {
+                _hotelDetailState.update {
+                    it.copy(
+                        viewPagerOpen = false
+                    )
+                }
+            }
+            is DetailHotelActions.ClickRoomDetailImages -> {
+                openImageViewPager(
+                    selectedImage = action.selectedImage,
+                    images = _hotelDetailState.value.hotelRoomDetail[action.selectedRoomIndex].roomImages
+                )
+            }
         }
     }
 
@@ -135,6 +156,19 @@ class DetailHotelViewModel @Inject constructor(
             it.copy(
                 showFacilityInfo = false,
                 showRoomDetail = true
+            )
+        }
+    }
+
+    private fun openImageViewPager(
+        selectedImage: Int,
+        images: List<String>
+    ) {
+        _hotelDetailState.update {
+            it.copy(
+                viewPagerOpen = true,
+                selectedImage = selectedImage,
+                viewPagerImages = images
             )
         }
     }

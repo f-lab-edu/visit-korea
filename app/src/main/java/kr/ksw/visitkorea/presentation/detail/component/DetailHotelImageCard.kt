@@ -1,6 +1,7 @@
 package kr.ksw.visitkorea.presentation.detail.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -42,7 +43,8 @@ import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DetailHotelImageCard(
-    hotelRoomDetail: HotelRoomDetail
+    hotelRoomDetail: HotelRoomDetail,
+    onImageClick: (Int) -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = {
         hotelRoomDetail.roomImages.size
@@ -75,7 +77,10 @@ fun DetailHotelImageCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .aspectRatio(1.4f)
-                            .background(color = Color.LightGray),
+                            .background(color = Color.LightGray)
+                            .clickable {
+                                onImageClick(page)
+                            },
                         model = ImageRequest
                             .Builder(LocalContext.current)
                             .data(hotelRoomDetail.roomImages[page])
@@ -227,7 +232,9 @@ fun DetailHotelImageCardPreview() {
                         "", ""
                     )
                 )
-            )
+            ) {
+
+            }
         }
     }
 }

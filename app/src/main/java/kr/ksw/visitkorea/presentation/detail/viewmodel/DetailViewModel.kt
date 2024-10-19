@@ -41,6 +41,16 @@ class DetailViewModel @Inject constructor(
             is DetailActions.ClickFavoriteIconDelete -> {
                 deleteFavorite(action.contentId)
             }
+            is DetailActions.ClickDetailImages -> {
+                openImageViewPager(action.selectedImage)
+            }
+            is DetailActions.ClickBackButtonWhenViewPagerOpened -> {
+                _detailState.update {
+                    it.copy(
+                        viewPagerOpen = false
+                    )
+                }
+            }
         }
     }
 
@@ -168,6 +178,15 @@ class DetailViewModel @Inject constructor(
                     isFavorite = false
                 )
             }
+        }
+    }
+
+    private fun openImageViewPager(selectedImage: Int) {
+        _detailState.update {
+            it.copy(
+                selectedImage = selectedImage,
+                viewPagerOpen = true,
+            )
         }
     }
 }

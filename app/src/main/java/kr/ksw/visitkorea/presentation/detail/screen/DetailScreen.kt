@@ -1,5 +1,6 @@
 package kr.ksw.visitkorea.presentation.detail.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -53,6 +54,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.model.CommonDetail
 import kr.ksw.visitkorea.presentation.common.convertHtmlToString
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
+import kr.ksw.visitkorea.presentation.detail.component.DetailImageViewPager
 import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
 import kr.ksw.visitkorea.presentation.detail.component.DetailTitleView
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailActions
@@ -65,16 +67,24 @@ fun DetailScreen(
     viewModel: DetailViewModel
 ) {
     val detailState by viewModel.detailState.collectAsState()
+    BackHandler(
+        enabled = detailState.viewPagerOpen
+    ) {
+        viewModel.onAction(
+            DetailActions.ClickBackButtonWhenViewPagerOpened
+        )
+    }
+
     DetailScreen(
         detailState = detailState,
-        onIconClick = viewModel::onAction
+        onClick = viewModel::onAction
     )
 }
 
 @Composable
 private fun DetailScreen(
     detailState: DetailState,
-    onIconClick: (DetailActions) -> Unit
+    onClick: (DetailActions) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Surface {
@@ -117,11 +127,11 @@ private fun DetailScreen(
                                 .size(24.dp)
                                 .clickable {
                                     if(detailState.isFavorite) {
-                                        onIconClick(DetailActions.ClickFavoriteIconDelete(
+                                        onClick(DetailActions.ClickFavoriteIconDelete(
                                             detailState.contentId
                                         ))
                                     } else {
-                                        onIconClick(DetailActions.ClickFavoriteIconUpsert(
+                                        onClick(DetailActions.ClickFavoriteIconUpsert(
                                             FavoriteEntity(
                                                 title = detailState.title,
                                                 address = detailState.address,
@@ -162,8 +172,23 @@ private fun DetailScreen(
                 detailIntro = detailState.detailIntro
             )
             Spacer(modifier = Modifier.height(16.dp))
-            DetailImageRow(detailState.images)
+            DetailImageRow(
+                images = detailState.images,
+                onImageClick = { index ->
+                    onClick(DetailActions.ClickDetailImages(
+                        selectedImage = index
+                    ))
+                }
+            )
             Spacer(modifier = Modifier.height(16.dp))
+        }
+        if(detailState.viewPagerOpen) {
+            DetailImageViewPager(
+                selectedImage = detailState.selectedImage,
+                images = detailState.images.map { imageDTO ->
+                    imageDTO.originImgUrl
+                }
+            )
         }
     }
 }
@@ -348,7 +373,7 @@ fun DetailScreenPreview() {
                 contentId = "1111",
                 contentTypeId = TYPE_FESTIVAL
             ),
-            onIconClick = {}
+            onClick = {}
         )
     }
 }

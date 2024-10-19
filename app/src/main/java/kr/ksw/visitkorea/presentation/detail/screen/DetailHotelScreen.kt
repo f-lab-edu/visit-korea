@@ -1,5 +1,6 @@
 package kr.ksw.visitkorea.presentation.detail.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +46,7 @@ import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelImageCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
+import kr.ksw.visitkorea.presentation.detail.component.DetailImageViewPager
 import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
 import kr.ksw.visitkorea.presentation.detail.component.DetailTitleView
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelActions
@@ -57,6 +59,14 @@ fun DetailHotelScreen(
     viewModel: DetailHotelViewModel
 ) {
     val detailHotelState by viewModel.hotelDetailState.collectAsState()
+    BackHandler(
+        enabled = detailHotelState.viewPagerOpen
+    ) {
+        viewModel.onAction(
+            DetailHotelActions.ClickBackButtonWhenViewPagerOpened
+        )
+    }
+
     DetailHotelScreen(
         hotelDetailState = detailHotelState,
         onAction = viewModel::onAction
@@ -127,7 +137,14 @@ private fun DetailHotelScreen(
                             hotelDetail = hotelDetailState.hotelDetail
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        DetailImageRow(hotelDetailState.images)
+                        DetailImageRow(
+                            images = hotelDetailState.images,
+                            onImageClick = { index ->
+                                onAction(DetailHotelActions.ClickDetailImages(
+                                    selectedImage = index
+                                ))
+                            }
+                        )
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
@@ -153,7 +170,14 @@ private fun DetailHotelScreen(
                             if(roomDetail.roomImages.isEmpty()) {
                                 DetailHotelCard(roomDetail)
                             } else {
-                                DetailHotelImageCard(roomDetail)
+                                DetailHotelImageCard(
+                                    hotelRoomDetail = roomDetail
+                                ) { imageIndex ->
+                                    onAction(DetailHotelActions.ClickRoomDetailImages(
+                                        selectedImage = imageIndex,
+                                        selectedRoomIndex = index
+                                    ))
+                                }
                             }
                         }
                         item {
@@ -162,6 +186,12 @@ private fun DetailHotelScreen(
                     }
                 }
             }
+        }
+        if(hotelDetailState.viewPagerOpen) {
+            DetailImageViewPager(
+                selectedImage = hotelDetailState.selectedImage,
+                images = hotelDetailState.viewPagerImages
+            )
         }
     }
 }
@@ -260,7 +290,7 @@ private fun DetailIntroView(
         Spacer(modifier = Modifier.height(4.dp))
         hotelDetail.subFacility?.let {
             DetailIntroContent(
-                "쉬는날",
+                "부대시설",
                 it
             )
         }

@@ -16,5 +16,7 @@ data class DetailState(
     val eventEndDate: String? = null,
     val detailCommon: DetailCommonDTO = DetailCommonDTO("",""),
     val detailIntro: CommonDetail = CommonDetail(),
-    val images: List<DetailImageDTO> = emptyList()
+    val images: List<DetailImageDTO> = emptyList(),
+    val viewPagerOpen: Boolean = false,
+    val selectedImage: Int = 0,
 )

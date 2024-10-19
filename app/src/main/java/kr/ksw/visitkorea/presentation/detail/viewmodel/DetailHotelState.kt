@@ -15,4 +15,7 @@ data class DetailHotelState (
     val hotelDetail: HotelDetail = HotelDetail(),
     val hotelRoomDetail: List<HotelRoomDetail> = emptyList(),
     val images: List<DetailImageDTO> = emptyList(),
+    val viewPagerOpen: Boolean = false,
+    val selectedImage: Int = 0,
+    val viewPagerImages: List<String> = emptyList(),
 )
