@@ -1,12 +1,13 @@
-package kr.ksw.visitkorea.presentation.home.screen
+package kr.ksw.visitkorea.presentation.home.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -15,12 +16,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -34,75 +35,69 @@ import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
-fun RestaurantCard(
+fun TouristSpotCard(
     title: String,
     address: String,
     dist: String,
-    category: String,
     image: String,
 ) {
-    Card(
+    Card (
         modifier = Modifier
-            .width(300.dp),
-        elevation = CardDefaults.elevatedCardElevation(6.dp),
+            .width(200.dp)
+            .aspectRatio(0.75f),
+        shape = RoundedCornerShape(24.dp),
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 4.dp
+        )
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Box(
+            contentAlignment = Alignment.BottomStart
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .size(88.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                    .fillMaxSize()
                     .background(color = Color.LightGray),
                 model = ImageRequest
                     .Builder(LocalContext.current)
                     .data(image)
                     .size(Size.ORIGINAL)
                     .build(),
-                contentDescription = "Culture Spot Image",
+                colorFilter = if(image.isNotEmpty())
+                    ColorFilter.tint(Color.LightGray, blendMode = BlendMode.Darken)
+                else
+                    null,
+                contentDescription = "TouristSpot Image",
                 contentScale = ContentScale.Crop,
             )
             Column(
                 modifier = Modifier
-                    .padding(start = 8.dp)
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    SingleLineText(
-                        text = title,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Text(
-                        text = category,
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                SingleLineText(
+                    text = title,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White,
+                )
+                Row {
                     Icon(
-                        modifier = Modifier
-                            .size(20.dp),
                         imageVector = Icons.Outlined.LocationOn,
                         contentDescription = null,
+                        tint = Color.White
                     )
                     SingleLineText(
+                        modifier = Modifier.weight(1f),
                         text = address,
-                        fontSize = 14.sp
+                        fontSize = 14.sp,
+                        color = Color.White,
+                    )
+                    SingleLineText(
+                        text = dist,
+                        fontSize = 12.sp,
+                        color = Color.White
                     )
                 }
-                SingleLineText(
-                    text = dist,
-                    fontSize = 12.sp
-                )
             }
         }
     }
@@ -110,15 +105,13 @@ fun RestaurantCard(
 
 @Composable
 @Preview(showBackground = true)
-fun RestaurantCardPreview() {
+fun TouristSpotCardPreview() {
     VisitKoreaTheme {
-        Surface {
-            RestaurantCard(
-                "음식점",
-                "음식점 주소",
-                "188m",
-                "한식",
-                "https"
+        Surface(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            TouristSpotCard(
+                "광통교", "서울 특별시 종로구 서린동", "16m", ""
             )
         }
     }

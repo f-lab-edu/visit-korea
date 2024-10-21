@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.presentation.home.screen
+package kr.ksw.visitkorea.presentation.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LocationOn
@@ -37,14 +35,13 @@ import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 @Composable
 fun CultureCard(
     modifier: Modifier = Modifier,
-    ratio: Float = 0.7f,
     title: String,
     address: String,
     image: String,
 ) {
     Card (
         modifier = modifier
-            .aspectRatio(ratio),
+            .aspectRatio(0.7f),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 4.dp
