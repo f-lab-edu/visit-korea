@@ -8,7 +8,7 @@ import javax.inject.Inject
 class SearchFestivalRepositoryImpl @Inject constructor(
     private val searchFestivalApi: SearchFestivalApi
 ): SearchFestivalRepository {
-    override suspend fun invoke(
+    override suspend fun searchFestival(
         numOfRows: Int,
         pageNo: Int,
         eventStartDate: String,

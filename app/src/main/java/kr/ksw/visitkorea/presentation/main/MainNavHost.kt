@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import kr.ksw.visitkorea.presentation.festival.screen.FestivalScreen
 import kr.ksw.visitkorea.presentation.home.screen.HomeScreen
 import kr.ksw.visitkorea.presentation.hotel.screen.HotelScreen
+import kr.ksw.visitkorea.presentation.search.screen.SearchScreen
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
@@ -36,12 +37,7 @@ fun MainNavHost(
             FestivalScreen()
         }
         composable(route = MainRoute.SEARCH.route) {
-            SampleScreen {
-                Text(
-                    text = "SEARCH",
-                    fontSize = 32.sp
-                )
-            }
+            SearchScreen()
         }
         composable(route = MainRoute.FAVORITE.route) {
             SampleScreen {
