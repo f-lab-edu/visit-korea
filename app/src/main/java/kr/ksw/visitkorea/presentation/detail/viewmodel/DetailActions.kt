@@ -13,4 +13,5 @@ sealed interface DetailActions {
         val selectedImage: Int,
     ) : DetailActions
     data object ClickBackButtonWhenViewPagerOpened : DetailActions
+    data object ClickViewMapButton : DetailActions
 }

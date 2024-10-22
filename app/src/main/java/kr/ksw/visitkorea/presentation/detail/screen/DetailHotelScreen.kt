@@ -124,7 +124,9 @@ private fun DetailHotelScreen(
                                 hotelDetailState.homePage
                             else hotelDetailState.hotelDetail.reservationUrl,
                             hotelDetailState.hotelDetail.tel ?: ""
-                        )
+                        ) {
+
+                        }
                         InfoButtonHeader(
                             onAction = onAction
                         )

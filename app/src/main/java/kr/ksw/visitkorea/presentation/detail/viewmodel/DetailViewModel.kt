@@ -3,8 +3,11 @@ package kr.ksw.visitkorea.presentation.detail.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,6 +35,9 @@ class DetailViewModel @Inject constructor(
     private val _detailState = MutableStateFlow(DetailState())
     val detailState: StateFlow<DetailState>
         get() = _detailState.asStateFlow()
+    private val _detailUIEffect = MutableSharedFlow<DetailUIEffect>(replay = 0)
+    val detailUIEffect: SharedFlow<DetailUIEffect>
+        get() = _detailUIEffect.asSharedFlow()
 
     fun onAction(action: DetailActions) {
         when(action) {
@@ -48,6 +54,18 @@ class DetailViewModel @Inject constructor(
                 _detailState.update {
                     it.copy(
                         viewPagerOpen = false
+                    )
+                }
+            }
+            is DetailActions.ClickViewMapButton -> {
+                viewModelScope.launch {
+                    val detailCommon = _detailState.value.detailCommon
+                    _detailUIEffect.emit(
+                        DetailUIEffect.OpenMapApplication(
+                            lat = detailCommon.lat.toDouble(),
+                            lng = detailCommon.lng.toDouble(),
+                            name = _detailState.value.title
+                        )
                     )
                 }
             }

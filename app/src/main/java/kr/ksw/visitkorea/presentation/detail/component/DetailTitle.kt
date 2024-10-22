@@ -1,6 +1,7 @@
 package kr.ksw.visitkorea.presentation.detail.component
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,7 @@ fun DetailTitleView(
     dist: String?,
     homePage: String = "",
     tel: String = "",
+    onMapTextClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -63,7 +65,8 @@ fun DetailTitleView(
                         color = Color.Black,
                         shape = RoundedCornerShape(4.dp)
                     )
-                    .padding(horizontal = 4.dp),
+                    .padding(horizontal = 4.dp)
+                    .clickable(onClick = onMapTextClick),
                 text = "지도보기",
                 fontSize = 12.sp
             )
@@ -149,7 +152,9 @@ fun TitlePreview() {
                 dist = "600m",
                 homePage = "https://www.hotel.com",
                 tel = "02-0000-0000"
-            )
+            ) {
+
+            }
         }
     }
 }
