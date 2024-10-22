@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,6 +30,10 @@ class DetailHotelViewModel @Inject constructor(
     private val _hotelDetailState = MutableStateFlow(DetailHotelState())
     val hotelDetailState: StateFlow<DetailHotelState>
         get() = _hotelDetailState.asStateFlow()
+
+    private val _hotelDetailUIEffect = MutableSharedFlow<DetailHotelUIEffect>(replay = 0)
+    val hotelDetailUIEffect: SharedFlow<DetailHotelUIEffect>
+        get() = _hotelDetailUIEffect.asSharedFlow()
 
     fun onAction(action: DetailHotelActions) {
         when(action) {
@@ -57,6 +64,18 @@ class DetailHotelViewModel @Inject constructor(
                     images = _hotelDetailState.value.hotelRoomDetail[action.selectedRoomIndex].roomImages
                 )
             }
+            DetailHotelActions.ClickViewMapButton -> {
+                viewModelScope.launch {
+                    val state = _hotelDetailState.value
+                    _hotelDetailUIEffect.emit(
+                        DetailHotelUIEffect.OpenMapApplication(
+                            name = state.title,
+                            lat = state.lat,
+                            lng = state.lng
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -71,6 +90,7 @@ class DetailHotelViewModel @Inject constructor(
                 dist = detailParcel.dist,
             )
         }
+        getDetailCommon(detailParcel.contentId)
         getHotelDetail(detailParcel.contentId)
         getHotelRoomDetail(detailParcel.contentId)
         getDetailImage(detailParcel.contentId)
@@ -84,9 +104,6 @@ class DetailHotelViewModel @Inject constructor(
                         it.copy(
                             hotelDetail = this
                         )
-                    }
-                    if(reservationUrl.isNullOrEmpty()) {
-                        getDetailCommon(contentId)
                     }
                 }
         }
@@ -130,13 +147,12 @@ class DetailHotelViewModel @Inject constructor(
         viewModelScope.launch {
             getDetailCommonUseCase(contentId)
                 .getOrNull()?.run {
-                    if(homepage.isNotEmpty()) {
-                        Log.d("DetailHotelViewModel", homepage)
-                        _hotelDetailState.update {
-                            it.copy(
-                                homePage = homepage
-                            )
-                        }
+                    _hotelDetailState.update {
+                        it.copy(
+                            homePage = homepage,
+                            lat = lat,
+                            lng = lng
+                        )
                     }
                 }
         }

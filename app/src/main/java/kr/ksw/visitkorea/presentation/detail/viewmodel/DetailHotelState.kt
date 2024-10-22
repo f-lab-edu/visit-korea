@@ -10,6 +10,8 @@ data class DetailHotelState (
     val address: String = "",
     val dist: String? = null,
     val homePage: String = "",
+    val lat: String = "",
+    val lng: String = "",
     val showFacilityInfo: Boolean = true,
     val showRoomDetail: Boolean = false,
     val hotelDetail: HotelDetail = HotelDetail(),

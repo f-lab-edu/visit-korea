@@ -11,4 +11,5 @@ sealed interface DetailHotelActions {
         val selectedRoomIndex: Int,
     ) : DetailHotelActions
     data object ClickBackButtonWhenViewPagerOpened : DetailHotelActions
+    data object ClickViewMapButton : DetailHotelActions
 }

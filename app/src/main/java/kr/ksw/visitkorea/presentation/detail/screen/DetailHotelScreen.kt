@@ -1,5 +1,9 @@
 package kr.ksw.visitkorea.presentation.detail.screen
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
+import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -24,6 +28,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,6 +45,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.BuildConfig
 import kr.ksw.visitkorea.domain.model.HotelDetail
 import kr.ksw.visitkorea.domain.model.HotelRoomDetail
 import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
@@ -51,14 +59,48 @@ import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
 import kr.ksw.visitkorea.presentation.detail.component.DetailTitleView
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelActions
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelState
+import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelUIEffect
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelViewModel
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
+import java.net.URLEncoder
 
 @Composable
 fun DetailHotelScreen(
     viewModel: DetailHotelViewModel
 ) {
     val detailHotelState by viewModel.hotelDetailState.collectAsState()
+    val context = LocalContext.current
+    LaunchedEffect(viewModel.hotelDetailUIEffect) {
+        viewModel.hotelDetailUIEffect.collectLatest { effect ->
+            when(effect) {
+                is DetailHotelUIEffect.OpenMapApplication -> {
+                    val name = async {
+                        URLEncoder.encode(effect.name, "UTF-8")
+                    }.await()
+                    val url = "nmap://place?lat=${effect.lat}&lng=${effect.lng}&name=$name&appname=${BuildConfig.APPLICATION_ID}"
+
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE)
+
+                    val list: List<ResolveInfo> = context.packageManager.queryIntentActivities(
+                        intent,
+                        PackageManager.MATCH_DEFAULT_ONLY
+                    )
+                    if (list.isEmpty()) {
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=com.nhn.android.nmap")
+                            )
+                        )
+                    } else {
+                        context.startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
     BackHandler(
         enabled = detailHotelState.viewPagerOpen
     ) {
@@ -125,7 +167,7 @@ private fun DetailHotelScreen(
                             else hotelDetailState.hotelDetail.reservationUrl,
                             hotelDetailState.hotelDetail.tel ?: ""
                         ) {
-
+                            onAction(DetailHotelActions.ClickViewMapButton)
                         }
                         InfoButtonHeader(
                             onAction = onAction
