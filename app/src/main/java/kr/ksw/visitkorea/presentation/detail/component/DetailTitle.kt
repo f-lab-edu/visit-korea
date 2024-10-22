@@ -1,5 +1,7 @@
 package kr.ksw.visitkorea.presentation.detail.component
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,6 +44,7 @@ fun DetailTitleView(
     tel: String = "",
     onMapTextClick: () -> Unit
 ) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -105,16 +109,23 @@ fun DetailTitleView(
         if(homePage.isNotEmpty() || tel.isNotEmpty()) {
             Spacer(modifier = Modifier.height(16.dp))
             if(homePage.isNotEmpty()) {
+                val urlText = homePage.convertHtmlToString()
                 SubInfoView(
                     icon = Icons.Outlined.Info,
-                    content = homePage.convertHtmlToString()
-                )
+                    content = urlText
+                ) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlText))
+                    context.startActivity(intent)
+                }
             }
             if(tel.isNotEmpty()) {
                 SubInfoView(
                     icon = Icons.Outlined.Phone,
                     content = tel
-                )
+                ) {
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$tel"))
+                    context.startActivity(intent)
+                }
             }
         }
     }
@@ -124,6 +135,7 @@ fun DetailTitleView(
 private fun SubInfoView(
     icon: ImageVector,
     content: String,
+    onClick: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -135,8 +147,11 @@ private fun SubInfoView(
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = content
+        SingleLineText(
+            modifier = Modifier
+                .clickable(onClick = onClick),
+            text = content,
+            fontSize = 16.sp
         )
     }
 }
