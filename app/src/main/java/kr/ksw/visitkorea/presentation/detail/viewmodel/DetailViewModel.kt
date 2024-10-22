@@ -58,16 +58,7 @@ class DetailViewModel @Inject constructor(
                 }
             }
             is DetailActions.ClickViewMapButton -> {
-                viewModelScope.launch {
-                    val detailCommon = _detailState.value.detailCommon
-                    _detailUIEffect.emit(
-                        DetailUIEffect.OpenMapApplication(
-                            lat = detailCommon.lat.toDouble(),
-                            lng = detailCommon.lng.toDouble(),
-                            name = _detailState.value.title
-                        )
-                    )
-                }
+                openMapApp()
             }
         }
     }
@@ -204,6 +195,19 @@ class DetailViewModel @Inject constructor(
             it.copy(
                 selectedImage = selectedImage,
                 viewPagerOpen = true,
+            )
+        }
+    }
+
+    private fun openMapApp() {
+        viewModelScope.launch {
+            val detailCommon = _detailState.value.detailCommon
+            _detailUIEffect.emit(
+                DetailUIEffect.OpenMapApplication(
+                    lat = detailCommon.lat,
+                    lng = detailCommon.lng,
+                    name = _detailState.value.title
+                )
             )
         }
     }

@@ -2,8 +2,8 @@ package kr.ksw.visitkorea.presentation.detail.viewmodel
 
 sealed class DetailUIEffect {
     data class OpenMapApplication(
-        val lat: Double,
-        val lng: Double,
+        val lat: String,
+        val lng: String,
         val name: String,
     ) : DetailUIEffect()
 }

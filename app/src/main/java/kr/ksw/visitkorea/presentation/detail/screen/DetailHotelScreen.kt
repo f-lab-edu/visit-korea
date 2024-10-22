@@ -1,9 +1,5 @@
 package kr.ksw.visitkorea.presentation.detail.screen
 
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
-import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -47,10 +43,10 @@ import coil.request.ImageRequest
 import coil.size.Size
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
-import kr.ksw.visitkorea.BuildConfig
 import kr.ksw.visitkorea.domain.model.HotelDetail
 import kr.ksw.visitkorea.domain.model.HotelRoomDetail
 import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
+import kr.ksw.visitkorea.presentation.common.openMap
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelImageCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
@@ -77,25 +73,11 @@ fun DetailHotelScreen(
                     val name = async {
                         URLEncoder.encode(effect.name, "UTF-8")
                     }.await()
-                    val url = "nmap://place?lat=${effect.lat}&lng=${effect.lng}&name=$name&appname=${BuildConfig.APPLICATION_ID}"
-
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE)
-
-                    val list: List<ResolveInfo> = context.packageManager.queryIntentActivities(
-                        intent,
-                        PackageManager.MATCH_DEFAULT_ONLY
+                    context.openMap(
+                        effect.lat,
+                        effect.lng,
+                        name
                     )
-                    if (list.isEmpty()) {
-                        context.startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=com.nhn.android.nmap")
-                            )
-                        )
-                    } else {
-                        context.startActivity(intent)
-                    }
                 }
             }
         }

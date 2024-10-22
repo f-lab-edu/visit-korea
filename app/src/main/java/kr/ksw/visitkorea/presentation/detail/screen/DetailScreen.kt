@@ -1,9 +1,5 @@
 package kr.ksw.visitkorea.presentation.detail.screen
 
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
-import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -53,7 +49,6 @@ import coil.request.ImageRequest
 import coil.size.Size
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
-import kr.ksw.visitkorea.BuildConfig
 import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.data.remote.dto.DetailCommonDTO
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
@@ -61,6 +56,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.model.CommonDetail
 import kr.ksw.visitkorea.presentation.common.convertHtmlToString
+import kr.ksw.visitkorea.presentation.common.openMap
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageViewPager
 import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
@@ -86,25 +82,11 @@ fun DetailScreen(
                     val name = async {
                         URLEncoder.encode(effect.name, "UTF-8")
                     }.await()
-                    val url = "nmap://place?lat=${effect.lat}&lng=${effect.lng}&name=$name&appname=${BuildConfig.APPLICATION_ID}"
-
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE)
-
-                    val list: List<ResolveInfo> = context.packageManager.queryIntentActivities(
-                        intent,
-                        PackageManager.MATCH_DEFAULT_ONLY
+                    context.openMap(
+                        effect.lat,
+                        effect.lng,
+                        name
                     )
-                    if (list.isEmpty()) {
-                        context.startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=com.nhn.android.nmap")
-                            )
-                        )
-                    } else {
-                        context.startActivity(intent)
-                    }
                 }
             }
         }

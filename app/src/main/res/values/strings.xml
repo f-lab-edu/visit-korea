@@ -13,4 +13,7 @@
     <string name="culture_center_title">문화시설</string>
     <string name="leisure_sports_title">레포츠</string>
     <string name="restaurant_title">음식점</string>
+
+    <string name="open_naver_map_market">market://details?id=com.nhn.android.nmap</string>
+    <string name="open_naver_map_url_scheme">nmap://place?lat=%1$s&amp;lng=%2$s&amp;name=%3$s&amp;appname=%4$s</string>
 </resources>

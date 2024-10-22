@@ -65,16 +65,7 @@ class DetailHotelViewModel @Inject constructor(
                 )
             }
             DetailHotelActions.ClickViewMapButton -> {
-                viewModelScope.launch {
-                    val state = _hotelDetailState.value
-                    _hotelDetailUIEffect.emit(
-                        DetailHotelUIEffect.OpenMapApplication(
-                            name = state.title,
-                            lat = state.lat,
-                            lng = state.lng
-                        )
-                    )
-                }
+                openMapApp()
             }
         }
     }
@@ -185,6 +176,19 @@ class DetailHotelViewModel @Inject constructor(
                 viewPagerOpen = true,
                 selectedImage = selectedImage,
                 viewPagerImages = images
+            )
+        }
+    }
+
+    private fun openMapApp() {
+        viewModelScope.launch {
+            val state = _hotelDetailState.value
+            _hotelDetailUIEffect.emit(
+                DetailHotelUIEffect.OpenMapApplication(
+                    name = state.title,
+                    lat = state.lat,
+                    lng = state.lng
+                )
             )
         }
     }
