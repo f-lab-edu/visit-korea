@@ -23,6 +23,7 @@ import kr.ksw.visitkorea.domain.usecase.favorite.UpsertFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.festival.GetFestivalListUseCase
 import kr.ksw.visitkorea.domain.usecase.mapper.toFestival
 import kr.ksw.visitkorea.presentation.common.DetailParcel
+import kr.ksw.visitkorea.presentation.common.getCurrentDateString
 import javax.inject.Inject
 
 @HiltViewModel
@@ -71,11 +72,12 @@ class FestivalViewModel @Inject constructor(
     }
 
     private fun getFestivalList(forceFetch: Boolean = false) {
+        val currentDate = getCurrentDateString()
         viewModelScope.launch {
             val hotelListFlow = getFestivalListUseCase(
                 forceFetch,
-                "20241015",
-                "20241015",
+                currentDate,
+                currentDate,
                 null,
                 null
             ).getOrNull()
