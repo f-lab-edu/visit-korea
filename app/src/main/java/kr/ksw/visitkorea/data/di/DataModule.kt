@@ -8,12 +8,15 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.ksw.visitkorea.data.local.databases.AreaCodeDatabase
 import kr.ksw.visitkorea.data.remote.api.AreaCodeApi
+import kr.ksw.visitkorea.data.remote.api.DetailApi
 import kr.ksw.visitkorea.data.remote.api.LocationBasedListApi
 import kr.ksw.visitkorea.data.remote.api.RetrofitInterceptor
 import kr.ksw.visitkorea.data.remote.api.SearchFestivalApi
 import kr.ksw.visitkorea.data.remote.api.SearchKeywordApi
 import kr.ksw.visitkorea.data.repository.AreaCodeRepository
 import kr.ksw.visitkorea.data.repository.AreaCodeRepositoryImpl
+import kr.ksw.visitkorea.data.repository.DetailRepository
+import kr.ksw.visitkorea.data.repository.DetailRepositoryImpl
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepository
 import kr.ksw.visitkorea.data.repository.LocationBasedListRepositoryImpl
 import kr.ksw.visitkorea.data.repository.SearchFestivalRepository
@@ -97,5 +100,15 @@ object DataModule {
     @Singleton
     fun provideSearchKeywordRepository(searchKeywordApi: SearchKeywordApi): SearchKeywordRepository {
         return SearchKeywordRepositoryImpl(searchKeywordApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDetailApi(retrofit: Retrofit): DetailApi = retrofit.create(DetailApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDetailRepository(detailApi: DetailApi): DetailRepository {
+        return DetailRepositoryImpl(detailApi)
     }
 }

@@ -42,6 +42,7 @@
 
         <activity android:name=".presentation.main.MainActivity"/>
         <activity android:name=".presentation.more.MoreActivity"/>
+        <activity android:name=".presentation.detail.DetailActivity"/>
     </application>
 
 </manifest>
