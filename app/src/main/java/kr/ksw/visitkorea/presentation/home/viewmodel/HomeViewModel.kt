@@ -85,10 +85,11 @@ class HomeViewModel @Inject constructor(
                 lat
             ).getOrNull()
             if(items != null) {
+                val newItems = items.getShuffledItem()
                 _homeState.update {
                     it.copy(
-                        mainImage = items[0].firstImage,
-                        touristSpotList = items
+                        mainImage = newItems[0].firstImage,
+                        touristSpotList = newItems
                     )
                 }
             }
@@ -107,7 +108,7 @@ class HomeViewModel @Inject constructor(
             if(items != null) {
                 _homeState.update {
                     it.copy(
-                        cultureCenterList = items
+                        cultureCenterList = items.getShuffledItem()
                     )
                 }
             }
@@ -126,7 +127,7 @@ class HomeViewModel @Inject constructor(
             if(items != null) {
                 _homeState.update {
                     it.copy(
-                        restaurantList = items
+                        restaurantList = items.getShuffledItem()
                     )
                 }
             }
@@ -145,11 +146,17 @@ class HomeViewModel @Inject constructor(
             if(items != null) {
                 _homeState.update {
                     it.copy(
-                        leisureSportsList = items
+                        leisureSportsList = items.getShuffledItem()
                     )
                 }
             }
         }
+    }
+
+    private fun <T> List<T>.getShuffledItem(): List<T> {
+        if(size <= 10)
+            return this
+        return shuffled().take(10)
     }
 
     private fun startMoreActivity(contentType: ContentType) {
