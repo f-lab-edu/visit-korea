@@ -1,8 +1,6 @@
 package kr.ksw.visitkorea.presentation.home.viewmodel
 
 import android.annotation.SuppressLint
-import android.location.Location
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
