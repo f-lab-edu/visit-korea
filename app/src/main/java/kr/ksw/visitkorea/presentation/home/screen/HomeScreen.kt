@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -50,6 +52,7 @@ import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.component.CommonCard
+import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
 import kr.ksw.visitkorea.presentation.home.component.TouristSpotCard
@@ -109,10 +112,24 @@ fun HomeScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
         ) {
-            Box(
-                contentAlignment = Alignment.BottomStart
-            ) {
-                AsyncImage(
+            if(homeState.mainPagerItems.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1.0f)
+                        .clip(
+                            RoundedCornerShape(
+                                bottomStart = 32.dp,
+                                bottomEnd = 32.dp
+                            )
+                        )
+                        .background(color = Color.LightGray),  // change to shimmer effect
+                )
+            } else {
+                val pagerState = rememberPagerState(
+                    pageCount = { homeState.mainPagerItems.size }
+                )
+                HorizontalPager(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1.0f)
@@ -123,48 +140,60 @@ fun HomeScreen(
                             )
                         )
                         .background(color = Color.LightGray),
-                    model = ImageRequest
-                        .Builder(LocalContext.current)
-                        .data(homeState.mainImage)
-                        .size(Size.ORIGINAL)
-                        .build(),
-                    colorFilter = if(homeState.mainImage.isNotEmpty())
-                        ColorFilter.tint(Color.LightGray, blendMode = BlendMode.Darken)
-                    else
-                        null,
-                    contentDescription = "Main Content",
-                    contentScale = ContentScale.Crop,
-                )
-                if(homeState.touristSpotList.isNotEmpty()) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
+                    state = pagerState,
+                    key = { index ->
+                        homeState.mainPagerItems[index].image
+                    },
+                ) { page ->
+                    val pageData = homeState.mainPagerItems[page]
+                    Box(
+                        contentAlignment = Alignment.BottomStart
                     ) {
-                        Text(
-                            text = homeState.touristSpotList[0].title,
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.White
+                        AsyncImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(1.0f),
+                            model = ImageRequest
+                                .Builder(LocalContext.current)
+                                .data(pageData.image)
+                                .size(Size.ORIGINAL)
+                                .build(),
+                            colorFilter = if(pageData.image.isNotEmpty())
+                                ColorFilter.tint(Color.LightGray, blendMode = BlendMode.Darken)
+                            else
+                                null,
+                            contentDescription = "Main Contents",
+                            contentScale = ContentScale.Crop,
                         )
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Outlined.LocationOn,
-                                contentDescription = null,
-                                tint = Color.White
-                            )
                             Text(
-                                text = homeState.touristSpotList[0].address,
-                                fontSize = 16.sp,
+                                text = pageData.title,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Medium,
                                 color = Color.White
                             )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.LocationOn,
+                                    contentDescription = null,
+                                    tint = Color.White
+                                )
+                                SingleLineText(
+                                    text = pageData.address,
+                                    fontSize = 16.sp,
+                                    color = Color.White
+                                )
+                            }
                         }
                     }
                 }
             }
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -388,7 +417,7 @@ fun HomeScreenPreview() {
     VisitKoreaTheme {
         HomeScreen(
             homeState = HomeState(
-                mainImage = "https://tong.visitkorea.or.kr/cms/resource/11/3094511_image2_1.jpg"
+                mainPagerItems = emptyList()
             ),
             onMoreClick = {  },
             onItemClick = { _ ->

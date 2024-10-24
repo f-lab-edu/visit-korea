@@ -83,16 +83,14 @@ class HomeViewModel @Inject constructor(
             val items = getTouristSpotForHomeUseCase(
                 lng,
                 lat
-            ).getOrNull()
-            if(items != null) {
-                val newItems = items.getShuffledItem()
-                _homeState.update {
-                    it.copy(
-                        mainImage = newItems[0].firstImage,
-                        touristSpotList = newItems
-                    )
-                }
+            ).getOrNull()?.getShuffledItem() ?: emptyList()
+            _homeState.update {
+                it.copy(
+                    touristSpotList = items,
+                    touristSpotComplete = true
+                )
             }
+            setMainPagerData()
         }
     }
 
@@ -104,14 +102,14 @@ class HomeViewModel @Inject constructor(
             val items = getCultureCenterForHomeUseCase(
                 lng,
                 lat
-            ).getOrNull()
-            if(items != null) {
-                _homeState.update {
-                    it.copy(
-                        cultureCenterList = items.getShuffledItem()
-                    )
-                }
+            ).getOrNull()?.getShuffledItem() ?: emptyList()
+            _homeState.update {
+                it.copy(
+                    cultureCenterList = items,
+                    cultureCenterComplete = true
+                )
             }
+            setMainPagerData()
         }
     }
 
@@ -123,14 +121,14 @@ class HomeViewModel @Inject constructor(
             val items = getRestaurantForHomeUseCase(
                 lng,
                 lat
-            ).getOrNull()
-            if(items != null) {
-                _homeState.update {
-                    it.copy(
-                        restaurantList = items.getShuffledItem()
-                    )
-                }
+            ).getOrNull()?.getShuffledItem() ?: emptyList()
+            _homeState.update {
+                it.copy(
+                    restaurantList = items,
+                    restaurantComplete = true
+                )
             }
+            setMainPagerData()
         }
     }
 
@@ -142,14 +140,14 @@ class HomeViewModel @Inject constructor(
             val items = getLeisureSportsForHomeUseCase(
                 lng,
                 lat
-            ).getOrNull()
-            if(items != null) {
-                _homeState.update {
-                    it.copy(
-                        leisureSportsList = items.getShuffledItem()
-                    )
-                }
+            ).getOrNull()?.getShuffledItem() ?: emptyList()
+            _homeState.update {
+                it.copy(
+                    leisureSportsList = items,
+                    leisureSportsComplete = true
+                )
             }
+            setMainPagerData()
         }
     }
 
@@ -157,6 +155,53 @@ class HomeViewModel @Inject constructor(
         if(size <= 10)
             return this
         return shuffled().take(10)
+    }
+
+    private fun setMainPagerData() {
+        val state = _homeState.value
+        if(state.touristSpotComplete &&
+            state.cultureCenterComplete &&
+            state.leisureSportsComplete &&
+            state.restaurantComplete) {
+            val touristSpot = state.touristSpotList.random().let { touristSpot ->
+                HomePagerItem(
+                    image = touristSpot.firstImage,
+                    title = touristSpot.title,
+                    address = touristSpot.address
+                )
+            }
+            val cultureCenter = state.cultureCenterList.random().let { culture ->
+                HomePagerItem(
+                    image = culture.firstImage,
+                    title = culture.title,
+                    address = culture.address
+                )
+            }
+            val leisure = state.leisureSportsList.random().let { leisure ->
+                HomePagerItem(
+                    image = leisure.firstImage,
+                    title = leisure.title,
+                    address = leisure.address
+                )
+            }
+            val restaurant = state.restaurantList.random().let { restaurant ->
+                HomePagerItem(
+                    image = restaurant.firstImage,
+                    title = restaurant.title,
+                    address = restaurant.address
+                )
+            }
+            _homeState.update {
+                it.copy(
+                    mainPagerItems = listOf(
+                        touristSpot,
+                        cultureCenter,
+                        leisure,
+                        restaurant
+                    )
+                )
+            }
+        }
     }
 
     private fun startMoreActivity(contentType: ContentType) {
