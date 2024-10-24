@@ -27,6 +27,8 @@ import kr.ksw.visitkorea.domain.usecase.favorite.GetAllFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.favorite.UpsertFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.mapper.toMoreCardModel
 import kr.ksw.visitkorea.domain.usecase.more.GetMoreListUseCase
+import kr.ksw.visitkorea.presentation.common.DEFAULT_LATITUDE
+import kr.ksw.visitkorea.presentation.common.DEFAULT_LONGITUDE
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.common.latitudeToStringOrDefault
 import kr.ksw.visitkorea.presentation.common.longitudeToStringOrDefault
@@ -94,7 +96,7 @@ class MoreViewModel @Inject constructor(
                 task.result.latitudeToStringOrDefault() to
                         task.result.longitudeToStringOrDefault()
             } catch (e: Exception) {
-                "37.5678958128" to "126.9817290217"
+                DEFAULT_LATITUDE to DEFAULT_LONGITUDE
             }
             getMoreListByContentType(
                 contentTypeId = contentTypeId,
