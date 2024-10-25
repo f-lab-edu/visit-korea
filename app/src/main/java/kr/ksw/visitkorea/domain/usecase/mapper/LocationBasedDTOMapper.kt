@@ -12,21 +12,20 @@ import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
 import kr.ksw.visitkorea.domain.usecase.util.toImageUrl
 
 fun LocationBasedDTO.toTouristSpotModel(): TouristSpot = TouristSpot(
-    address,
-    contentId,
-    dist.toDistForUi(),
-    firstImage.toImageUrl(),
-    firstImage2.toImageUrl(),
-    title
+    title = title,
+    address = address,
+    dist = dist.toDistForUi(),
+    firstImage = firstImage.toImageUrl(),
+    contentId = contentId,
 )
 
 fun LocationBasedDTO.toCommonCardModel(): CommonCardModel = CommonCardModel(
-    address,
-    firstImage.toImageUrl(),
-    title,
-    dist.toDistForUi(),
-    contentId,
-    contentTypeId
+    title = title,
+    address = address,
+    dist = dist.toDistForUi(),
+    firstImage = firstImage.toImageUrl(),
+    contentId = contentId,
+    contentTypeId = contentTypeId
 )
 
 fun SearchFestivalDTO.toFestival(): Festival = Festival(
@@ -49,13 +48,13 @@ val restaurantMap = mapOf(
 )
 
 fun LocationBasedDTO.toRestaurantModel(): Restaurant = Restaurant(
+    title = title,
     address = address,
     dist = dist.toDistForUi(),
     firstImage = firstImage.toImageUrl(),
+    contentId = contentId,
     firstImage2 = firstImage2.toImageUrl(),
-    title = title,
     category = restaurantMap[cat3] ?: "",
-    contentId = contentId
 )
 
 fun LocationBasedDTO.toMoreCardModel(): MoreCardModel = MoreCardModel(

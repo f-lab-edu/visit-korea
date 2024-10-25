@@ -1,13 +1,9 @@
 package kr.ksw.visitkorea.domain.model
 
-/**
- * For Home Screen Card Model
- */
 data class TouristSpot(
-    val address: String = "",
-    val contentId: String = "",
-    val dist: String = "",
-    val firstImage: String = "",
-    val firstImage2: String = "",
-    val title: String = ""
-)
+    override val title: String = "",
+    override val address: String = "",
+    override val dist: String = "",
+    override val firstImage: String = "",
+    override val contentId: String = "",
+) : CardData

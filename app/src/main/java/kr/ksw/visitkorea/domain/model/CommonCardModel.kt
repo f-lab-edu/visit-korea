@@ -1,10 +1,10 @@
 package kr.ksw.visitkorea.domain.model
 
 data class CommonCardModel(
-    val address: String = "",
-    val firstImage: String = "",
-    val title: String = "",
-    val dist: String? = null,
-    val contentId: String = "",
+    override val title: String = "",
+    override val address: String = "",
+    override val dist: String? = null,
+    override val firstImage: String = "",
+    override val contentId: String = "",
     val contentTypeId: String = "",
-)
+) : CardData
