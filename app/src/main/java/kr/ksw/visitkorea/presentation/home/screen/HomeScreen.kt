@@ -127,7 +127,10 @@ fun HomeScreen(
                 )
             } else {
                 val pagerState = rememberPagerState(
-                    pageCount = { homeState.mainPagerItems.size }
+                    pageCount = {
+                        Int.MAX_VALUE
+                    },
+                    initialPage = Int.MAX_VALUE / 2
                 )
                 HorizontalPager(
                     modifier = Modifier
@@ -142,10 +145,12 @@ fun HomeScreen(
                         .background(color = Color.LightGray),
                     state = pagerState,
                     key = { index ->
-                        homeState.mainPagerItems[index].image
+                        val i = index % homeState.mainPagerItems.size
+                        homeState.mainPagerItems[i].image
                     },
                 ) { page ->
-                    val pageData = homeState.mainPagerItems[page]
+                    val index = page % homeState.mainPagerItems.size
+                    val pageData = homeState.mainPagerItems[index]
                     Box(
                         contentAlignment = Alignment.BottomStart
                     ) {
@@ -420,9 +425,7 @@ fun HomeScreenPreview() {
                 mainPagerItems = emptyList()
             ),
             onMoreClick = {  },
-            onItemClick = { _ ->
-
-            }
+            onItemClick = { _ -> }
         )
     }
 }
