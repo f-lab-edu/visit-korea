@@ -19,6 +19,8 @@ import kr.ksw.visitkorea.domain.common.TYPE_CULTURE
 import kr.ksw.visitkorea.domain.common.TYPE_LEiSURE
 import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
+import kr.ksw.visitkorea.domain.model.CardData
+import kr.ksw.visitkorea.domain.model.TouristSpot
 import kr.ksw.visitkorea.domain.usecase.home.GetCultureCenterForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetLeisureSportsForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetRestaurantForHomeUseCase
@@ -29,6 +31,7 @@ import kr.ksw.visitkorea.presentation.common.DEFAULT_LONGITUDE
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.common.latitudeToStringOrDefault
 import kr.ksw.visitkorea.presentation.common.longitudeToStringOrDefault
+import kr.ksw.visitkorea.presentation.home.mapper.toHomePagerItem
 import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
@@ -167,56 +170,24 @@ class HomeViewModel @Inject constructor(
             state.cultureCenterComplete &&
             state.leisureSportsComplete &&
             state.restaurantComplete) {
-            val touristSpot = state.touristSpotList.random().let { touristSpot ->
-                HomePagerItem(
-                    image = touristSpot.firstImage,
-                    title = touristSpot.title,
-                    address = touristSpot.address,
-                    dist = touristSpot.dist,
-                    contentId = touristSpot.contentId,
-                    contentTypeId = TYPE_TOURIST_SPOT
-                )
-            }
-            val cultureCenter = state.cultureCenterList.random().let { culture ->
-                HomePagerItem(
-                    image = culture.firstImage,
-                    title = culture.title,
-                    address = culture.address,
-                    dist = culture.dist,
-                    contentId = culture.contentId,
-                    contentTypeId = TYPE_CULTURE
-                )
-            }
-            val leisure = state.leisureSportsList.random().let { leisure ->
-                HomePagerItem(
-                    image = leisure.firstImage,
-                    title = leisure.title,
-                    address = leisure.address,
-                    dist = leisure.dist,
-                    contentId = leisure.contentId,
-                    contentTypeId = TYPE_LEiSURE
-                )
-            }
-            val restaurant = state.restaurantList.random().let { restaurant ->
-                HomePagerItem(
-                    image = restaurant.firstImage,
-                    title = restaurant.title,
-                    address = restaurant.address,
-                    dist = restaurant.dist,
-                    contentId = restaurant.contentId,
-                    contentTypeId = TYPE_RESTAURANT
-                )
-            }
+            val homePagerItems: MutableList<HomePagerItem> = mutableListOf()
+            homePagerItems.addHomePagerItem(state.touristSpotList)
+            homePagerItems.addHomePagerItem(state.cultureCenterList)
+            homePagerItems.addHomePagerItem(state.leisureSportsList)
+            homePagerItems.addHomePagerItem(state.restaurantList)
             _homeState.update {
                 it.copy(
-                    mainPagerItems = listOf(
-                        touristSpot,
-                        cultureCenter,
-                        leisure,
-                        restaurant
-                    )
+                    mainPagerItems = homePagerItems.toList()
                 )
             }
+        }
+    }
+
+    private fun MutableList<HomePagerItem>.addHomePagerItem(
+        data: List<CardData>
+    ) {
+        data.randomOrNull()?.run {
+            add(this.toHomePagerItem())
         }
     }
 
