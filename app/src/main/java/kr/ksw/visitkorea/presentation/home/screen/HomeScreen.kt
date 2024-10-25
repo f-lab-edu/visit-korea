@@ -2,20 +2,25 @@ package kr.ksw.visitkorea.presentation.home.screen
 
 import android.content.Intent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -48,6 +53,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_CULTURE
 import kr.ksw.visitkorea.domain.common.TYPE_LEiSURE
 import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
+import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
 import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
@@ -130,9 +136,9 @@ fun HomeScreen(
                     pageCount = {
                         Int.MAX_VALUE
                     },
-                    initialPage = Int.MAX_VALUE / 2
+                    initialPage = Int.MAX_VALUE / 2 + 1
                 )
-                HorizontalPager(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1.0f)
@@ -142,59 +148,108 @@ fun HomeScreen(
                                 bottomEnd = 32.dp
                             )
                         )
-                        .background(color = Color.LightGray),
-                    state = pagerState,
-                    key = { index ->
-                        val i = index % homeState.mainPagerItems.size
-                        homeState.mainPagerItems[i].image
-                    },
-                ) { page ->
-                    val index = page % homeState.mainPagerItems.size
-                    val pageData = homeState.mainPagerItems[index]
-                    Box(
-                        contentAlignment = Alignment.BottomStart
-                    ) {
-                        AsyncImage(
+                ) {
+                    HorizontalPager(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = Color.LightGray),
+                        state = pagerState,
+                        key = { index ->
+                            val i = index % homeState.mainPagerItems.size
+                            homeState.mainPagerItems[i].image
+                        },
+                    ) { page ->
+                        val index = page % homeState.mainPagerItems.size
+                        val pageData = homeState.mainPagerItems[index]
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(1.0f),
-                            model = ImageRequest
-                                .Builder(LocalContext.current)
-                                .data(pageData.image)
-                                .size(Size.ORIGINAL)
-                                .build(),
-                            colorFilter = if(pageData.image.isNotEmpty())
-                                ColorFilter.tint(Color.LightGray, blendMode = BlendMode.Darken)
-                            else
-                                null,
-                            contentDescription = "Main Contents",
-                            contentScale = ContentScale.Crop,
-                        )
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
+                                .clickable {
+                                    onItemClick(HomeActions.ClickCardItem(
+                                        DetailParcel(
+                                            title = pageData.title,
+                                            firstImage = pageData.image,
+                                            address = pageData.address,
+                                            dist = pageData.dist,
+                                            contentId = pageData.contentId,
+                                            contentTypeId = pageData.contentTypeId
+                                        )
+                                    ))
+                                },
+                            contentAlignment = Alignment.BottomStart
                         ) {
-                            Text(
-                                text = pageData.title,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.White
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(1.0f),
+                                model = ImageRequest
+                                    .Builder(LocalContext.current)
+                                    .data(pageData.image)
+                                    .size(Size.ORIGINAL)
+                                    .build(),
+                                colorFilter = if(pageData.image.isNotEmpty())
+                                    ColorFilter.tint(Color.LightGray, blendMode = BlendMode.Darken)
+                                else
+                                    null,
+                                contentDescription = "Main Contents",
+                                contentScale = ContentScale.Crop,
                             )
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
                             ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.LocationOn,
-                                    contentDescription = null,
-                                    tint = Color.White
-                                )
-                                SingleLineText(
-                                    text = pageData.address,
-                                    fontSize = 16.sp,
+                                Text(
+                                    text = pageData.title,
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Medium,
                                     color = Color.White
                                 )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.LocationOn,
+                                        contentDescription = null,
+                                        tint = Color.White
+                                    )
+                                    SingleLineText(
+                                        text = pageData.address,
+                                        fontSize = 16.sp,
+                                        color = Color.White
+                                    )
+                                }
+                                Spacer(
+                                    modifier = Modifier
+                                        .height(20.dp)
+                                )
                             }
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .height(36.dp)
+                            .fillMaxWidth()
+                            .align(Alignment.BottomCenter),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        val realSize = homeState.mainPagerItems.size
+                        repeat(realSize) { iteration ->
+                            val color = if (pagerState.currentPage % realSize == iteration)
+                                Color.White
+                            else Color.White.copy(alpha = 0.5f)
+
+                            val circleSize = if (pagerState.currentPage % realSize == iteration)
+                                12.dp
+                            else 8.dp
+
+                            Box(
+                                modifier = Modifier
+                                    .padding(4.dp)
+                                    .clip(CircleShape)
+                                    .background(color)
+                                    .size(circleSize)
+                            )
                         }
                     }
                 }

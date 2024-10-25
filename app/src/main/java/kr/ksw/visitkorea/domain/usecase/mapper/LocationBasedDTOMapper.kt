@@ -24,7 +24,7 @@ fun LocationBasedDTO.toCommonCardModel(): CommonCardModel = CommonCardModel(
     address,
     firstImage.toImageUrl(),
     title,
-    dist,
+    dist.toDistForUi(),
     contentId,
     contentTypeId
 )

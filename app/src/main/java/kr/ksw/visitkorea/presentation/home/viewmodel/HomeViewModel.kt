@@ -15,6 +15,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.ksw.visitkorea.domain.common.TYPE_CULTURE
+import kr.ksw.visitkorea.domain.common.TYPE_LEiSURE
+import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
+import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.usecase.home.GetCultureCenterForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetLeisureSportsForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetRestaurantForHomeUseCase
@@ -167,28 +171,40 @@ class HomeViewModel @Inject constructor(
                 HomePagerItem(
                     image = touristSpot.firstImage,
                     title = touristSpot.title,
-                    address = touristSpot.address
+                    address = touristSpot.address,
+                    dist = touristSpot.dist,
+                    contentId = touristSpot.contentId,
+                    contentTypeId = TYPE_TOURIST_SPOT
                 )
             }
             val cultureCenter = state.cultureCenterList.random().let { culture ->
                 HomePagerItem(
                     image = culture.firstImage,
                     title = culture.title,
-                    address = culture.address
+                    address = culture.address,
+                    dist = culture.dist,
+                    contentId = culture.contentId,
+                    contentTypeId = TYPE_CULTURE
                 )
             }
             val leisure = state.leisureSportsList.random().let { leisure ->
                 HomePagerItem(
                     image = leisure.firstImage,
                     title = leisure.title,
-                    address = leisure.address
+                    address = leisure.address,
+                    dist = leisure.dist,
+                    contentId = leisure.contentId,
+                    contentTypeId = TYPE_LEiSURE
                 )
             }
             val restaurant = state.restaurantList.random().let { restaurant ->
                 HomePagerItem(
                     image = restaurant.firstImage,
                     title = restaurant.title,
-                    address = restaurant.address
+                    address = restaurant.address,
+                    dist = restaurant.dist,
+                    contentId = restaurant.contentId,
+                    contentTypeId = TYPE_RESTAURANT
                 )
             }
             _homeState.update {

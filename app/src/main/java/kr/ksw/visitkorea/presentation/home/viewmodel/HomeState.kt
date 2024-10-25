@@ -23,4 +23,7 @@ data class HomePagerItem(
     val image: String = "",
     val title: String = "",
     val address: String = "",
+    val dist: String?,
+    val contentId: String = "",
+    val contentTypeId: String = "",
 )
