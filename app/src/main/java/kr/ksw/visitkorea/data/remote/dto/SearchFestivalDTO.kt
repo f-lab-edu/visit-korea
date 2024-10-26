@@ -27,5 +27,5 @@ data class SearchFestivalDTO(
     val mapY: String,
     val cat3: String,
     val tel: String,
-    val title: String
+    val title: String,
 )

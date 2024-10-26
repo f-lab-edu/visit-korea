@@ -12,5 +12,5 @@ data class DetailParcel(
     val contentId: String = "",
     val contentTypeId: String = "",
     val eventStartDate: String? = null,
-    val eventEndDate: String? = null
+    val eventEndDate: String? = null,
 ): Parcelable
