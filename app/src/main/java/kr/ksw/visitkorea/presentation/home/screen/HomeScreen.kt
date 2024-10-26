@@ -44,7 +44,10 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.presentation.common.ContentType
+import kr.ksw.visitkorea.presentation.common.DetailParcel
+import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.home.component.CultureCard
 import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
@@ -73,20 +76,30 @@ fun HomeScreen(
                         putExtra("contentType", effect.contentType)
                     })
                 }
+                is HomeUiEffect.StartDetailActivity -> {
+                    context.startActivity(Intent(
+                        context,
+                        DetailActivity::class.java
+                    ).apply {
+                        putExtra("detail", effect.data)
+                    })
+                }
             }
         }
     }
 
     HomeScreen(
         homeState = homeState,
-        onMoreClick = homeViewModel::startMoreActivity
+        onMoreClick = homeViewModel::startMoreActivity,
+        onItemClick = homeViewModel::startDetailActivity
     )
 }
 
 @Composable
 fun HomeScreen(
     homeState: HomeState,
-    onMoreClick: (ContentType) -> Unit
+    onMoreClick: (ContentType) -> Unit,
+    onItemClick: (DetailParcel) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Surface {
@@ -186,7 +199,16 @@ fun HomeScreen(
                             touristSpot.address,
                             touristSpot.dist,
                             touristSpot.firstImage
-                        )
+                        ) {
+                            onItemClick(DetailParcel(
+                                title = touristSpot.title,
+                                firstImage = touristSpot.firstImage,
+                                address = touristSpot.address,
+                                dist = touristSpot.dist,
+                                contentId = touristSpot.contentId,
+                                contentTypeId = TYPE_TOURIST_SPOT
+                            ))
+                        }
                     }
                 }
             }
@@ -324,7 +346,10 @@ fun HomeScreenPreview() {
             homeState = HomeState(
                 mainImage = "https://tong.visitkorea.or.kr/cms/resource/11/3094511_image2_1.jpg"
             ),
-            onMoreClick = {  }
+            onMoreClick = {  },
+            onItemClick = { _ ->
+
+            }
         )
     }
 }

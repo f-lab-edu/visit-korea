@@ -1,6 +1,7 @@
 package kr.ksw.visitkorea.presentation.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,11 +41,13 @@ fun TouristSpotCard(
     address: String,
     dist: String,
     image: String,
+    onItemClick: () -> Unit
 ) {
     Card (
         modifier = Modifier
             .width(200.dp)
-            .aspectRatio(0.75f),
+            .aspectRatio(0.75f)
+            .clickable(onClick = onItemClick),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 4.dp
@@ -112,7 +115,9 @@ fun TouristSpotCardPreview() {
         ) {
             TouristSpotCard(
                 "광통교", "서울 특별시 종로구 서린동", "16m", ""
-            )
+            ) {
+                
+            }
         }
     }
 }
