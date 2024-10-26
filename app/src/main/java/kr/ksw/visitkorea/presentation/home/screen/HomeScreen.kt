@@ -351,6 +351,7 @@ fun HomeScreen(
                                     title = cultureCenter.title,
                                     address = cultureCenter.address,
                                     firstImage = cultureCenter.firstImage,
+                                    dist = cultureCenter.dist,
                                     contentId = cultureCenter.contentId,
                                     contentTypeId = TYPE_CULTURE
                                 )
@@ -404,6 +405,7 @@ fun HomeScreen(
                                     title = leisureSports.title,
                                     address = leisureSports.address,
                                     firstImage = leisureSports.firstImage,
+                                    dist = leisureSports.dist,
                                     contentId = leisureSports.contentId,
                                     contentTypeId = TYPE_LEiSURE
                                 )

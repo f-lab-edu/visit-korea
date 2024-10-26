@@ -143,7 +143,7 @@ private fun DetailHotelScreen(
                         DetailTitleView(
                             hotelDetailState.title,
                             hotelDetailState.address,
-                            hotelDetailState.dist?.toDistForUi(),
+                            hotelDetailState.dist,
                             if(hotelDetailState.hotelDetail.reservationUrl.isNullOrEmpty())
                                 hotelDetailState.homePage
                             else hotelDetailState.hotelDetail.reservationUrl,
