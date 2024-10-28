@@ -69,11 +69,10 @@ class FestivalViewModel @Inject constructor(
                 }
             }
             is FestivalActions.ClickFilterIcon -> {
-                _festivalState.update {
-                    it.copy(
-                        showFilterDialog = true
-                    )
-                }
+                dialogToggle(true)
+            }
+            is FestivalActions.DismissDialog -> {
+                dialogToggle(false)
             }
         }
     }
@@ -131,6 +130,14 @@ class FestivalViewModel @Inject constructor(
     private fun deleteFavorite(favoriteEntity: FavoriteEntity) {
         viewModelScope.launch {
             deleteFavoriteEntityByContentIdUseCase(favoriteEntity.contentId)
+        }
+    }
+
+    private fun dialogToggle(show: Boolean) {
+        _festivalState.update {
+            it.copy(
+                showFilterDialog = show
+            )
         }
     }
 }

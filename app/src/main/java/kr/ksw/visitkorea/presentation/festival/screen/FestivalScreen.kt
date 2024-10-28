@@ -22,6 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,19 +32,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.PagingData
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.emptyFlow
-import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.model.Festival
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.festival.component.FestivalCard
+import kr.ksw.visitkorea.presentation.festival.dialog.FestivalFilterDialog
 import kr.ksw.visitkorea.presentation.festival.viewmodel.FestivalActions
+import kr.ksw.visitkorea.presentation.festival.viewmodel.FestivalState
 import kr.ksw.visitkorea.presentation.festival.viewmodel.FestivalUiEffect
 import kr.ksw.visitkorea.presentation.festival.viewmodel.FestivalViewModel
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
@@ -51,8 +55,7 @@ fun FestivalScreen(
     viewModel: FestivalViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val hotelState by viewModel.festivalState.collectAsState()
-    val lazyItem = hotelState.festivalModelFlow.collectAsLazyPagingItems()
+    val festivalState by viewModel.festivalState.collectAsState()
     LaunchedEffect(viewModel.festivalUiEffect) {
         viewModel.festivalUiEffect.collectLatest { effect ->
             when(effect) {
@@ -70,16 +73,17 @@ fun FestivalScreen(
     }
 
     FestivalScreen(
-        lazyItem,
+        festivalState,
         viewModel::onAction
     )
 }
 
 @Composable
 fun FestivalScreen(
-    festivals: LazyPagingItems<Festival>,
+    festivalState: FestivalState,
     onItemClick: (FestivalActions) -> Unit
 ) {
+    val festivals = festivalState.festivalModelFlow.collectAsLazyPagingItems()
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -155,6 +159,17 @@ fun FestivalScreen(
             }
         }
     }
+
+
+    if(festivalState.showFilterDialog) {
+        Dialog(
+            onDismissRequest = {
+                onItemClick(FestivalActions.DismissDialog)
+            }
+        ) {
+            
+        }
+    }
 }
 
 @Composable
@@ -162,7 +177,7 @@ fun FestivalScreen(
 fun FestivalPreview() {
     VisitKoreaTheme {
         FestivalScreen(
-            festivals = emptyFlow<PagingData<Festival>>().collectAsLazyPagingItems()
+            festivalState = FestivalState()
         ) {
 
         }
