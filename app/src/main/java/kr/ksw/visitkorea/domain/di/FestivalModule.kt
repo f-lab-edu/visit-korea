@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
+import kr.ksw.visitkorea.domain.usecase.festival.GetAreaCodeUseCase
+import kr.ksw.visitkorea.domain.usecase.festival.GetAreaCodeUseCaseImpl
 import kr.ksw.visitkorea.domain.usecase.festival.GetFestivalListUseCase
 import kr.ksw.visitkorea.domain.usecase.festival.GetFestivalListUseCaseImpl
 
@@ -11,5 +13,12 @@ import kr.ksw.visitkorea.domain.usecase.festival.GetFestivalListUseCaseImpl
 @InstallIn(ActivityRetainedComponent::class)
 abstract class FestivalModule {
     @Binds
-    abstract fun bindGetFestivalListUseCase(getFestivalListUseCase: GetFestivalListUseCaseImpl): GetFestivalListUseCase
+    abstract fun bindGetFestivalListUseCase(
+        getFestivalListUseCase: GetFestivalListUseCaseImpl
+    ): GetFestivalListUseCase
+
+    @Binds
+    abstract fun bindGetAreaCodeUseCase(
+        getAreaCodeUseCase: GetAreaCodeUseCaseImpl
+    ): GetAreaCodeUseCase
 }

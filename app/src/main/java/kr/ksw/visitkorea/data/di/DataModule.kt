@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.ksw.visitkorea.data.local.dao.AreaCodeDao
 import kr.ksw.visitkorea.data.local.dao.FavoriteDao
 import kr.ksw.visitkorea.data.local.databases.AreaCodeDatabase
 import kr.ksw.visitkorea.data.local.databases.FavoriteDatabase
@@ -68,6 +69,10 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun provideAreaCodeDao(areaCodeDatabase: AreaCodeDatabase) = areaCodeDatabase.areaCodeDao
+
+    @Provides
+    @Singleton
     fun provideAreaCodeApi(retrofit: Retrofit): AreaCodeApi = retrofit.create(AreaCodeApi::class.java)
 
     @Provides
@@ -76,8 +81,11 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideAreaCodeRepository(areaCodeApi: AreaCodeApi): AreaCodeRepository {
-        return AreaCodeRepositoryImpl(areaCodeApi)
+    fun provideAreaCodeRepository(
+        areaCodeApi: AreaCodeApi,
+        areaCodeDao: AreaCodeDao
+    ): AreaCodeRepository {
+        return AreaCodeRepositoryImpl(areaCodeApi, areaCodeDao)
     }
 
     @Provides
