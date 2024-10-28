@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -30,11 +31,12 @@ fun FestivalFilterDialog(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .sizeIn(maxHeight = 300.dp)
+            .sizeIn(maxHeight = 480.dp)
             .background(
                 color = Color.White,
                 shape = RoundedCornerShape(8.dp),
             )
+            .padding(horizontal = 16.dp)
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
@@ -58,7 +60,8 @@ fun FestivalFilterDialog(
                     )
                 ) {
                     Text(
-                        text = areaCodes[index]
+                        text = areaCodes[index],
+                        color = Color.Black
                     )
                 }
             }

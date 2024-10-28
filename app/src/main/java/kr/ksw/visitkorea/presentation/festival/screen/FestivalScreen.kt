@@ -22,24 +22,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.emptyFlow
+import kr.ksw.visitkorea.R
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
-import kr.ksw.visitkorea.domain.model.Festival
+import kr.ksw.visitkorea.presentation.common.AREA_CODE_GANGWON
+import kr.ksw.visitkorea.presentation.common.AREA_CODE_JEOLLABUKDO
+import kr.ksw.visitkorea.presentation.common.AREA_CODE_SEJONG
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.festival.component.FestivalCard
@@ -168,7 +167,14 @@ fun FestivalScreen(
             }
         ) {
             FestivalFilterDialog(
-                areaCodes = emptyList(),
+                areaCodes = festivalState.areaCodes.map {
+                    when(it.code) {
+                        AREA_CODE_SEJONG -> stringResource(R.string.filter_dialog_sejong)
+                        AREA_CODE_GANGWON -> stringResource(R.string.filter_dialog_gangwon)
+                        AREA_CODE_JEOLLABUKDO -> stringResource(R.string.filter_dialog_jeollabuk)
+                        else -> it.name
+                    }
+                },
                 sigunguCodes = emptyList()
             ) {
                 onItemClick(FestivalActions.DismissDialog)

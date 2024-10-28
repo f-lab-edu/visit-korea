@@ -20,6 +20,7 @@ import kr.ksw.visitkorea.domain.usecase.favorite.DeleteFavoriteEntityByContentId
 import kr.ksw.visitkorea.domain.usecase.favorite.ExistFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.favorite.GetAllFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.favorite.UpsertFavoriteEntityUseCase
+import kr.ksw.visitkorea.domain.usecase.festival.GetAreaCodeUseCase
 import kr.ksw.visitkorea.domain.usecase.festival.GetFestivalListUseCase
 import kr.ksw.visitkorea.domain.usecase.mapper.toFestival
 import kr.ksw.visitkorea.presentation.common.DetailParcel
@@ -32,6 +33,7 @@ class FestivalViewModel @Inject constructor(
     private val upsertFavoriteEntityUseCase: UpsertFavoriteEntityUseCase,
     private val deleteFavoriteEntityByContentIdUseCase: DeleteFavoriteEntityByContentIdUseCase,
     private val getAllFavoriteEntityUseCase: GetAllFavoriteEntityUseCase,
+    private val getAreaCodeUseCase: GetAreaCodeUseCase
 ) : ViewModel() {
     private val _festivalState = MutableStateFlow(FestivalState())
     val festivalState: StateFlow<FestivalState>
@@ -45,6 +47,7 @@ class FestivalViewModel @Inject constructor(
 
     init {
         getFestivalList()
+        getAllAreaCodes()
         viewModelScope.launch {
             getAllFavoriteEntityUseCase().collect { entities ->
                 favoriteIdFlow.update {
@@ -111,6 +114,16 @@ class FestivalViewModel @Inject constructor(
                         }
                     )
                 }
+            }
+        }
+    }
+
+    private fun getAllAreaCodes() {
+        viewModelScope.launch {
+            _festivalState.update {
+                it.copy(
+                    areaCodes = getAreaCodeUseCase()
+                )
             }
         }
     }
