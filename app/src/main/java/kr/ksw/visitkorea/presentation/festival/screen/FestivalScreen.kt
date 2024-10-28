@@ -167,7 +167,12 @@ fun FestivalScreen(
                 onItemClick(FestivalActions.DismissDialog)
             }
         ) {
-            
+            FestivalFilterDialog(
+                areaCodes = emptyList(),
+                sigunguCodes = emptyList()
+            ) {
+                onItemClick(FestivalActions.DismissDialog)
+            }
         }
     }
 }
