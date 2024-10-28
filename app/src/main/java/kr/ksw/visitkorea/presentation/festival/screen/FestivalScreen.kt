@@ -1,6 +1,7 @@
 package kr.ksw.visitkorea.presentation.festival.screen
 
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,9 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.emptyFlow
 import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.model.Festival
@@ -104,7 +107,10 @@ fun FestivalScreen(
                 Icon(
                     Icons.Outlined.LocationOn,
                     modifier = Modifier
-                        .size(32.dp),
+                        .size(32.dp)
+                        .clickable {
+                            onItemClick(FestivalActions.ClickFilterIcon)
+                        },
                     contentDescription = "Location Filter Icon"
                 )
             }
@@ -155,6 +161,10 @@ fun FestivalScreen(
 @Preview(showBackground = true)
 fun FestivalPreview() {
     VisitKoreaTheme {
-        FestivalScreen()
+        FestivalScreen(
+            festivals = emptyFlow<PagingData<Festival>>().collectAsLazyPagingItems()
+        ) {
+
+        }
     }
 }

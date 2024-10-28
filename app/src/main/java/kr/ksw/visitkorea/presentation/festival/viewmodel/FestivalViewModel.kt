@@ -68,6 +68,13 @@ class FestivalViewModel @Inject constructor(
                     upsertFavorite(action.entity)
                 }
             }
+            is FestivalActions.ClickFilterIcon -> {
+                _festivalState.update {
+                    it.copy(
+                        showFilterDialog = true
+                    )
+                }
+            }
         }
     }
 

@@ -11,4 +11,5 @@ sealed interface FestivalActions {
         val entity: FavoriteEntity,
         val isFavorite: Boolean = false,
     ) : FestivalActions
+    data object ClickFilterIcon : FestivalActions
 }
