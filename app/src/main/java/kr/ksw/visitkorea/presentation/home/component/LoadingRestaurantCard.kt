@@ -38,11 +38,10 @@ fun LoadingRestaurantCard() {
                 .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
+            ShimmerBox(
                 modifier = Modifier
                     .size(88.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .shimmerEffect(true)
             )
             Column(
                 modifier = Modifier
@@ -53,36 +52,32 @@ fun LoadingRestaurantCard() {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(
+                    ShimmerBox(
                         modifier = Modifier
                             .fillMaxWidth(fraction = 0.4f)
                             .height(20.dp)
                             .clip(RoundedCornerShape(4.dp))
-                            .shimmerEffect(true)
                     )
-                    Box(
+                    ShimmerBox(
                         modifier = Modifier
                             .fillMaxWidth(fraction = 0.3f)
                             .height(16.dp)
                             .clip(RoundedCornerShape(6.dp))
-                            .shimmerEffect(true)
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                Box(
+                ShimmerBox(
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.6f)
                         .height(16.dp)
                         .clip(RoundedCornerShape(4.dp))
-                        .shimmerEffect(true)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                Box(
+                ShimmerBox(
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.5f)
                         .height(14.dp)
                         .clip(RoundedCornerShape(4.dp))
-                        .shimmerEffect(true)
                 )
             }
         }

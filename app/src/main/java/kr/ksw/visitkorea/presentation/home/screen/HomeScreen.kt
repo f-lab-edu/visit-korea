@@ -25,6 +25,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -59,6 +61,7 @@ import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.home.component.LoadingRestaurantCard
 import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
+import kr.ksw.visitkorea.presentation.home.component.ShimmerBox
 import kr.ksw.visitkorea.presentation.home.component.TouristSpotCard
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeActions
 import kr.ksw.visitkorea.presentation.home.viewmodel.HomeState
@@ -275,26 +278,50 @@ fun HomeScreen(
                     contentPadding = PaddingValues(horizontal = 16.dp)
                 ) {
                     items(
-                        count = homeState.touristSpotList.size,
-                        key = { it }
+                        count = if(homeState.touristSpotComplete) {
+                            homeState.touristSpotList.size
+                        } else {
+                            10
+                        },
+                        key = { index ->
+                            if(homeState.touristSpotComplete) {
+                                homeState.touristSpotList[index].firstImage
+                            } else {
+                                index
+                            }
+                        }
                     ) { index ->
-                        val touristSpot = homeState.touristSpotList[index]
-                        TouristSpotCard(
-                            touristSpot.title,
-                            touristSpot.address,
-                            touristSpot.dist,
-                            touristSpot.firstImage
-                        ) {
-                            onItemClick(
-                                HomeActions.ClickCardItem(DetailParcel(
-                                    title = touristSpot.title,
-                                    firstImage = touristSpot.firstImage,
-                                    address = touristSpot.address,
-                                    dist = touristSpot.dist,
-                                    contentId = touristSpot.contentId,
-                                    contentTypeId = TYPE_TOURIST_SPOT
-                                ))
-                            )
+                        if(homeState.touristSpotComplete) {
+                            val touristSpot = homeState.touristSpotList[index]
+                            TouristSpotCard(
+                                touristSpot.title,
+                                touristSpot.address,
+                                touristSpot.dist,
+                                touristSpot.firstImage
+                            ) {
+                                onItemClick(
+                                    HomeActions.ClickCardItem(DetailParcel(
+                                        title = touristSpot.title,
+                                        firstImage = touristSpot.firstImage,
+                                        address = touristSpot.address,
+                                        dist = touristSpot.dist,
+                                        contentId = touristSpot.contentId,
+                                        contentTypeId = TYPE_TOURIST_SPOT
+                                    ))
+                                )
+                            }
+                        } else {
+                            Card (
+                                modifier = Modifier
+                                    .width(200.dp)
+                                    .aspectRatio(0.75f),
+                                shape = RoundedCornerShape(24.dp),
+                                elevation = CardDefaults.elevatedCardElevation(
+                                    defaultElevation = 4.dp
+                                )
+                            ) {
+                                ShimmerBox(Modifier.fillMaxSize())
+                            }
                         }
                     }
                 }
