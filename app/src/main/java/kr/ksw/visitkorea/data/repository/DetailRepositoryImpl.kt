@@ -33,7 +33,8 @@ class DetailRepositoryImpl @Inject constructor(
         imageYN: String,
     ): Result<List<DetailImageDTO>> = runCatching {
         detailApi.getDetailImage(
-            contentId = contentId
+            contentId = contentId,
+            imageYN = imageYN
         ).toItems()
     }
 }

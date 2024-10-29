@@ -8,5 +8,5 @@ import kr.ksw.visitkorea.domain.usecase.model.Festival
 
 @Immutable
 data class FestivalState(
-    val festivalModelFlow: Flow<PagingData<Festival>> = emptyFlow()
+    val festivalModelFlow: Flow<PagingData<Festival>> = emptyFlow(),
 )

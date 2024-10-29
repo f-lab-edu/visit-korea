@@ -2,6 +2,7 @@ package kr.ksw.visitkorea.presentation.festival.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,9 +41,12 @@ import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
 fun FestivalCard(
-    festival: Festival
+    festival: Festival,
+    onItemClick: () -> Unit
 ) {
     Card(
+        modifier = Modifier
+            .clickable(onClick = onItemClick),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 6.dp
@@ -118,14 +122,13 @@ fun FestivalCard(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
+                .padding(vertical = 8.dp)
         ) {
             SingleLineText(
                 modifier = Modifier
                     .padding(
-                        top = 8.dp,
                         start = 10.dp,
                         end = 10.dp,
-                        bottom = 4.dp
                     ),
                 text = festival.title,
                 fontSize = 18.sp,
@@ -134,10 +137,8 @@ fun FestivalCard(
             Row(
                 modifier = Modifier
                     .padding(
-                        top = 8.dp,
                         start = 10.dp,
                         end = 10.dp,
-                        bottom = 10.dp
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -168,7 +169,7 @@ fun FestivalCardPreview() {
                 "1111",
                 "10.11",
                 "10.30"
-            ))
+            )) {}
         }
     }
 }

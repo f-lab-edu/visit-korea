@@ -1,6 +1,7 @@
 package kr.ksw.visitkorea.presentation.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,10 +39,12 @@ fun CultureCard(
     title: String,
     address: String,
     image: String,
+    onItemClick: () -> Unit
 ) {
     Card (
         modifier = modifier
-            .aspectRatio(0.7f),
+            .aspectRatio(0.7f)
+            .clickable(onClick = onItemClick),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 4.dp
@@ -105,7 +108,9 @@ fun CultureCardPreview() {
                 title = "문화시설",
                 address = "문화시설 주소",
                 image = "https://ksw"
-            )
+            ) {
+
+            }
         }
     }
 }

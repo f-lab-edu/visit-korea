@@ -6,5 +6,5 @@ data class Festival(
     val title: String = "",
     val contentId: String = "",
     val eventStartDate: String = "",
-    val eventEndDate: String = ""
+    val eventEndDate: String = "",
 )

@@ -1,13 +1,12 @@
 package kr.ksw.visitkorea.presentation.detail.screen
 
-import android.os.Build
-import android.text.Html
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,7 +48,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.text.HtmlCompat
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
@@ -58,6 +57,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.usecase.model.CommonDetail
+import kr.ksw.visitkorea.presentation.common.convertHtmlToString
 import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailState
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailViewModel
@@ -99,24 +99,36 @@ private fun DetailScreen(
                         .data(detailState.firstImage)
                         .size(Size.ORIGINAL)
                         .build(),
-                    colorFilter = if(detailState.firstImage.isNotEmpty())
+                    colorFilter = if(detailState.firstImage.isNotEmpty()) {
                         ColorFilter.tint(Color.LightGray, blendMode = BlendMode.Darken)
-                    else
-                        null,
+                    }
+                    else {
+                        null
+                    },
                     contentDescription = "Detail Image",
                     contentScale = ContentScale.Crop,
                 )
-                if(detailState.contentTypeId == TYPE_TOURIST_SPOT ||
-                    detailState.contentTypeId == TYPE_FESTIVAL) {
-                    Icon(
-                        Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Favorite Icon",
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(10.dp)
-                            .size(24.dp),
-                        tint = Color.Red
-                    )
+                when(detailState.contentTypeId) {
+                    TYPE_TOURIST_SPOT,
+                    TYPE_FESTIVAL -> {
+                        Icon(
+                            Icons.Outlined.FavoriteBorder,
+                            contentDescription = "Favorite Icon",
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(10.dp)
+                                .size(24.dp),
+                            tint = Color.Red
+                        )
+                        if(detailState.contentTypeId == TYPE_FESTIVAL &&
+                            detailState.eventStartDate != null &&
+                            detailState.eventEndDate != null) {
+                            FestivalDateView(
+                                detailState.eventStartDate,
+                                detailState.eventEndDate
+                            )
+                        }
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -136,6 +148,58 @@ private fun DetailScreen(
             ImageViews(detailState.images)
             Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+}
+
+@Composable
+private fun FestivalDateView(
+    eventStartDate: String,
+    eventEndDate: String
+) {
+    Column(
+        modifier = Modifier
+            .width(IntrinsicSize.Min)
+            .border(
+                2.dp,
+                Color.DarkGray,
+                RoundedCornerShape(
+                    bottomEnd = 24.dp
+                )
+            )
+            .background(
+                Color.Black.copy(alpha = 0.5f),
+                RoundedCornerShape(
+                    bottomEnd = 24.dp
+                )
+            )
+            .padding(
+                vertical = 28.dp,
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 16.dp),
+            text = eventStartDate,
+            fontWeight = FontWeight.Medium,
+            fontSize = 24.sp,
+            color = Color.White,
+            letterSpacing = (-0.6).sp
+        )
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 28.dp),
+            thickness = 2.dp,
+            color = Color.White
+        )
+        Text(
+            text = eventEndDate,
+            fontWeight = FontWeight.Medium,
+            fontSize = 24.sp,
+            color = Color.White,
+            letterSpacing = (-0.6).sp
+        )
     }
 }
 
@@ -229,7 +293,7 @@ private fun OverView(
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = overView,
+            text = overView.convertHtmlToString(),
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             onTextLayout = { result ->
@@ -317,7 +381,6 @@ private fun DetailIntroContent(
     title: String,
     content: String
 ) {
-    val htmlContent = Html.fromHtml(content, Html.FROM_HTML_MODE_LEGACY)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -328,7 +391,9 @@ private fun DetailIntroContent(
             fontSize = 14.sp
         )
         Text(
-            text = htmlContent.toString().ifEmpty { "문의" },
+            text = content
+                .convertHtmlToString()
+                .ifEmpty { "문의" },
             fontSize = 14.sp
         )
     }
@@ -359,7 +424,7 @@ private fun ImageViews(
             val image = images[index].smallImageUrl
             AsyncImage(
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(120.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(color = Color.LightGray),
                 model = ImageRequest
@@ -391,7 +456,10 @@ fun DetailScreenPreview() {
                     parking = "가능",
                     time = "상시개방",
                     restDate = "연중무휴"
-                )
+                ),
+                eventStartDate = "03.23",
+                eventEndDate = "12.15",
+                contentTypeId = TYPE_FESTIVAL
             )
         )
     }

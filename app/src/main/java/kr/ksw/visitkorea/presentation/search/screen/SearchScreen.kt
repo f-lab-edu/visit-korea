@@ -139,7 +139,9 @@ fun SearchScreen(
                                 title = title,
                                 address = address,
                                 image = firstImage
-                            )
+                            ) {
+
+                            }
                         }
                     }
                 }
