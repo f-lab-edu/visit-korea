@@ -47,9 +47,6 @@ fun CommonCard(
     onIconClick: () -> Unit = {},
     onItemClick: () -> Unit
 ) {
-    var isLoading by remember {
-        mutableStateOf(true)
-    }
     Card (
         modifier = modifier
             .aspectRatio(0.7f)
