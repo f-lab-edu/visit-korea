@@ -65,7 +65,6 @@ fun DetailImageViewPager(
                     .padding(horizontal = 8.dp)
                     .background(
                         color = Color.Black,
-                        shape = RoundedCornerShape(8.dp)
                     ),
                 data = images[page],
                 contentDescription = "Detail Image",

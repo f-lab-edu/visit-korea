@@ -56,6 +56,7 @@ import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.component.shimmerEffect
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
+import kr.ksw.visitkorea.presentation.home.component.LoadingRestaurantCard
 import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
 import kr.ksw.visitkorea.presentation.home.component.TouristSpotCard
@@ -435,28 +436,42 @@ fun HomeScreen(
                     contentPadding = PaddingValues(horizontal = 16.dp)
                 ) {
                     items(
-                        count = homeState.restaurantList.size,
-                        key = { it }
+                        count = if(homeState.restaurantComplete) {
+                            homeState.restaurantList.size
+                        } else {
+                            10
+                        },
+                        key = { index ->
+                             if(homeState.restaurantComplete) {
+                                 homeState.restaurantList[index].firstImage
+                             } else {
+                                 index
+                             }
+                        }
                     ) { index ->
-                        val restaurant = homeState.restaurantList[index]
-                        RestaurantCard(
-                            restaurant.title,
-                            restaurant.address,
-                            restaurant.dist,
-                            restaurant.category,
-                            restaurant.firstImage2,
-                            Modifier.width(300.dp)
-                        ) {
-                            onItemClick(HomeActions.ClickCardItem(
-                                DetailParcel(
-                                    title = restaurant.title,
-                                    firstImage = restaurant.firstImage,
-                                    address = restaurant.address,
-                                    dist = restaurant.dist,
-                                    contentId = restaurant.contentId,
-                                    contentTypeId = TYPE_RESTAURANT
-                                )
-                            ))
+                        if(homeState.restaurantComplete) {
+                            val restaurant = homeState.restaurantList[index]
+                            RestaurantCard(
+                                restaurant.title,
+                                restaurant.address,
+                                restaurant.dist,
+                                restaurant.category,
+                                restaurant.firstImage2,
+                                Modifier.width(300.dp)
+                            ) {
+                                onItemClick(HomeActions.ClickCardItem(
+                                    DetailParcel(
+                                        title = restaurant.title,
+                                        firstImage = restaurant.firstImage,
+                                        address = restaurant.address,
+                                        dist = restaurant.dist,
+                                        contentId = restaurant.contentId,
+                                        contentTypeId = TYPE_RESTAURANT
+                                    )
+                                ))
+                            }
+                        } else {
+                            LoadingRestaurantCard()
                         }
                     }
                 }
