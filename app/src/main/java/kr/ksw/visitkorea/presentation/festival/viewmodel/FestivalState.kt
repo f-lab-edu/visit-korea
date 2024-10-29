@@ -12,4 +12,5 @@ data class FestivalState(
     val showFilterDialog: Boolean = false,
     val areaCodes: List<AreaCodeEntity> = emptyList(),
     val festivalModelFlow: Flow<PagingData<Festival>> = emptyFlow(),
+    val selectedAreaCode: Int = -1,
 )

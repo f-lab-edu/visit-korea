@@ -19,7 +19,9 @@ class GetFestivalListUseCaseImpl @Inject constructor(
         return searchFestivalRepository.searchFestival(
             forceFetch = forceFetch,
             eventStartDate = eventStartDate,
-            eventEndDate = eventEndDate
+            eventEndDate = eventEndDate,
+            areaCode = areaCode,
+            sigunguCode = sigunguCode
         )
     }
 }

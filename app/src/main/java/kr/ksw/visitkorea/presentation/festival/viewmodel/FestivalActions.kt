@@ -12,5 +12,8 @@ sealed interface FestivalActions {
         val isFavorite: Boolean = false,
     ) : FestivalActions
     data object ClickFilterIcon : FestivalActions
+    data class ClickFilterItem(
+        val index: Int
+    ) : FestivalActions
     data object DismissDialog : FestivalActions
 }

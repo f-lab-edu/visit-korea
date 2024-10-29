@@ -77,21 +77,38 @@ class FestivalViewModel @Inject constructor(
             is FestivalActions.DismissDialog -> {
                 dialogToggle(false)
             }
+            is FestivalActions.ClickFilterItem -> {
+                dialogToggle(false)
+                getFestivalList(
+                    forceFetch = true,
+                    areaCodeIndex = action.index
+                )
+            }
         }
     }
 
-    private fun getFestivalList(forceFetch: Boolean = false) {
+    private fun getFestivalList(
+        forceFetch: Boolean = false,
+        areaCodeIndex: Int = -1
+    ) {
         val currentDate = getCurrentDateString()
+        val areaCode = if(areaCodeIndex == -1 ||
+            _festivalState.value.areaCodes.isEmpty()) {
+            null
+        } else {
+            _festivalState.value.areaCodes[areaCodeIndex].code
+        }
+
         viewModelScope.launch {
-            val hotelListFlow = getFestivalListUseCase(
+            val festivalListFlow = getFestivalListUseCase(
                 forceFetch,
                 currentDate,
                 currentDate,
-                null,
+                areaCode,
                 null
             ).getOrNull()
-            if(hotelListFlow != null) {
-                val festivalModelFlow = hotelListFlow.map { pagingData ->
+            if(festivalListFlow != null) {
+                val festivalModelFlow = festivalListFlow.map { pagingData ->
                     pagingData.map { data ->
                         data.toFestival()
                     }
