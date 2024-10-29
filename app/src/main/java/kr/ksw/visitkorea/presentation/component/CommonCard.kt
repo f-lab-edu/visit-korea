@@ -21,18 +21,26 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.BrushPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import kr.ksw.visitkorea.R
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.common.TYPE_LEiSURE
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
@@ -49,6 +57,9 @@ fun CommonCard(
     onIconClick: () -> Unit = {},
     onItemClick: () -> Unit
 ) {
+    var isLoading by remember {
+        mutableStateOf(true)
+    }
     Card (
         modifier = modifier
             .aspectRatio(0.7f)
@@ -60,18 +71,12 @@ fun CommonCard(
     ) {
         Column {
             Box {
-                AsyncImage(
+                ShimmerAsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .background(color = Color.LightGray),
-                    model = ImageRequest
-                        .Builder(LocalContext.current)
-                        .data(image)
-                        .size(Size.ORIGINAL)
-                        .build(),
-                    contentDescription = "Culture Spot Image",
-                    contentScale = ContentScale.Crop,
+                        .aspectRatio(1f),
+                    data = image,
+                    contentDescription = "Culture Spot Image"
                 )
                 if(contentTypeId == TYPE_TOURIST_SPOT ||
                     contentTypeId == TYPE_FESTIVAL) {

@@ -58,7 +58,9 @@ import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.component.CommonCard
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.component.SingleLineText
+import kr.ksw.visitkorea.presentation.component.shimmerEffect
 import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
 import kr.ksw.visitkorea.presentation.home.component.TouristSpotCard
@@ -129,7 +131,7 @@ fun HomeScreen(
                                 bottomEnd = 32.dp
                             )
                         )
-                        .background(color = Color.LightGray),  // change to shimmer effect
+                        .shimmerEffect(true)
                 )
             } else {
                 val pagerState = rememberPagerState(
@@ -151,8 +153,7 @@ fun HomeScreen(
                 ) {
                     HorizontalPager(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = Color.LightGray),
+                            .fillMaxSize(),
                         state = pagerState,
                         key = { index ->
                             val i = index % homeState.mainPagerItems.size
@@ -177,21 +178,17 @@ fun HomeScreen(
                                 },
                             contentAlignment = Alignment.BottomStart
                         ) {
-                            AsyncImage(
+                            ShimmerAsyncImage(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .aspectRatio(1.0f),
-                                model = ImageRequest
-                                    .Builder(LocalContext.current)
-                                    .data(pageData.image)
-                                    .size(Size.ORIGINAL)
-                                    .build(),
-                                colorFilter = if(pageData.image.isNotEmpty())
+                                data = pageData.image,
+                                colorFilter = if(pageData.image.isNotEmpty()) {
                                     ColorFilter.tint(Color.LightGray, blendMode = BlendMode.Darken)
-                                else
-                                    null,
+                                } else {
+                                    null
+                                },
                                 contentDescription = "Main Contents",
-                                contentScale = ContentScale.Crop,
                             )
                             Column(
                                 modifier = Modifier
