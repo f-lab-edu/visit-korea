@@ -38,6 +38,7 @@ import coil.size.Size
 import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
 import kr.ksw.visitkorea.domain.model.Festival
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.festival.viewmodel.FestivalActions
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
@@ -60,22 +61,16 @@ fun FestivalCard(
             modifier = Modifier
                 .background(Color.White)
         ) {
-            AsyncImage(
+            ShimmerAsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(2f)
                     .clip(RoundedCornerShape(
                         topStart = 24.dp,
                         topEnd = 24.dp
-                    ))
-                    .background(color = Color.LightGray),
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(festival.firstImage)
-                    .size(Size.ORIGINAL)
-                    .build(),
+                    )),
+                data = festival.firstImage,
                 contentDescription = "Event Image",
-                contentScale = ContentScale.Crop,
             )
             Column(
                 modifier = Modifier

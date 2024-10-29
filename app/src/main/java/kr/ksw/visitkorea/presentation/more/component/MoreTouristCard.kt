@@ -40,6 +40,7 @@ import coil.size.Size
 import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.model.MoreCardModel
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.more.viewmodel.MoreActions
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
@@ -58,17 +59,11 @@ fun MoreTouristCard(
         elevation = CardDefaults.elevatedCardElevation(6.dp)
     ) {
         Box {
-            AsyncImage(
+            ShimmerAsyncImage(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = Color.LightGray),
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(model.firstImage)
-                    .size(Size.ORIGINAL)
-                    .build(),
-                contentDescription = "Tourist Card",
-                contentScale = ContentScale.Crop,
+                    .fillMaxSize(),
+                data = model.firstImage,
+                contentDescription = "Tourist Card"
             )
             Icon(
                 if(model.isFavorite)
