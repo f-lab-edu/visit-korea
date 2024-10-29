@@ -17,15 +17,16 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.ksw.visitkorea.R
 import kr.ksw.visitkorea.presentation.festival.viewmodel.FestivalActions
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
 fun FestivalFilterDialog(
     areaCodes: List<String>,
-    sigunguCodes: List<String>,
     onAction: (FestivalActions) -> Unit,
 ) {
     Column(
@@ -45,14 +46,14 @@ fun FestivalFilterDialog(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(
-                count = areaCodes.size,
-                key = { index ->
-                    areaCodes[index]
-                }
+                count = areaCodes.size + 1,
+                key = { it }
             ) { index ->
                 TextButton(
                     onClick = {
-
+                        onAction(FestivalActions.ClickFilterItem(
+                            index = index - 1
+                        ))
                     },
                     border = BorderStroke(
                         1.dp,
@@ -60,7 +61,11 @@ fun FestivalFilterDialog(
                     )
                 ) {
                     Text(
-                        text = areaCodes[index],
+                        text = if(index == 0) {
+                            stringResource(R.string.filter_dialog_all)
+                        } else {
+                            areaCodes[index - 1]
+                        },
                         color = Color.Black
                     )
                 }
@@ -78,7 +83,6 @@ fun FestivalFilterDialogPreview() {
                 areaCodes = listOf(
                     "서울특별시", "인천광역시", "경기도"
                 ),
-                sigunguCodes = emptyList()
             ) {
 
             }

@@ -175,10 +175,8 @@ fun FestivalScreen(
                         else -> it.name
                     }
                 },
-                sigunguCodes = emptyList()
-            ) {
-                onItemClick(FestivalActions.DismissDialog)
-            }
+                onAction = onItemClick
+            )
         }
     }
 }

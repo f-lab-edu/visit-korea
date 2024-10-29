@@ -20,4 +20,6 @@
     <string name="filter_dialog_sejong">세종시</string>
     <string name="filter_dialog_gangwon">강원도</string>
     <string name="filter_dialog_jeollabuk">전라북도</string>
+
+    <string name="filter_dialog_all">전체</string>
 </resources>
