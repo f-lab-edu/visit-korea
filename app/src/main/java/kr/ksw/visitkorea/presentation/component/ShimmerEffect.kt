@@ -20,44 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 
-@Composable
-fun shimmerEffect(isLoading: Boolean): Brush {
-    val shimmerColor = listOf(
-        Color.LightGray.copy(alpha = 0.8f),
-        Color.LightGray.copy(alpha = 0.4f),
-        Color.LightGray.copy(alpha = 0.8f)
-    )
-    val transition = rememberInfiniteTransition(label = "Shimmer Transition")
-    val translateAnimation = transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1200f,
-        animationSpec = infiniteRepeatable(
-            repeatMode = RepeatMode.Reverse,
-            animation = tween(
-                durationMillis = 800,
-                easing = FastOutSlowInEasing
-            )
-        ),
-        label = "Shimmer Animation"
-    )
-    return if(isLoading) {
-        Brush.linearGradient(
-            colors = shimmerColor,
-            start = Offset.Zero,
-            end = Offset(
-                x = translateAnimation.value,
-                y = translateAnimation.value
-            )
-        )
-    } else {
-        Brush.linearGradient(
-            colors = listOf(Color.Transparent, Color.Transparent),
-            start = Offset.Zero,
-            end = Offset.Zero
-        )
-    }
-}
-
 fun Modifier.shimmerEffect(isLoading: Boolean) = composed {
     var size by remember {
         mutableStateOf(IntSize.Zero)

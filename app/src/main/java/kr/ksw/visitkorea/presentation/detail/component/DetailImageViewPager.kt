@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
@@ -56,19 +57,13 @@ fun DetailImageViewPager(
                 horizontal = 16.dp
             )
         ) { page ->
-            AsyncImage(
+            ShimmerAsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(0.75f)
-                    .padding(horizontal = 8.dp)
-                    .background(color = Color.LightGray),
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(images[page])
-                    .size(Size.ORIGINAL)
-                    .build(),
-                contentDescription = "Culture Spot Image",
-                contentScale = ContentScale.Crop,
+                    .padding(horizontal = 8.dp),
+                data = images[page],
+                contentDescription = "Detail Image",
             )
         }
         Column(

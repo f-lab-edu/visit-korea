@@ -24,6 +24,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import kr.ksw.visitkorea.data.remote.dto.DetailImageDTO
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailActions
 
 @Composable
@@ -50,21 +51,15 @@ fun DetailImageRow(
             }
         ) { index ->
             val image = images[index].smallImageUrl
-            AsyncImage(
+            ShimmerAsyncImage(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(color = Color.LightGray)
                     .clickable {
                         onImageClick(index)
                     },
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(image)
-                    .size(Size.ORIGINAL)
-                    .build(),
-                contentDescription = "Culture Spot Image",
-                contentScale = ContentScale.Crop,
+                data = image,
+                contentDescription = "Detail Thumbnail",
             )
         }
     }

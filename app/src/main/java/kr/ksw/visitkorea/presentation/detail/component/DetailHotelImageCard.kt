@@ -38,6 +38,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import kr.ksw.visitkorea.R
 import kr.ksw.visitkorea.domain.model.HotelRoomDetail
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -73,21 +74,15 @@ fun DetailHotelImageCard(
                     },
                     state = pagerState
                 ) { page ->
-                    AsyncImage(
+                    ShimmerAsyncImage(
                         modifier = Modifier
                             .fillMaxWidth()
                             .aspectRatio(1.4f)
-                            .background(color = Color.LightGray)
                             .clickable {
                                 onImageClick(page)
                             },
-                        model = ImageRequest
-                            .Builder(LocalContext.current)
-                            .data(hotelRoomDetail.roomImages[page])
-                            .size(Size.ORIGINAL)
-                            .build(),
-                        contentDescription = "Culture Spot Image",
-                        contentScale = ContentScale.Crop,
+                        data = hotelRoomDetail.roomImages[page],
+                        contentDescription = "Hotel Room Image",
                     )
                 }
                 Text(
