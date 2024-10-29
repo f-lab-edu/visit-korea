@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,7 +62,11 @@ fun DetailImageViewPager(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(0.75f)
-                    .padding(horizontal = 8.dp),
+                    .padding(horizontal = 8.dp)
+                    .background(
+                        color = Color.Black,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
                 data = images[page],
                 contentDescription = "Detail Image",
             )

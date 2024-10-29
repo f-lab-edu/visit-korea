@@ -193,7 +193,9 @@ private fun DetailScreen(
                 detailState.address,
                 detailState.dist,
             ) {
-                onClick(DetailActions.ClickViewMapButton)
+                if(!detailState.viewPagerOpen) {
+                    onClick(DetailActions.ClickViewMapButton)
+                }
             }
             Spacer(modifier = Modifier.height(16.dp))
             OverView(detailState.detailCommon.overview)
