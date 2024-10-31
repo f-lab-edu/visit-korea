@@ -72,8 +72,8 @@ class HomeViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             val items = getTouristSpotForHomeUseCase(
-                lng,
-                lat
+                mapX = lng,
+                mapY = lat
             ).getOrNull()
             if(items != null) {
                 _homeState.update {
@@ -92,8 +92,8 @@ class HomeViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             val items = getCultureCenterForHomeUseCase(
-                lng,
-                lat
+                mapX = lng,
+                mapY = lat
             ).getOrNull()
             if(items != null) {
                 _homeState.update {
@@ -111,8 +111,8 @@ class HomeViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             val items = getRestaurantForHomeUseCase(
-                lng,
-                lat
+                mapX = lng,
+                mapY = lat
             ).getOrNull()
             if(items != null) {
                 _homeState.update {
@@ -130,8 +130,8 @@ class HomeViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             val items = getLeisureSportsForHomeUseCase(
-                lng,
-                lat
+                mapX = lng,
+                mapY = lat
             ).getOrNull()
             if(items != null) {
                 _homeState.update {
