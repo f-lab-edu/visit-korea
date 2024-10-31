@@ -58,6 +58,7 @@ import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.component.shimmerEffect
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
+import kr.ksw.visitkorea.presentation.home.component.LoadingCommonCard
 import kr.ksw.visitkorea.presentation.home.component.LoadingRestaurantCard
 import kr.ksw.visitkorea.presentation.home.component.MoreButton
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
@@ -145,8 +146,8 @@ fun HomeScreen(
                         .aspectRatio(1.0f)
                         .clip(
                             RoundedCornerShape(
-                                bottomStart = 32.dp,
-                                bottomEnd = 32.dp
+                                bottomStart = 16.dp,
+                                bottomEnd = 16.dp
                             )
                         )
                 ) {
@@ -355,27 +356,43 @@ fun HomeScreen(
                     contentPadding = PaddingValues(horizontal = 16.dp)
                 ) {
                     items(
-                        count = homeState.cultureCenterList.size,
-                        key = { it }
+                        count = if(homeState.cultureCenterComplete) {
+                            homeState.cultureCenterList.size
+                        } else {
+                            10
+                        },
+                        key = { index ->
+                            if(homeState.cultureCenterComplete) {
+                                homeState.cultureCenterList[index].firstImage
+                            } else {
+                                index
+                            }
+                        }
                     ) { index ->
-                        val cultureCenter = homeState.cultureCenterList[index]
-                        CommonCard(
-                            Modifier.fillParentMaxWidth(0.5f),
-                            title = cultureCenter.title,
-                            address = cultureCenter.address,
-                            image = cultureCenter.firstImage,
-                            contentTypeId = cultureCenter.contentTypeId
-                        ) {
-                            onItemClick(HomeActions.ClickCardItem(
-                                DetailParcel(
-                                    title = cultureCenter.title,
-                                    address = cultureCenter.address,
-                                    firstImage = cultureCenter.firstImage,
-                                    dist = cultureCenter.dist,
-                                    contentId = cultureCenter.contentId,
-                                    contentTypeId = TYPE_CULTURE
-                                )
-                            ))
+                        if(homeState.cultureCenterComplete) {
+                            val cultureCenter = homeState.cultureCenterList[index]
+                            CommonCard(
+                                Modifier.fillParentMaxWidth(0.5f),
+                                title = cultureCenter.title,
+                                address = cultureCenter.address,
+                                image = cultureCenter.firstImage,
+                                contentTypeId = cultureCenter.contentTypeId
+                            ) {
+                                onItemClick(HomeActions.ClickCardItem(
+                                    DetailParcel(
+                                        title = cultureCenter.title,
+                                        address = cultureCenter.address,
+                                        firstImage = cultureCenter.firstImage,
+                                        dist = cultureCenter.dist,
+                                        contentId = cultureCenter.contentId,
+                                        contentTypeId = TYPE_CULTURE
+                                    )
+                                ))
+                            }
+                        } else {
+                            LoadingCommonCard(
+                                modifier = Modifier.fillParentMaxWidth(0.5f)
+                            )
                         }
                     }
                 }
@@ -409,27 +426,43 @@ fun HomeScreen(
                     contentPadding = PaddingValues(horizontal = 16.dp)
                 ) {
                     items(
-                        count = homeState.leisureSportsList.size,
-                        key = { it }
+                        count = if(homeState.leisureSportsComplete) {
+                            homeState.leisureSportsList.size
+                        } else {
+                            10
+                        },
+                        key = { index ->
+                            if(homeState.leisureSportsComplete) {
+                                homeState.leisureSportsList[index].firstImage
+                            } else {
+                                index
+                            }
+                        }
                     ) { index ->
-                        val leisureSports = homeState.leisureSportsList[index]
-                        CommonCard(
-                            Modifier.fillParentMaxWidth(0.5f),
-                            title = leisureSports.title,
-                            address = leisureSports.address,
-                            image = leisureSports.firstImage,
-                            contentTypeId = leisureSports.contentTypeId
-                        ) {
-                            onItemClick(HomeActions.ClickCardItem(
-                                DetailParcel(
-                                    title = leisureSports.title,
-                                    address = leisureSports.address,
-                                    firstImage = leisureSports.firstImage,
-                                    dist = leisureSports.dist,
-                                    contentId = leisureSports.contentId,
-                                    contentTypeId = TYPE_LEiSURE
-                                )
-                            ))
+                        if(homeState.leisureSportsComplete) {
+                            val leisureSports = homeState.leisureSportsList[index]
+                            CommonCard(
+                                Modifier.fillParentMaxWidth(0.5f),
+                                title = leisureSports.title,
+                                address = leisureSports.address,
+                                image = leisureSports.firstImage,
+                                contentTypeId = leisureSports.contentTypeId
+                            ) {
+                                onItemClick(HomeActions.ClickCardItem(
+                                    DetailParcel(
+                                        title = leisureSports.title,
+                                        address = leisureSports.address,
+                                        firstImage = leisureSports.firstImage,
+                                        dist = leisureSports.dist,
+                                        contentId = leisureSports.contentId,
+                                        contentTypeId = TYPE_LEiSURE
+                                    )
+                                ))
+                            }
+                        } else {
+                            LoadingCommonCard(
+                                modifier = Modifier.fillParentMaxWidth(0.5f),
+                            )
                         }
                     }
                 }

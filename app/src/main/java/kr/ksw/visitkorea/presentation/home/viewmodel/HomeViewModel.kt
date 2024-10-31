@@ -7,6 +7,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -91,6 +92,7 @@ class HomeViewModel @Inject constructor(
                 lng,
                 lat
             ).getOrNull()?.getShuffledItem() ?: emptyList()
+            delay(500)
             _homeState.update {
                 it.copy(
                     touristSpotList = items,
@@ -110,29 +112,11 @@ class HomeViewModel @Inject constructor(
                 lng,
                 lat
             ).getOrNull()?.getShuffledItem() ?: emptyList()
+            delay(500)
             _homeState.update {
                 it.copy(
                     cultureCenterList = items,
                     cultureCenterComplete = true
-                )
-            }
-            setMainPagerData()
-        }
-    }
-
-    private fun getRestaurant(
-        lat: String,
-        lng: String,
-    ) {
-        viewModelScope.launch {
-            val items = getRestaurantForHomeUseCase(
-                lng,
-                lat
-            ).getOrNull()?.getShuffledItem() ?: emptyList()
-            _homeState.update {
-                it.copy(
-                    restaurantList = items,
-                    restaurantComplete = true
                 )
             }
             setMainPagerData()
@@ -148,10 +132,31 @@ class HomeViewModel @Inject constructor(
                 lng,
                 lat
             ).getOrNull()?.getShuffledItem() ?: emptyList()
+            delay(500)
             _homeState.update {
                 it.copy(
                     leisureSportsList = items,
                     leisureSportsComplete = true
+                )
+            }
+            setMainPagerData()
+        }
+    }
+
+    private fun getRestaurant(
+        lat: String,
+        lng: String,
+    ) {
+        viewModelScope.launch {
+            val items = getRestaurantForHomeUseCase(
+                lng,
+                lat
+            ).getOrNull()?.getShuffledItem() ?: emptyList()
+            delay(500)
+            _homeState.update {
+                it.copy(
+                    restaurantList = items,
+                    restaurantComplete = true
                 )
             }
             setMainPagerData()
