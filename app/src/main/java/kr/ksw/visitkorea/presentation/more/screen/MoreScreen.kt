@@ -2,6 +2,7 @@ package kr.ksw.visitkorea.presentation.more.screen
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -71,9 +74,9 @@ fun MoreScreen(
     val onRefresh = {
         viewModel.getMoreListByContentType(contentType.contentTypeId, true)
     }
-
     MoreScreen(
         state = state,
+        isLoading = moreState.isLoading,
         isRefreshing = moreState.isRefreshing,
         onRefresh = onRefresh,
         moreCardModels = moreCardModels,
@@ -87,6 +90,7 @@ fun MoreScreen(
 @Composable
 fun MoreScreen(
     state: PullToRefreshState,
+    isLoading: Boolean,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     moreCardModels: LazyPagingItems<MoreCardModel>,
@@ -103,24 +107,33 @@ fun MoreScreen(
                 title = stringResource(contentType.title),
                 onBackButtonClick = onBackButtonClick
             )
-            PullToRefreshBox(
-                modifier = Modifier
-                    .fillMaxSize(),
-                state = state,
-                isRefreshing = isRefreshing,
-                onRefresh = onRefresh,
-            ) {
-                if(contentType == ContentType.RESTAURANT) {
-                    RestaurantList(
-                        moreCardModels = moreCardModels,
-                        onItemClick = onItemClick
-                    )
-                } else {
-                    CommonTypeGrid(
-                        contentType = contentType,
-                        moreCardModels = moreCardModels,
-                        onItemClick = onItemClick
-                    )
+            if(isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                PullToRefreshBox(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    state = state,
+                    isRefreshing = isRefreshing,
+                    onRefresh = onRefresh,
+                ) {
+                    if(contentType == ContentType.RESTAURANT) {
+                        RestaurantList(
+                            moreCardModels = moreCardModels,
+                            onItemClick = onItemClick
+                        )
+                    } else {
+                        CommonTypeGrid(
+                            contentType = contentType,
+                            moreCardModels = moreCardModels,
+                            onItemClick = onItemClick
+                        )
+                    }
                 }
             }
         }

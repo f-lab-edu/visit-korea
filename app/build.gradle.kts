@@ -105,6 +105,9 @@ dependencies {
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
 
+    // location
+    implementation(libs.google.android.gms.location)
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
