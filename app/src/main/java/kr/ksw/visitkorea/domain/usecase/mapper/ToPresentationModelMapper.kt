@@ -27,7 +27,9 @@ fun LocationBasedDTO.toCommonCardModel(): CommonCardModel = CommonCardModel(
     address,
     firstImage.toImageUrl(),
     title,
-    contentId
+    dist,
+    contentId,
+    contentTypeId
 )
 
 fun SearchFestivalDTO.toFestival(): Festival = Festival(
