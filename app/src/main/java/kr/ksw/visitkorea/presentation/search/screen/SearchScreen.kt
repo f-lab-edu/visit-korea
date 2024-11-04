@@ -52,8 +52,8 @@ fun SearchScreen(
 ) {
     val searchState by viewModel.searchState.collectAsState()
     val context = LocalContext.current
-    LaunchedEffect(viewModel.searchUiEffect) {
-        viewModel.searchUiEffect.collectLatest { effect ->
+    LaunchedEffect(viewModel.uiEffect) {
+        viewModel.uiEffect.collectLatest { effect ->
             when(effect) {
                 is SearchUiEffect.StartDetailActivity -> {
                     context.startActivity(Intent(
