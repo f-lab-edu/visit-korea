@@ -1,18 +1,13 @@
 package kr.ksw.visitkorea.presentation.home.viewmodel
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,8 +15,7 @@ import kr.ksw.visitkorea.domain.usecase.home.GetCultureCenterForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetLeisureSportsForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetRestaurantForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetTouristSpotForHomeUseCase
-import kr.ksw.visitkorea.presentation.common.ContentType
-import kr.ksw.visitkorea.presentation.common.DetailParcel
+import kr.ksw.visitkorea.presentation.core.BaseViewModel
 import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
@@ -32,14 +26,10 @@ class HomeViewModel @Inject constructor(
     private val getLeisureSportsForHomeUseCase: GetLeisureSportsForHomeUseCase,
     private val getRestaurantForHomeUseCase: GetRestaurantForHomeUseCase,
     private val fusedLocationProviderClient: FusedLocationProviderClient
-): ViewModel() {
+): BaseViewModel<HomeUiEffect>() {
     private val _homeState = MutableStateFlow(HomeState())
     val homeState: StateFlow<HomeState>
         get() = _homeState.asStateFlow()
-
-    private val _homeUiEffect = MutableSharedFlow<HomeUiEffect>(replay = 0)
-    val homeUiEffect: SharedFlow<HomeUiEffect>
-        get() = _homeUiEffect.asSharedFlow()
 
     init {
         fusedLocationProviderClient.getCurrentLocation(
@@ -58,10 +48,14 @@ class HomeViewModel @Inject constructor(
     fun onAction(action: HomeActions) {
         when(action) {
             is HomeActions.ClickMoreButton -> {
-                startMoreActivity(action.contentType)
+                postUIEffect(
+                    HomeUiEffect.StartMoreActivity(action.contentType)
+                )
             }
             is HomeActions.ClickCardItem -> {
-                startDetailActivity(action.data)
+                postUIEffect(
+                    HomeUiEffect.StartDetailActivity(action.data)
+                )
             }
         }
     }
@@ -140,18 +134,6 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
-        }
-    }
-
-    private fun startMoreActivity(contentType: ContentType) {
-        viewModelScope.launch {
-            _homeUiEffect.emit(HomeUiEffect.StartMoreActivity(contentType))
-        }
-    }
-
-    private fun startDetailActivity(data: DetailParcel) {
-        viewModelScope.launch {
-            _homeUiEffect.emit(HomeUiEffect.StartDetailActivity(data))
         }
     }
 }

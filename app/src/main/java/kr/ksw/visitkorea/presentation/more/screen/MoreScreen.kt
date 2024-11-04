@@ -56,8 +56,8 @@ fun MoreScreen(
     val state = rememberPullToRefreshState()
     val context = LocalContext.current
 
-    LaunchedEffect(viewModel.moreUiEffect) {
-        viewModel.moreUiEffect.collectLatest { effect ->
+    LaunchedEffect(viewModel.uiEffect) {
+        viewModel.uiEffect.collectLatest { effect ->
             when(effect) {
                 is MoreUiEffect.StartDetailActivity -> {
                     context.startActivity(Intent(

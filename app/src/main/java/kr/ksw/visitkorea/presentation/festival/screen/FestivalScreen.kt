@@ -49,8 +49,8 @@ fun FestivalScreen(
     val context = LocalContext.current
     val hotelState by viewModel.festivalState.collectAsState()
     val lazyItem = hotelState.festivalModelFlow.collectAsLazyPagingItems()
-    LaunchedEffect(viewModel.festivalUiEffect) {
-        viewModel.festivalUiEffect.collectLatest { effect ->
+    LaunchedEffect(viewModel.uiEffect) {
+        viewModel.uiEffect.collectLatest { effect ->
             when(effect) {
                 is FestivalUiEffect.StartDetailActivity -> {
                     context.startActivity(

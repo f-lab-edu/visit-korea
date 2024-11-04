@@ -12,7 +12,7 @@ open class BaseViewModel<EFFECT> : ViewModel() {
     val uiEffect: SharedFlow<EFFECT>
         get() = _uiEffect.asSharedFlow()
 
-    protected fun startDetailActivity(effect: EFFECT) {
+    protected fun postUIEffect(effect: EFFECT) {
         viewModelScope.launch {
             _uiEffect.emit(effect)
         }

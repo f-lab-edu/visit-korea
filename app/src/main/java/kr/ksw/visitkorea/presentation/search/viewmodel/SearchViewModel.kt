@@ -40,7 +40,7 @@ class SearchViewModel @Inject constructor(
                 getListByKeyword()
             }
             is SearchActions.ClickCardItem -> {
-                startDetailActivity(SearchUiEffect.StartDetailActivity(action.data))
+                postUIEffect(SearchUiEffect.StartDetailActivity(action.data))
             }
         }
     }
