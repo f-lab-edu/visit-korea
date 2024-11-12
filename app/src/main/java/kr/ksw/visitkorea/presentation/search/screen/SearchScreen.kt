@@ -1,5 +1,6 @@
 package kr.ksw.visitkorea.presentation.search.screen
 
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,10 +23,12 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,9 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.presentation.common.DetailParcel
+import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.home.component.CultureCard
 import kr.ksw.visitkorea.presentation.search.viewmodel.SearchActions
 import kr.ksw.visitkorea.presentation.search.viewmodel.SearchState
+import kr.ksw.visitkorea.presentation.search.viewmodel.SearchUiEffect
 import kr.ksw.visitkorea.presentation.search.viewmodel.SearchViewModel
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
@@ -44,6 +51,22 @@ fun SearchScreen(
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val searchState by viewModel.searchState.collectAsState()
+    val context = LocalContext.current
+    LaunchedEffect(viewModel.uiEffect) {
+        viewModel.uiEffect.collectLatest { effect ->
+            when(effect) {
+                is SearchUiEffect.StartDetailActivity -> {
+                    context.startActivity(Intent(
+                        context,
+                        DetailActivity::class.java
+                    ).apply {
+                        putExtra("detail", effect.data)
+                    })
+                }
+            }
+        }
+    }
+
     SearchScreen(
         searchState,
         viewModel::onAction
@@ -133,14 +156,20 @@ fun SearchScreen(
                         val model = searchCardModels[index]
                         model?.run {
                             CultureCard(
-                                modifier = Modifier.clickable {
-                                    // Go to DetailActivity
-                                },
                                 title = title,
                                 address = address,
                                 image = firstImage
                             ) {
-
+                                onAction(SearchActions.ClickCardItem(
+                                    DetailParcel(
+                                        title = title,
+                                        firstImage = firstImage,
+                                        address = address,
+                                        dist = dist,
+                                        contentId = contentId,
+                                        contentTypeId = contentTypeId
+                                    )
+                                ))
                             }
                         }
                     }

@@ -1,7 +1,6 @@
 package kr.ksw.visitkorea.presentation.more.viewmodel
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -10,11 +9,8 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
@@ -22,9 +18,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.domain.usecase.mapper.toMoreCardModel
 import kr.ksw.visitkorea.domain.usecase.more.GetMoreListUseCase
-import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.common.latitudeToStringOrDefault
 import kr.ksw.visitkorea.presentation.common.longitudeToStringOrDefault
+import kr.ksw.visitkorea.presentation.core.BaseViewModel
 import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
@@ -32,19 +28,17 @@ import javax.inject.Inject
 class MoreViewModel @Inject constructor(
     private val getMoreListUseCase: GetMoreListUseCase,
     private val fusedLocationProviderClient: FusedLocationProviderClient,
-): ViewModel() {
+): BaseViewModel<MoreUiEffect>() {
     private val _moreState = MutableStateFlow(MoreState())
     val moreState: StateFlow<MoreState>
         get() = _moreState.asStateFlow()
 
-    private val _moreUiEffect = MutableSharedFlow<MoreUiEffect>(replay = 0)
-    val moreUiEffect: SharedFlow<MoreUiEffect>
-        get() = _moreUiEffect.asSharedFlow()
-
     fun onAction(action: MoreActions) {
         when(action) {
             is MoreActions.ClickCardItem -> {
-                startDetailActivity(action.data)
+                postUIEffect(
+                    MoreUiEffect.StartDetailActivity(action.data)
+                )
             }
         }
     }
@@ -97,12 +91,6 @@ class MoreViewModel @Inject constructor(
                     isRefreshing = false
                 )
             }
-        }
-    }
-
-    private fun startDetailActivity(data: DetailParcel) {
-        viewModelScope.launch {
-            _moreUiEffect.emit(MoreUiEffect.StartDetailActivity(data))
         }
     }
 }
