@@ -2,6 +2,7 @@ package kr.ksw.visitkorea.data.remote.api
 
 import kr.ksw.visitkorea.data.remote.dto.DetailCommonDTO
 import kr.ksw.visitkorea.data.remote.dto.DetailImageDTO
+import kr.ksw.visitkorea.data.remote.dto.DetailInfoDTO
 import kr.ksw.visitkorea.data.remote.dto.DetailIntroDTO
 import kr.ksw.visitkorea.data.remote.model.ApiResponse
 import retrofit2.http.GET
@@ -23,9 +24,9 @@ interface DetailApi {
 
     @GET("detailInfo1")
     suspend fun getDetailInfo(
-        @Query("contentId") contentId: Int,
-        @Query("contentTypeId") contentTypeId: Int
-    )
+        @Query("contentId") contentId: String,
+        @Query("contentTypeId") contentTypeId: String = "32"
+    ): ApiResponse<DetailInfoDTO>
 
     @GET("detailImage1")
     suspend fun getDetailImage(

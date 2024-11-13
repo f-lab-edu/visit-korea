@@ -4,6 +4,7 @@ import kr.ksw.visitkorea.data.mapper.toItems
 import kr.ksw.visitkorea.data.remote.api.DetailApi
 import kr.ksw.visitkorea.data.remote.dto.DetailCommonDTO
 import kr.ksw.visitkorea.data.remote.dto.DetailImageDTO
+import kr.ksw.visitkorea.data.remote.dto.DetailInfoDTO
 import kr.ksw.visitkorea.data.remote.dto.DetailIntroDTO
 import javax.inject.Inject
 
@@ -26,6 +27,14 @@ class DetailRepositoryImpl @Inject constructor(
             contentId = contentId,
             contentTypeId = contentTypeId
         ).toItems().first()
+    }
+
+    override suspend fun getDetailInfo(
+        contentId: String
+    ): Result<List<DetailInfoDTO>> = runCatching {
+        detailApi.getDetailInfo(
+            contentId
+        ).toItems()
     }
 
     override suspend fun getDetailImage(
