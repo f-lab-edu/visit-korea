@@ -14,5 +14,5 @@ data class HotelRoomDetail(
     val roomInternet: String,
     val roomRefrigerator: String,
     val roomHairdryer: String,
-    val roomImages: List<String> = emptyList()
+    val roomImages: List<String> = emptyList(),
 )

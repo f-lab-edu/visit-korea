@@ -4,5 +4,5 @@ data class HotelDetail(
     val checkInTime: String?,
     val checkOutTime: String?,
     val subFacility: String?,
-    val reservationUrl: String?
+    val reservationUrl: String?,
 )
