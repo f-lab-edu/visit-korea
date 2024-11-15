@@ -16,11 +16,11 @@ data class DetailInfoDTO (
     @SerializedName("roomoffseasonminfee1")
     val roomOffSeasonMinFee1: String, // 비수기주중최소
     @SerializedName("roomoffseasonminfee2")
-    val roomoffseasonminfee2: String, // 비수기주말최소
+    val roomOffSeasonMinFee2: String, // 비수기주말최소
     @SerializedName("roompeakseasonminfee1")
-    val roomPeakSeasonMinfee1: String, // 성수기주중최소
+    val roomPeakSeasonMinFee1: String, // 성수기주중최소
     @SerializedName("roompeakseasonminfee2")
-    val roomPeakSeasonMinfee2: String, // 성수기주말최소
+    val roomPeakSeasonMinFee2: String, // 성수기주말최소
     @SerializedName("roombathfacility")
     val roomBathFacility: String,
     @SerializedName("roomtv")
