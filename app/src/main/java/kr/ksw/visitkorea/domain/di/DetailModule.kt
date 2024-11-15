@@ -8,6 +8,8 @@ import kr.ksw.visitkorea.domain.usecase.detail.GetDetailCommonUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailCommonUseCaseImpl
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailImageUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailImageUseCaseUseCaseImpl
+import kr.ksw.visitkorea.domain.usecase.detail.GetDetailInfoUseCase
+import kr.ksw.visitkorea.domain.usecase.detail.GetDetailInfoUseCaseImpl
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailIntroUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetDetailIntroUseCaseImpl
 
@@ -28,4 +30,9 @@ abstract class DetailModule {
     abstract fun bindGetDetailImageUseCase(
         getDetailImageUseCase: GetDetailImageUseCaseUseCaseImpl
     ): GetDetailImageUseCase
+
+    @Binds
+    abstract fun bindGetDetailInfoUseCase(
+        getDetailInfoUseCase: GetDetailInfoUseCaseImpl
+    ): GetDetailInfoUseCase
 }
