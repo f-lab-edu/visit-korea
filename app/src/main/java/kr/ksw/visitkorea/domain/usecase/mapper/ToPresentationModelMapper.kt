@@ -115,9 +115,6 @@ fun DetailIntroDTO.toHotelDetail(): HotelDetail = HotelDetail(
 )
 
 fun DetailInfoDTO.toHotelRoomDetail(): HotelRoomDetail {
-    val images = listOf(roomImg1, roomImg2, roomImg3, roomImg4, roomImg5).filterNot {
-        it.isEmpty()
-    }
     return HotelRoomDetail(
         roomTitle = roomTitle,
         roomSize = roomSize,
@@ -132,6 +129,14 @@ fun DetailInfoDTO.toHotelRoomDetail(): HotelRoomDetail {
         roomInternet = roomInternet,
         roomRefrigerator = roomRefrigerator,
         roomHairdryer = roomHairdryer,
-        roomImages = images
+        roomImages = filterImages(
+            roomImg1,
+            roomImg2,
+            roomImg3,
+            roomImg4,
+            roomImg5
+        )
     )
 }
+
+fun filterImages(vararg images: String) = images.asList().filterNot { it.isEmpty() }
