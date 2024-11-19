@@ -111,7 +111,8 @@ fun DetailIntroDTO.toHotelDetail(): HotelDetail = HotelDetail(
     checkInTime = checkInTime,
     checkOutTime = checkOutTime,
     subFacility = subFacility,
-    reservationUrl = reservationUrl
+    reservationUrl = reservationUrl,
+    tel = infoCenterLodging
 )
 
 fun DetailInfoDTO.toHotelRoomDetail(): HotelRoomDetail {

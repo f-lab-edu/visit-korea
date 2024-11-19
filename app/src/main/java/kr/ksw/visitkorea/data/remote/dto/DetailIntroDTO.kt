@@ -44,6 +44,8 @@ data class DetailIntroDTO(
     @SerializedName("firstmenu")
     val firstMenu: String?,
     // Hotel
+    @SerializedName("infocenterlodging")
+    val infoCenterLodging: String?,
     @SerializedName("checkintime")
     val checkInTime: String?,
     @SerializedName("checkouttime")
