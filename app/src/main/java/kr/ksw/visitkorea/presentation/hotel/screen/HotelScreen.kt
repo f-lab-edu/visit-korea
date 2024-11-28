@@ -46,8 +46,8 @@ fun HotelScreen(
     val hotelState by viewModel.hotelState.collectAsState()
     val lazyItem = hotelState.hotelCardModelFlow.collectAsLazyPagingItems()
     val context = LocalContext.current
-    LaunchedEffect(viewModel.hotelUiEffect) {
-        viewModel.hotelUiEffect.collectLatest { effect ->
+    LaunchedEffect(viewModel.uiEffect) {
+        viewModel.uiEffect.collectLatest { effect ->
             when(effect) {
                 is HotelUiEffect.StartDetailActivity -> {
                     context.startActivity(Intent(
