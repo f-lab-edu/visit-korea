@@ -9,6 +9,8 @@ data class DetailHotelState (
     val firstImage: String = "",
     val address: String = "",
     val dist: String? = null,
+    val showFacilityInfo: Boolean = true,
+    val showRoomDetail: Boolean = false,
     val hotelDetail: HotelDetail = HotelDetail(),
     val hotelRoomDetail: List<HotelRoomDetail> = emptyList(),
     val images: List<DetailImageDTO> = emptyList(),
