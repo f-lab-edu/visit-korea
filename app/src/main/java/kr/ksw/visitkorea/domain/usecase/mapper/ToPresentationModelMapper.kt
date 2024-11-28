@@ -122,8 +122,10 @@ fun DetailInfoDTO.toHotelRoomDetail(): HotelRoomDetail {
         roomSize2 = roomSize2,
         roomBaseCount = roomBaseCount,
         roomMaxCount = roomMaxCount,
-        roomOffSeasonMinFee1 = roomOffSeasonMinFee1,
-        roomOffSeasonMinFee2 = roomOffSeasonMinFee2,
+        roomOffSeasonMinFee1 = if(roomOffSeasonMinFee1.isEmpty() || roomOffSeasonMinFee1 == "0")
+            roomPeakSeasonMinFee1 else roomOffSeasonMinFee1,
+        roomOffSeasonMinFee2 = if(roomOffSeasonMinFee2.isEmpty() || roomOffSeasonMinFee2 == "0")
+            roomPeakSeasonMinFee2 else roomOffSeasonMinFee2,
         roomBathFacility = roomBathFacility,
         roomTv = roomTv,
         roomPc = roomPc,
