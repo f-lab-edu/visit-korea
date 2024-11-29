@@ -1,43 +1,34 @@
 package kr.ksw.visitkorea.presentation.home.viewmodel
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.domain.usecase.home.GetCultureCenterForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetLeisureSportsForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetRestaurantForHomeUseCase
 import kr.ksw.visitkorea.domain.usecase.home.GetTouristSpotForHomeUseCase
 import kr.ksw.visitkorea.presentation.core.BaseViewModel
+import kr.ksw.visitkorea.presentation.core.getResult
+import kr.ksw.visitkorea.presentation.core.viewModelLauncher
 import javax.inject.Inject
 
-@SuppressLint("MissingPermission")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getTouristSpotForHomeUseCase: GetTouristSpotForHomeUseCase,
     private val getCultureCenterForHomeUseCase: GetCultureCenterForHomeUseCase,
     private val getLeisureSportsForHomeUseCase: GetLeisureSportsForHomeUseCase,
     private val getRestaurantForHomeUseCase: GetRestaurantForHomeUseCase,
-    private val fusedLocationProviderClient: FusedLocationProviderClient
-): BaseViewModel<HomeUiEffect>() {
+    fusedLocationProviderClient: FusedLocationProviderClient
+): BaseViewModel<HomeUiEffect>(fusedLocationProviderClient) {
     private val _homeState = MutableStateFlow(HomeState())
     val homeState: StateFlow<HomeState>
         get() = _homeState.asStateFlow()
 
     init {
-        fusedLocationProviderClient.getCurrentLocation(
-            Priority.PRIORITY_HIGH_ACCURACY,
-            CancellationTokenSource().token
-        ).addOnCompleteListener { task ->
-            val lat = task.result.latitude.run { if(this == 0.0) "37.5678958128" else this.toString() }
-            val lng = task.result.longitude.run { if(this == 0.0) "126.9817290217" else this.toString() }
+        getWithLocation { lat, lng ->
             getTouristSpot(lat, lng)
             getCultureCenter(lat, lng)
             getLeisureSports(lat, lng)
@@ -64,16 +55,15 @@ class HomeViewModel @Inject constructor(
         lat: String,
         lng: String,
     ) {
-        viewModelScope.launch {
-            val items = getTouristSpotForHomeUseCase(
+        viewModelLauncher {
+            getTouristSpotForHomeUseCase(
                 mapX = lng,
                 mapY = lat
-            ).getOrNull()
-            if(items != null) {
+            ).getResult { result ->
                 _homeState.update {
                     it.copy(
-                        mainImage = items[0].firstImage,
-                        touristSpotList = items
+                        mainImage = result[0].firstImage,
+                        touristSpotList = result
                     )
                 }
             }
@@ -84,15 +74,14 @@ class HomeViewModel @Inject constructor(
         lat: String,
         lng: String,
     ) {
-        viewModelScope.launch {
-            val items = getCultureCenterForHomeUseCase(
+        viewModelLauncher {
+            getCultureCenterForHomeUseCase(
                 mapX = lng,
                 mapY = lat
-            ).getOrNull()
-            if(items != null) {
+            ).getResult { result ->
                 _homeState.update {
                     it.copy(
-                        cultureCenterList = items
+                        cultureCenterList = result
                     )
                 }
             }
@@ -103,15 +92,14 @@ class HomeViewModel @Inject constructor(
         lat: String,
         lng: String,
     ) {
-        viewModelScope.launch {
-            val items = getRestaurantForHomeUseCase(
+        viewModelLauncher {
+            getRestaurantForHomeUseCase(
                 mapX = lng,
                 mapY = lat
-            ).getOrNull()
-            if(items != null) {
+            ).getResult { result ->
                 _homeState.update {
                     it.copy(
-                        restaurantList = items
+                        restaurantList = result
                     )
                 }
             }
@@ -122,15 +110,14 @@ class HomeViewModel @Inject constructor(
         lat: String,
         lng: String,
     ) {
-        viewModelScope.launch {
-            val items = getLeisureSportsForHomeUseCase(
+        viewModelLauncher {
+            getLeisureSportsForHomeUseCase(
                 mapX = lng,
                 mapY = lat
-            ).getOrNull()
-            if(items != null) {
+            ).getResult { result ->
                 _homeState.update {
                     it.copy(
-                        leisureSportsList = items
+                        leisureSportsList = result
                     )
                 }
             }
