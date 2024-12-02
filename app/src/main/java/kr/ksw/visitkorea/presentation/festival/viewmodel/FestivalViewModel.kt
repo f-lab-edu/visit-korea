@@ -9,10 +9,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.domain.usecase.festival.GetFestivalListUseCase
 import kr.ksw.visitkorea.domain.usecase.mapper.toFestival
 import kr.ksw.visitkorea.presentation.core.BaseViewModel
+import kr.ksw.visitkorea.presentation.core.getResult
+import kr.ksw.visitkorea.presentation.core.viewModelLauncher
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,16 +37,15 @@ class FestivalViewModel @Inject constructor(
     }
 
     private fun getFestivalList(forceFetch: Boolean = false) {
-        viewModelScope.launch {
-            val hotelListFlow = getFestivalListUseCase(
+        viewModelLauncher {
+            getFestivalListUseCase(
                 forceFetch,
                 "20241007",
                 "20241007",
                 null,
                 null
-            ).getOrNull()
-            if(hotelListFlow != null) {
-                val festivalModelFlow = hotelListFlow.map { pagingData ->
+            ).getResult { result ->
+                val festivalModelFlow = result.map { pagingData ->
                     pagingData.map {
                         it.toFestival()
                     }

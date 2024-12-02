@@ -1,12 +1,9 @@
 package kr.ksw.visitkorea.presentation.more.viewmodel
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,17 +15,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.ksw.visitkorea.domain.usecase.mapper.toMoreCardModel
 import kr.ksw.visitkorea.domain.usecase.more.GetMoreListUseCase
-import kr.ksw.visitkorea.presentation.common.latitudeToStringOrDefault
-import kr.ksw.visitkorea.presentation.common.longitudeToStringOrDefault
 import kr.ksw.visitkorea.presentation.core.BaseViewModel
+import kr.ksw.visitkorea.presentation.core.getResult
+import kr.ksw.visitkorea.presentation.core.viewModelLauncher
 import javax.inject.Inject
 
-@SuppressLint("MissingPermission")
 @HiltViewModel
 class MoreViewModel @Inject constructor(
     private val getMoreListUseCase: GetMoreListUseCase,
-    private val fusedLocationProviderClient: FusedLocationProviderClient,
-): BaseViewModel<MoreUiEffect>() {
+    fusedLocationProviderClient: FusedLocationProviderClient,
+): BaseViewModel<MoreUiEffect>(fusedLocationProviderClient) {
     private val _moreState = MutableStateFlow(MoreState())
     val moreState: StateFlow<MoreState>
         get() = _moreState.asStateFlow()
@@ -52,15 +48,12 @@ class MoreViewModel @Inject constructor(
                 it.copy(isRefreshing = true)
             }
         }
-        fusedLocationProviderClient.getCurrentLocation(
-            Priority.PRIORITY_HIGH_ACCURACY,
-            CancellationTokenSource().token
-        ).addOnCompleteListener { task ->
+        getWithLocation { lat, lng ->
             getMoreListByContentType(
                 contentTypeId = contentTypeId,
                 forceFetch = forceFetch,
-                lat = task.result.latitudeToStringOrDefault(),
-                lng = task.result.longitudeToStringOrDefault()
+                lat = lat,
+                lng = lng
             )
         }
     }
@@ -71,25 +64,25 @@ class MoreViewModel @Inject constructor(
         lat: String,
         lng: String,
     ) {
-        viewModelScope.launch {
-            val moreListFlow = getMoreListUseCase(
+        viewModelLauncher {
+            getMoreListUseCase(
                 forceFetch,
                 lng,
                 lat,
                 contentTypeId
-            ).getOrNull()?.map { pagingData ->
-                pagingData.map {
-                    it.toMoreCardModel()
+            ).getResult { result ->
+                val moreFlow = result.map { pagingData ->
+                    pagingData.map {
+                        it.toMoreCardModel()
+                    }
+                }.cachedIn(viewModelScope)
+                _moreState.update { state ->
+                    state.copy(
+                        moreCardModelFlow = moreFlow,
+                        isLoading = false,
+                        isRefreshing = false
+                    )
                 }
-            }?.cachedIn(viewModelScope) ?: emptyFlow()
-
-            delay(500)
-            _moreState.update {
-                it.copy(
-                    moreCardModelFlow = moreListFlow,
-                    isLoading = false,
-                    isRefreshing = false
-                )
             }
         }
     }
