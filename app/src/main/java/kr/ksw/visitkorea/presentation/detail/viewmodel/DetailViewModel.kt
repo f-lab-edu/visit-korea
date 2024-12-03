@@ -21,6 +21,8 @@ import kr.ksw.visitkorea.domain.usecase.favorite.ExistFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.favorite.UpsertFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.util.toImageUrl
 import kr.ksw.visitkorea.presentation.common.DetailParcel
+import kr.ksw.visitkorea.presentation.core.getResult
+import kr.ksw.visitkorea.presentation.core.viewModelLauncher
 import javax.inject.Inject
 
 @HiltViewModel
@@ -94,14 +96,15 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun getDetailCommon(contentId: String) {
-        viewModelScope.launch {
-            getDetailCommonUseCase(contentId).getOrNull()?.run {
-                _detailState.update {
-                    it.copy(
-                        detailCommon = this
-                    )
+        viewModelLauncher {
+            getDetailCommonUseCase(contentId)
+                .getResult { result ->
+                    _detailState.update {
+                        it.copy(
+                            detailCommon = result
+                        )
+                    }
                 }
-            }
         }
     }
 
@@ -109,14 +112,14 @@ class DetailViewModel @Inject constructor(
         contentId: String,
         contentTypeId: String
     ) {
-        viewModelScope.launch {
+        viewModelLauncher {
             getDetailIntroUseCase(
                 contentId,
                 contentTypeId
-            ).getOrNull()?.run {
+            ).getResult { result ->
                 _detailState.update {
                     it.copy(
-                        detailIntro = this
+                        detailIntro = result
                     )
                 }
             }
@@ -126,13 +129,13 @@ class DetailViewModel @Inject constructor(
     private fun getDetailImage(
         contentId: String
     ) {
-        viewModelScope.launch {
+        viewModelLauncher {
             getDetailImageUseCase(
                 contentId, "Y"
-            ).getOrNull()?.run {
+            ).getResult { result ->
                 _detailState.update {
                     it.copy(
-                        images = this.map { image ->
+                        images = result.map { image ->
                             image.copy(
                                 originImgUrl = image.originImgUrl.toImageUrl(),
                                 smallImageUrl = image.smallImageUrl.toImageUrl()
@@ -147,7 +150,7 @@ class DetailViewModel @Inject constructor(
     private fun getDetailMenuImage(
         contentId: String
     ) {
-        viewModelScope.launch {
+        viewModelLauncher {
             val result = getDetailImageUseCase(
                 contentId, "N"
             ).getOrNull()

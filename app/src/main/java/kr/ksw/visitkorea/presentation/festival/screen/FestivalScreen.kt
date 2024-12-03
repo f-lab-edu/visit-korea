@@ -55,8 +55,8 @@ fun FestivalScreen(
 ) {
     val context = LocalContext.current
     val festivalState by viewModel.festivalState.collectAsState()
-    LaunchedEffect(viewModel.festivalUiEffect) {
-        viewModel.festivalUiEffect.collectLatest { effect ->
+    LaunchedEffect(viewModel.uiEffect) {
+        viewModel.uiEffect.collectLatest { effect ->
             when(effect) {
                 is FestivalUiEffect.StartDetailActivity -> {
                     context.startActivity(

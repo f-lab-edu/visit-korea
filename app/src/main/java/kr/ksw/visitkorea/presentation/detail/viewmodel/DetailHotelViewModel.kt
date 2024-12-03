@@ -1,6 +1,5 @@
 package kr.ksw.visitkorea.presentation.detail.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +17,8 @@ import kr.ksw.visitkorea.domain.usecase.detail.GetHotelDetailUseCase
 import kr.ksw.visitkorea.domain.usecase.detail.GetHotelRoomDetailUseCase
 import kr.ksw.visitkorea.domain.usecase.util.toImageUrl
 import kr.ksw.visitkorea.presentation.common.DetailParcel
+import kr.ksw.visitkorea.presentation.core.getResult
+import kr.ksw.visitkorea.presentation.core.viewModelLauncher
 import javax.inject.Inject
 
 @HiltViewModel
@@ -88,12 +89,12 @@ class DetailHotelViewModel @Inject constructor(
     }
 
     private fun getHotelDetail(contentId: String) {
-        viewModelScope.launch {
+        viewModelLauncher {
             getHotelDetailUseCase(contentId)
-                .getOrNull()?.run {
+                .getResult { result ->
                     _hotelDetailState.update {
                         it.copy(
-                            hotelDetail = this
+                            hotelDetail = result
                         )
                     }
                 }
@@ -101,12 +102,12 @@ class DetailHotelViewModel @Inject constructor(
     }
 
     private fun getHotelRoomDetail(contentId: String) {
-        viewModelScope.launch {
+        viewModelLauncher {
             getHotelRoomDetailUseCase(contentId)
-                .getOrNull()?.run {
+                .getResult { result ->
                     _hotelDetailState.update {
                         it.copy(
-                            hotelRoomDetail = this
+                            hotelRoomDetail = result
                         )
                     }
                 }
@@ -116,13 +117,13 @@ class DetailHotelViewModel @Inject constructor(
     private fun getDetailImage(
         contentId: String
     ) {
-        viewModelScope.launch {
+        viewModelLauncher {
             getDetailImageUseCase(
                 contentId, "Y"
-            ).getOrNull()?.run {
+            ).getResult { result ->
                 _hotelDetailState.update {
                     it.copy(
-                        images = this.map { image ->
+                        images = result.map { image ->
                             image.copy(
                                 originImgUrl = image.originImgUrl.toImageUrl(),
                                 smallImageUrl = image.smallImageUrl.toImageUrl()

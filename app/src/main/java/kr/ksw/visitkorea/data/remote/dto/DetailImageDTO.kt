@@ -8,5 +8,5 @@ data class DetailImageDTO(
     @SerializedName("originimgurl")
     val originImgUrl: String,
     @SerializedName("smallimageurl")
-    val smallImageUrl: String
+    val smallImageUrl: String,
 )

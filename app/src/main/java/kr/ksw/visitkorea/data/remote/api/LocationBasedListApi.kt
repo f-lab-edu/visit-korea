@@ -14,6 +14,6 @@ interface LocationBasedListApi {
         @Query("pageNo") pageNo: Int,
         @Query("mapX") mapX: String,
         @Query("mapY") mapY: String,
-        @Query("contentTypeId") contentTypeId: String
+        @Query("contentTypeId") contentTypeId: String,
     ): ApiResponse<LocationBasedDTO>
 }

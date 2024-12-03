@@ -45,7 +45,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kr.ksw.visitkorea.domain.model.HotelDetail
 import kr.ksw.visitkorea.domain.model.HotelRoomDetail
-import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
 import kr.ksw.visitkorea.presentation.common.openMap
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelImageCard
@@ -144,7 +143,7 @@ private fun DetailHotelScreen(
                             hotelDetailState.title,
                             hotelDetailState.address,
                             hotelDetailState.dist,
-                            if(hotelDetailState.hotelDetail.reservationUrl.isNullOrEmpty())
+                            if (hotelDetailState.hotelDetail.reservationUrl.isNullOrEmpty())
                                 hotelDetailState.homePage
                             else hotelDetailState.hotelDetail.reservationUrl,
                             hotelDetailState.hotelDetail.tel ?: ""
@@ -157,7 +156,7 @@ private fun DetailHotelScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
-                if(hotelDetailState.showFacilityInfo) {
+                if (hotelDetailState.showFacilityInfo) {
                     item {
                         DetailIntroView(
                             hotelDetail = hotelDetailState.hotelDetail
@@ -166,16 +165,18 @@ private fun DetailHotelScreen(
                         DetailImageRow(
                             images = hotelDetailState.images,
                             onImageClick = { index ->
-                                onAction(DetailHotelActions.ClickDetailImages(
-                                    selectedImage = index
-                                ))
+                                onAction(
+                                    DetailHotelActions.ClickDetailImages(
+                                        selectedImage = index
+                                    )
+                                )
                             }
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
-                if(hotelDetailState.showRoomDetail) {
-                    if(hotelDetailState.hotelRoomDetail.isEmpty()) {
+                if (hotelDetailState.showRoomDetail) {
+                    if (hotelDetailState.hotelRoomDetail.isEmpty()) {
                         item {
                             Text(
                                 modifier = Modifier
@@ -193,26 +194,26 @@ private fun DetailHotelScreen(
                             key = { it }
                         ) { index ->
                             val roomDetail = hotelDetailState.hotelRoomDetail[index]
-                            if(roomDetail.roomImages.isEmpty()) {
+                            if (roomDetail.roomImages.isEmpty()) {
                                 DetailHotelCard(roomDetail)
                             } else {
                                 DetailHotelImageCard(
                                     hotelRoomDetail = roomDetail
                                 ) { imageIndex ->
-                                    onAction(DetailHotelActions.ClickRoomDetailImages(
-                                        selectedImage = imageIndex,
-                                        selectedRoomIndex = index
-                                    ))
+                                    onAction(
+                                        DetailHotelActions.ClickRoomDetailImages(
+                                            selectedImage = imageIndex,
+                                            selectedRoomIndex = index
+                                        )
+                                    )
                                 }
                             }
-                        }
-                        item {
-                            Spacer(modifier = Modifier.height(16.dp))
                         }
                     }
                 }
             }
         }
+
         if(hotelDetailState.viewPagerOpen) {
             DetailImageViewPager(
                 selectedImage = hotelDetailState.selectedImage,
@@ -370,8 +371,6 @@ fun DetailHotelScreenPreview() {
                         roomRefrigerator = "Y"
                     ),
                 ),
-                showFacilityInfo = false,
-                showRoomDetail = true
             )
         ) {
 

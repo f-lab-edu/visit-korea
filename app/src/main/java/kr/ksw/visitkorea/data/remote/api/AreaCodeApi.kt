@@ -14,6 +14,6 @@ interface AreaCodeApi {
     @GET("areaCode1")
     suspend fun getSigunguCode(
         @Query("numOfRows") numOfRows: Int = 40,
-        @Query("areaCode") areaCode: String
+        @Query("areaCode") areaCode: String,
     ): ApiResponse<AreaCodeDTO>
 }

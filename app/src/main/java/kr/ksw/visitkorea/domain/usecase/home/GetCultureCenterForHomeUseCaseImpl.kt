@@ -11,8 +11,7 @@ class GetCultureCenterForHomeUseCaseImpl @Inject constructor(
 ) : GetCultureCenterForHomeUseCase {
     override suspend fun invoke(
         mapX: String,
-        mapY: String
-    ): Result<List<CommonCardModel>> {
+        mapY: String,): Result<List<CommonCardModel>> {
         return locationBasedListRepository.getLocationBasedListByContentType(
             HOME_USE_CASE_DEFAULT_NUM_ROWS,
             HOME_USE_CASE_DEFAULT_PAGE,

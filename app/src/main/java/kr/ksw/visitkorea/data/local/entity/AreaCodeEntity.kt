@@ -8,5 +8,5 @@ data class AreaCodeEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val code: String,
-    val name: String
+    val name: String,
 )

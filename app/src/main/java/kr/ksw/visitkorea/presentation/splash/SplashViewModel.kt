@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,7 +57,7 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             val areaCodeItems = areaCodeDatabase.areaCodeDao.getAllAreaCodeEntities()
             if(areaCodeItems.isEmpty()) {
-                val workRequest = OneTimeWorkRequestBuilder<AreaCodeWorker>().build()
+                val workRequest = OneTimeWorkRequest.Companion.from(AreaCodeWorker::class.java)
                 WorkManager
                     .getInstance(context)
                     .enqueue(workRequest)

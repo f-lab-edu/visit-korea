@@ -22,7 +22,6 @@ class AreaCodeApiTest {
 
     @Test
     fun `getSigunguCode request success, valid area code`() = runTest {
-//        val areaCodeItems = fakeAreaCodeRepository.getSigunguCode("1").getOrNull()
         val areaCodeItems = fakeAreaCodeRepository.getSigunguCode("31").getOrNull()
         assert(areaCodeItems != null)
     }

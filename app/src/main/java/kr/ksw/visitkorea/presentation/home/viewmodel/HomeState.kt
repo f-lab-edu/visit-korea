@@ -26,4 +26,5 @@ data class HomePagerItem(
     val dist: String?,
     val contentId: String = "",
     val contentTypeId: String = "",
+    val restaurantList: List<Restaurant> = emptyList(),
 )

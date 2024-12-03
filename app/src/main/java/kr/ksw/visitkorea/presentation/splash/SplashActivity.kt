@@ -48,6 +48,7 @@ class SplashActivity : ComponentActivity() {
         }
         observeSideEffect()
         viewModel.checkPermission(this)
+        viewModel.initAreaCode(applicationContext)
     }
 
     private fun observeSideEffect() {

@@ -5,6 +5,6 @@ import kr.ksw.visitkorea.domain.model.CommonCardModel
 interface GetLeisureSportsForHomeUseCase {
     suspend operator fun invoke(
         mapX: String,
-        mapY: String
+        mapY: String,
     ): Result<List<CommonCardModel>>
 }

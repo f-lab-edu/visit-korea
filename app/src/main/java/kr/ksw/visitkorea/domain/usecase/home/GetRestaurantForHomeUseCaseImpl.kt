@@ -11,7 +11,7 @@ class GetRestaurantForHomeUseCaseImpl @Inject constructor(
 ) : GetRestaurantForHomeUseCase{
     override suspend fun invoke(
         mapX: String,
-        mapY: String
+        mapY: String,
     ): Result<List<Restaurant>> {
         return locationBasedListRepository.getLocationBasedListByContentType(
             HOME_USE_CASE_DEFAULT_NUM_ROWS,

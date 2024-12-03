@@ -11,7 +11,7 @@ class GetLeisureSportsForHomeUseCaseImpl @Inject constructor(
 ): GetLeisureSportsForHomeUseCase {
     override suspend fun invoke(
         mapX: String,
-        mapY: String
+        mapY: String,
     ): Result<List<CommonCardModel>> {
         return locationBasedListRepository.getLocationBasedListByContentType(
             HOME_USE_CASE_DEFAULT_NUM_ROWS,

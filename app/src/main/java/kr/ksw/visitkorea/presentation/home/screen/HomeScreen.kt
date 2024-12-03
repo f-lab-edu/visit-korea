@@ -77,8 +77,8 @@ fun HomeScreen(
 ) {
     val homeState by homeViewModel.homeState.collectAsState()
     val context = LocalContext.current
-    LaunchedEffect(homeViewModel.homeUiEffect) {
-        homeViewModel.homeUiEffect.collectLatest { effect ->
+    LaunchedEffect(homeViewModel.uiEffect) {
+        homeViewModel.uiEffect.collectLatest { effect ->
             when(effect) {
                 is HomeUiEffect.StartMoreActivity -> {
                     context.startActivity(Intent(
