@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
 import kr.ksw.visitkorea.presentation.component.CommonCard
@@ -158,7 +159,23 @@ fun SearchScreen(
                                 title = title,
                                 address = address,
                                 image = firstImage,
-                                contentTypeId = contentTypeId
+                                contentTypeId = contentTypeId,
+                                favorite = isFavorite,
+                                onIconClick = {
+                                    onAction(SearchActions.ClickFavoriteIcon(
+                                        FavoriteEntity(
+                                            title = title,
+                                            firstImage = firstImage,
+                                            address = address,
+                                            dist = dist,
+                                            contentId = contentId,
+                                            contentTypeId = contentTypeId,
+                                            eventStartDate = null,
+                                            eventEndDate = null
+                                        ),
+                                        isFavorite = isFavorite
+                                    ))
+                                }
                             ) {
                                 onAction(SearchActions.ClickCardItem(
                                     DetailParcel(

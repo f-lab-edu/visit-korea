@@ -7,4 +7,5 @@ data class CommonCardModel(
     override val firstImage: String = "",
     override val contentId: String = "",
     val contentTypeId: String = "",
+    val isFavorite: Boolean = false,
 ) : CardData

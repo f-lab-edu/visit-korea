@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,11 +21,6 @@ import kr.ksw.visitkorea.domain.usecase.favorite.GetAllFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.favorite.UpsertFavoriteEntityUseCase
 import kr.ksw.visitkorea.domain.usecase.mapper.toMoreCardModel
 import kr.ksw.visitkorea.domain.usecase.more.GetMoreListUseCase
-import kr.ksw.visitkorea.presentation.common.DEFAULT_LATITUDE
-import kr.ksw.visitkorea.presentation.common.DEFAULT_LONGITUDE
-import kr.ksw.visitkorea.presentation.common.DetailParcel
-import kr.ksw.visitkorea.presentation.common.latitudeToStringOrDefault
-import kr.ksw.visitkorea.presentation.common.longitudeToStringOrDefault
 import kr.ksw.visitkorea.presentation.core.BaseViewModel
 import kr.ksw.visitkorea.presentation.core.viewModelLauncher
 import javax.inject.Inject

@@ -120,7 +120,7 @@ class FestivalViewModel @Inject constructor(
                                     festival.copy(isFavorite = false)
                                 }
                             }
-                        }.cachedIn(viewModelScope)
+                        }
                     )
                 }
             }
