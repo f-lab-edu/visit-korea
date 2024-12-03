@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kr.ksw.visitkorea.presentation.common.DEFAULT_LATITUDE
+import kr.ksw.visitkorea.presentation.common.DEFAULT_LONGITUDE
 import kr.ksw.visitkorea.presentation.common.latitudeToStringOrDefault
 import kr.ksw.visitkorea.presentation.common.longitudeToStringOrDefault
 
@@ -32,9 +34,13 @@ open class BaseViewModel<EFFECT> (
             Priority.PRIORITY_HIGH_ACCURACY,
             CancellationTokenSource().token
         )?.addOnCompleteListener { task ->
-            val lat = task.result.latitudeToStringOrDefault()
-            val lng = task.result.longitudeToStringOrDefault()
-            block(lat, lng)
+            val result = try {
+                task.result.latitudeToStringOrDefault() to
+                        task.result.longitudeToStringOrDefault()
+            } catch (e: Exception) {
+                DEFAULT_LATITUDE to DEFAULT_LONGITUDE
+            }
+            block(result.first, result.second)
         }
     }
 }
