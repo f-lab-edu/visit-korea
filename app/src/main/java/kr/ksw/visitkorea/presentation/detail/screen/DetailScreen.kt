@@ -37,16 +37,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.size.Size
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
@@ -57,6 +53,7 @@ import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.domain.model.CommonDetail
 import kr.ksw.visitkorea.presentation.common.convertHtmlToString
 import kr.ksw.visitkorea.presentation.common.openMap
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageViewPager
 import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
@@ -119,7 +116,7 @@ private fun DetailScreen(
                 .verticalScroll(scrollState)
         ) {
             Box {
-                AsyncImage(
+                ShimmerAsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1.0f)
@@ -128,15 +125,9 @@ private fun DetailScreen(
                                 bottomStart = 24.dp,
                                 bottomEnd = 24.dp
                             )
-                        )
-                        .background(color = Color.LightGray),
-                    model = ImageRequest
-                        .Builder(LocalContext.current)
-                        .data(detailState.firstImage)
-                        .size(Size.ORIGINAL)
-                        .build(),
+                        ),
+                    data = detailState.firstImage,
                     contentDescription = "Detail Image",
-                    contentScale = ContentScale.Crop,
                 )
                 when(detailState.contentTypeId) {
                     TYPE_TOURIST_SPOT,

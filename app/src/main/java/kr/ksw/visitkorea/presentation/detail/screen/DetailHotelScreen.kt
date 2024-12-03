@@ -31,21 +31,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.size.Size
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kr.ksw.visitkorea.domain.model.HotelDetail
 import kr.ksw.visitkorea.domain.model.HotelRoomDetail
 import kr.ksw.visitkorea.presentation.common.openMap
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelImageCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
@@ -110,7 +107,7 @@ private fun DetailHotelScreen(
             LazyColumn {
                 item {
                     Box {
-                        AsyncImage(
+                        ShimmerAsyncImage(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(1.2f)
@@ -119,15 +116,9 @@ private fun DetailHotelScreen(
                                         bottomStart = 24.dp,
                                         bottomEnd = 24.dp
                                     )
-                                )
-                                .background(color = Color.LightGray),
-                            model = ImageRequest
-                                .Builder(LocalContext.current)
-                                .data(hotelDetailState.firstImage)
-                                .size(Size.ORIGINAL)
-                                .build(),
-                            contentDescription = "Detail Image",
-                            contentScale = ContentScale.Crop,
+                                ),
+                            data = hotelDetailState.firstImage,
+                            contentDescription = "Detail Hotel Image",
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))

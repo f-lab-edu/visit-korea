@@ -105,7 +105,7 @@ class FestivalViewModel @Inject constructor(
                     pagingData.map { data ->
                         data.toFestival()
                     }
-                }
+                }.cachedIn(viewModelScope)
                 _festivalState.update {
                     it.copy(
                         // flow의 combine 함수를 이용한 PagingData의 Favorite 상태관리
