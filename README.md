@@ -15,4 +15,5 @@
 
 ## 5. 즐겨찾기
 
-# 아키텍처
+# 기술스택
+Android, Kotlin, MVVM(MVI), Hilt, ViewModel, Room, Coroutine, Compose, Paging, Retrofit, Coil
