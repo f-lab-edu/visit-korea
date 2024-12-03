@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.domain.usecase.model
+package kr.ksw.visitkorea.domain.model
 
 data class Festival(
     val address: String = "",
@@ -7,4 +7,5 @@ data class Festival(
     val contentId: String = "",
     val eventStartDate: String = "",
     val eventEndDate: String = "",
+    val isFavorite: Boolean = false,
 )

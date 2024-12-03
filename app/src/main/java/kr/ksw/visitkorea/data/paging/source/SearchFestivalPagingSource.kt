@@ -24,15 +24,18 @@ class SearchFestivalPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SearchFestivalDTO> {
         val page = params.key ?: 1
         val loadSize = params.loadSize
-        val response = searchFestivalApi.searchFestival(
-            numOfRows = loadSize,
-            pageNo =  page,
-            eventStartDate = eventStartDate,
-            eventEndDate = eventEndDate,
-            areaCode = areaCode,
-            sigunguCode = sigunguCode
-        )
-        val data = response.toItems()
+        val data = try {
+            searchFestivalApi.searchFestival(
+                numOfRows = loadSize,
+                pageNo =  page,
+                eventStartDate = eventStartDate,
+                eventEndDate = eventEndDate,
+                areaCode = areaCode,
+                sigunguCode = sigunguCode
+            ).toItems()
+        } catch(e: Exception) {
+            emptyList()
+        }
         return LoadResult.Page(
             data = data,
             prevKey = if(page == 1) null else page - 1,

@@ -1,7 +1,6 @@
 package kr.ksw.visitkorea.presentation.search.screen
 
 import android.content.Intent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,9 +36,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.data.local.entity.FavoriteEntity
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
-import kr.ksw.visitkorea.presentation.home.component.CultureCard
+import kr.ksw.visitkorea.presentation.component.CommonCard
 import kr.ksw.visitkorea.presentation.search.viewmodel.SearchActions
 import kr.ksw.visitkorea.presentation.search.viewmodel.SearchState
 import kr.ksw.visitkorea.presentation.search.viewmodel.SearchUiEffect
@@ -155,10 +155,27 @@ fun SearchScreen(
                     ) { index ->
                         val model = searchCardModels[index]
                         model?.run {
-                            CultureCard(
+                            CommonCard(
                                 title = title,
                                 address = address,
-                                image = firstImage
+                                image = firstImage,
+                                contentTypeId = contentTypeId,
+                                favorite = isFavorite,
+                                onIconClick = {
+                                    onAction(SearchActions.ClickFavoriteIcon(
+                                        FavoriteEntity(
+                                            title = title,
+                                            firstImage = firstImage,
+                                            address = address,
+                                            dist = dist,
+                                            contentId = contentId,
+                                            contentTypeId = contentTypeId,
+                                            eventStartDate = null,
+                                            eventEndDate = null
+                                        ),
+                                        isFavorite = isFavorite
+                                    ))
+                                }
                             ) {
                                 onAction(SearchActions.ClickCardItem(
                                     DetailParcel(

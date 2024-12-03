@@ -1,4 +1,4 @@
-package kr.ksw.visitkorea.domain.usecase.model
+package kr.ksw.visitkorea.domain.model
 
 data class MoreCardModel(
     val address: String = "",
@@ -7,4 +7,5 @@ data class MoreCardModel(
     val dist: String = "",
     val contentId: String = "",
     val category: String?,
+    val isFavorite: Boolean = false,
 )

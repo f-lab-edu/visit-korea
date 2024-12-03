@@ -22,7 +22,6 @@ class DetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val detail = intent.getParcelableExtra<DetailParcel>("detail")
-
         setContent {
             VisitKoreaTheme {
                 if(detail == null) {

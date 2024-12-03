@@ -13,6 +13,7 @@ interface DetailApi {
     suspend fun getDetailCommon(
         @Query("defaultYN") defaultYN: String = "Y",
         @Query("overviewYN") overviewYN: String = "Y",
+        @Query("mapinfoYN") mapinfoYN: String = "Y",
         @Query("contentId") contentId: String
     ): ApiResponse<DetailCommonDTO>
 

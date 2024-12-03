@@ -31,11 +31,11 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.collectLatest
 import kr.ksw.visitkorea.domain.common.TYPE_RESTAURANT
-import kr.ksw.visitkorea.domain.usecase.model.MoreCardModel
+import kr.ksw.visitkorea.domain.model.MoreCardModel
 import kr.ksw.visitkorea.presentation.common.ContentType
 import kr.ksw.visitkorea.presentation.common.DetailParcel
 import kr.ksw.visitkorea.presentation.detail.DetailActivity
-import kr.ksw.visitkorea.presentation.home.component.CultureCard
+import kr.ksw.visitkorea.presentation.component.CommonCard
 import kr.ksw.visitkorea.presentation.home.component.RestaurantCard
 import kr.ksw.visitkorea.presentation.more.component.MoreScreenHeader
 import kr.ksw.visitkorea.presentation.more.component.MoreTouristCard
@@ -215,15 +215,15 @@ private fun CommonTypeGrid(
                 }
                 when(contentType) {
                     ContentType.TOURIST -> MoreTouristCard(
-                        title = title,
-                        address = address,
-                        image = firstImage,
+                        this,
+                        onIconClick = onItemClick,
                         onItemClick = itemClick
                     )
-                    else -> CultureCard(
+                    else -> CommonCard(
                         title = title,
                         address = address,
                         image = firstImage,
+                        contentTypeId = contentType.contentTypeId,
                         onItemClick = itemClick
                     )
                 }

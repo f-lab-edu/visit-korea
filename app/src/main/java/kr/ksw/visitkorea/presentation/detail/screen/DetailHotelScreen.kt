@@ -1,5 +1,7 @@
 package kr.ksw.visitkorea.presentation.detail.screen
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,141 +17,157 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.size.Size
-import kotlinx.coroutines.launch
-import kr.ksw.visitkorea.domain.usecase.model.HotelDetail
-import kr.ksw.visitkorea.domain.usecase.model.HotelRoomDetail
-import kr.ksw.visitkorea.domain.usecase.util.toDistForUi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collectLatest
+import kr.ksw.visitkorea.domain.model.HotelDetail
+import kr.ksw.visitkorea.domain.model.HotelRoomDetail
+import kr.ksw.visitkorea.presentation.common.openMap
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.detail.component.DetailHotelCard
+import kr.ksw.visitkorea.presentation.detail.component.DetailHotelImageCard
 import kr.ksw.visitkorea.presentation.detail.component.DetailImageRow
+import kr.ksw.visitkorea.presentation.detail.component.DetailImageViewPager
 import kr.ksw.visitkorea.presentation.detail.component.DetailIntroContent
-import kr.ksw.visitkorea.presentation.detail.component.TitleView
+import kr.ksw.visitkorea.presentation.detail.component.DetailTitleView
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelActions
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelState
+import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelUIEffect
 import kr.ksw.visitkorea.presentation.detail.viewmodel.DetailHotelViewModel
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
+import java.net.URLEncoder
 
 @Composable
 fun DetailHotelScreen(
     viewModel: DetailHotelViewModel
 ) {
     val detailHotelState by viewModel.hotelDetailState.collectAsState()
+    val context = LocalContext.current
+    LaunchedEffect(viewModel.hotelDetailUIEffect) {
+        viewModel.hotelDetailUIEffect.collectLatest { effect ->
+            when(effect) {
+                is DetailHotelUIEffect.OpenMapApplication -> {
+                    val name = async {
+                        URLEncoder.encode(effect.name, "UTF-8")
+                    }.await()
+                    context.openMap(
+                        effect.lat,
+                        effect.lng,
+                        name
+                    )
+                }
+            }
+        }
+    }
+
+    BackHandler(
+        enabled = detailHotelState.viewPagerOpen
+    ) {
+        viewModel.onAction(
+            DetailHotelActions.ClickBackButtonWhenViewPagerOpened
+        )
+    }
+
     DetailHotelScreen(
         hotelDetailState = detailHotelState,
         onAction = viewModel::onAction
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DetailHotelScreen(
     hotelDetailState: DetailHotelState,
     onAction: (DetailHotelActions) -> Unit
 ) {
-    val scrollState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
     Surface {
         Column(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Box {
-                AsyncImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1.2f)
-                        .clip(
-                            RoundedCornerShape(
-                                bottomStart = 24.dp,
-                                bottomEnd = 24.dp
-                            )
+            LazyColumn {
+                item {
+                    Box {
+                        ShimmerAsyncImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(1.2f)
+                                .clip(
+                                    RoundedCornerShape(
+                                        bottomStart = 24.dp,
+                                        bottomEnd = 24.dp
+                                    )
+                                ),
+                            data = hotelDetailState.firstImage,
+                            contentDescription = "Detail Hotel Image",
                         )
-                        .background(color = Color.LightGray),
-                    model = ImageRequest
-                        .Builder(LocalContext.current)
-                        .data(hotelDetailState.firstImage)
-                        .size(Size.ORIGINAL)
-                        .build(),
-                    contentDescription = "Detail Image",
-                    contentScale = ContentScale.Crop,
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            TitleView(
-                hotelDetailState.title,
-                hotelDetailState.address,
-                hotelDetailState.dist?.toDistForUi()
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 16.dp,
-                        start = 16.dp,
-                        end = 16.dp
-                    )
-            ) {
-                InfoButton(
-                    modifier = Modifier
-                        .weight(1.0f),
-                    title = "시설 안내"
-                ) {
-                    onAction(DetailHotelActions.OnClickFacilityInfoButton)
-                    scope.launch {
-                        scrollState.scrollToItem(index = 0)
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                stickyHeader {
+                    Column(
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.surface
+                            )
+                    ) {
+                        DetailTitleView(
+                            hotelDetailState.title,
+                            hotelDetailState.address,
+                            hotelDetailState.dist,
+                            if (hotelDetailState.hotelDetail.reservationUrl.isNullOrEmpty())
+                                hotelDetailState.homePage
+                            else hotelDetailState.hotelDetail.reservationUrl,
+                            hotelDetailState.hotelDetail.tel ?: ""
+                        ) {
+                            onAction(DetailHotelActions.ClickViewMapButton)
+                        }
+                        InfoButtonHeader(
+                            onAction = onAction
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
-                Spacer(modifier = Modifier.width(12.dp))
-                InfoButton(
-                    modifier = Modifier
-                        .weight(1.0f),
-                    title = "객실 안내"
-                ) {
-                    onAction(DetailHotelActions.OnClickRoomInfoButton)
-                    scope.launch {
-                        scrollState.scrollToItem(index = 0)
-                    }
-                }
-            }
-            LazyColumn(
-                state = scrollState,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(vertical = 16.dp)
-            ) {
-                if(hotelDetailState.showFacilityInfo) {
+                if (hotelDetailState.showFacilityInfo) {
                     item {
                         DetailIntroView(
                             hotelDetail = hotelDetailState.hotelDetail
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        DetailImageRow(hotelDetailState.images)
+                        DetailImageRow(
+                            images = hotelDetailState.images,
+                            onImageClick = { index ->
+                                onAction(
+                                    DetailHotelActions.ClickDetailImages(
+                                        selectedImage = index
+                                    )
+                                )
+                            }
+                        )
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
-                if(hotelDetailState.showRoomDetail) {
-                    if(hotelDetailState.hotelRoomDetail.isEmpty()) {
+                if (hotelDetailState.showRoomDetail) {
+                    if (hotelDetailState.hotelRoomDetail.isEmpty()) {
                         item {
                             Text(
                                 modifier = Modifier
@@ -166,11 +184,63 @@ private fun DetailHotelScreen(
                             count = hotelDetailState.hotelRoomDetail.size,
                             key = { it }
                         ) { index ->
-                            DetailHotelCard(hotelDetailState.hotelRoomDetail[index])
+                            val roomDetail = hotelDetailState.hotelRoomDetail[index]
+                            if (roomDetail.roomImages.isEmpty()) {
+                                DetailHotelCard(roomDetail)
+                            } else {
+                                DetailHotelImageCard(
+                                    hotelRoomDetail = roomDetail
+                                ) { imageIndex ->
+                                    onAction(
+                                        DetailHotelActions.ClickRoomDetailImages(
+                                            selectedImage = imageIndex,
+                                            selectedRoomIndex = index
+                                        )
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
+        }
+
+        if(hotelDetailState.viewPagerOpen) {
+            DetailImageViewPager(
+                selectedImage = hotelDetailState.selectedImage,
+                images = hotelDetailState.viewPagerImages
+            )
+        }
+    }
+}
+
+@Composable
+private fun InfoButtonHeader(
+    onAction: (DetailHotelActions) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 16.dp,
+                start = 16.dp,
+                end = 16.dp
+            )
+    ) {
+        InfoButton(
+            modifier = Modifier
+                .weight(1.0f),
+            title = "시설 안내"
+        ) {
+            onAction(DetailHotelActions.OnClickFacilityInfoButton)
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+        InfoButton(
+            modifier = Modifier
+                .weight(1.0f),
+            title = "객실 안내"
+        ) {
+            onAction(DetailHotelActions.OnClickRoomInfoButton)
         }
     }
 }
@@ -211,7 +281,10 @@ private fun DetailIntroView(
 ) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(
+                start = 16.dp,
+                end = 16.dp
+            )
     ) {
         Text(
             text = "시설안내",
@@ -235,7 +308,7 @@ private fun DetailIntroView(
         Spacer(modifier = Modifier.height(4.dp))
         hotelDetail.subFacility?.let {
             DetailIntroContent(
-                "쉬는날",
+                "부대시설",
                 it
             )
         }
@@ -287,10 +360,8 @@ fun DetailHotelScreenPreview() {
                         roomPc = "Y",
                         roomHairdryer = "Y",
                         roomRefrigerator = "Y"
-                    )
+                    ),
                 ),
-                showFacilityInfo = false,
-                showRoomDetail = true
             )
         ) {
 

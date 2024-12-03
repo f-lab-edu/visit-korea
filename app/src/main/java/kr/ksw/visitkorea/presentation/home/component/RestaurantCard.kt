@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import kr.ksw.visitkorea.presentation.component.ShimmerAsyncImage
 import kr.ksw.visitkorea.presentation.component.SingleLineText
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
@@ -56,18 +57,12 @@ fun RestaurantCard(
                 .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
+            ShimmerAsyncImage(
                 modifier = Modifier
                     .size(88.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(color = Color.LightGray),
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(image)
-                    .size(Size.ORIGINAL)
-                    .build(),
+                    .clip(RoundedCornerShape(16.dp)),
+                data = image,
                 contentDescription = "Culture Spot Image",
-                contentScale = ContentScale.Crop,
             )
             Column(
                 modifier = Modifier

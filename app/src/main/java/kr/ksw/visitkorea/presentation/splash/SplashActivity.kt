@@ -2,6 +2,7 @@ package kr.ksw.visitkorea.presentation.splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -62,6 +63,7 @@ class SplashActivity : ComponentActivity() {
                         ).show()
                     }
                     SplashSideEffect.StartMainActivity -> {
+                        viewModel.initAreaCode(applicationContext)
                         startMainActivity()
                     }
                 }

@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import kr.ksw.visitkorea.presentation.favorite.screen.FavoriteScreen
 import kr.ksw.visitkorea.presentation.festival.screen.FestivalScreen
 import kr.ksw.visitkorea.presentation.home.screen.HomeScreen
 import kr.ksw.visitkorea.presentation.hotel.screen.HotelScreen
@@ -40,29 +41,7 @@ fun MainNavHost(
             SearchScreen()
         }
         composable(route = MainRoute.FAVORITE.route) {
-            SampleScreen {
-                Text(
-                    text = "FAVORITE",
-                    fontSize = 32.sp
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun SampleScreen(
-    text: @Composable () -> Unit
-) {
-    VisitKoreaTheme {
-        Surface {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                text()
-            }
+            FavoriteScreen()
         }
     }
 }

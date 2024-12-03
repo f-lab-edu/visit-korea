@@ -1,5 +1,6 @@
 package kr.ksw.visitkorea.presentation.hotel.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -17,6 +18,7 @@ import kr.ksw.visitkorea.presentation.core.getResult
 import kr.ksw.visitkorea.presentation.core.viewModelLauncher
 import javax.inject.Inject
 
+@SuppressLint("MissingPermission")
 @HiltViewModel
 class HotelViewModel @Inject constructor(
     private val getHotelListUseCase: GetHotelListUseCase,

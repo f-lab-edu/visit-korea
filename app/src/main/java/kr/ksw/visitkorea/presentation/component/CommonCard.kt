@@ -1,8 +1,9 @@
-package kr.ksw.visitkorea.presentation.home.component
+package kr.ksw.visitkorea.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -12,33 +13,38 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import coil.size.Size
-import kr.ksw.visitkorea.presentation.component.SingleLineText
+import kr.ksw.visitkorea.domain.common.TYPE_FESTIVAL
+import kr.ksw.visitkorea.domain.common.TYPE_TOURIST_SPOT
 import kr.ksw.visitkorea.presentation.ui.theme.VisitKoreaTheme
 
 @Composable
-fun CultureCard(
+fun CommonCard(
     modifier: Modifier = Modifier,
     title: String,
     address: String,
     image: String,
+    contentTypeId: String,
+    favorite: Boolean = false,
+    onIconClick: () -> Unit = {},
     onItemClick: () -> Unit
 ) {
     Card (
@@ -51,19 +57,30 @@ fun CultureCard(
         )
     ) {
         Column {
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .background(color = Color.LightGray),
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(image)
-                    .size(Size.ORIGINAL)
-                    .build(),
-                contentDescription = "Culture Spot Image",
-                contentScale = ContentScale.Crop,
-            )
+            Box {
+                ShimmerAsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f),
+                    data = image,
+                    contentDescription = "Culture Spot Image"
+                )
+                if(contentTypeId == TYPE_TOURIST_SPOT ||
+                    contentTypeId == TYPE_FESTIVAL) {
+                    Icon(
+                        if(favorite)
+                            Icons.Default.Favorite
+                        else Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favorite Icon",
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(10.dp)
+                            .size(24.dp)
+                            .clickable(onClick = onIconClick),
+                        tint = Color.Red
+                    )
+                }
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -98,16 +115,18 @@ fun CultureCard(
 
 @Composable
 @Preview(showBackground = true)
-fun CultureCardPreview() {
+fun CommonCardPreview() {
     VisitKoreaTheme {
         Surface(
             modifier = Modifier
                 .padding(20.dp)
         ) {
-            CultureCard(
+            CommonCard(
                 title = "문화시설",
                 address = "문화시설 주소",
-                image = "https://ksw"
+                image = "https://ksw",
+                contentTypeId = TYPE_TOURIST_SPOT,
+                favorite = true
             ) {
 
             }
