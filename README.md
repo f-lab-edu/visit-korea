@@ -19,5 +19,9 @@ https://github.com/user-attachments/assets/3e050459-18dd-4b2b-8cd0-781ae25086bd
 
 ## 5. 즐겨찾기
 
+# 설계
+- Google App 권장 아키텍처 (Layer 기준)
+- MVVM에 가까운 MVI 패턴 (Reducer를 따로 만들지 않음)
+
 # 기술스택
 Android, Kotlin, MVVM(MVI), Hilt, ViewModel, Room, Coroutine, Compose, Paging, Retrofit, Coil
