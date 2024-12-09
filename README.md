@@ -6,13 +6,10 @@
 
 # 동작영상
 ## 1. 홈
-
-
 https://github.com/user-attachments/assets/8152ece2-1317-4b32-b1ea-04c3aae5cbdb
 
-
-
 ## 2. 숙박
+https://github.com/user-attachments/assets/528773cb-244d-47db-94c9-8804ec512a92
 
 ## 3. 행사
 
