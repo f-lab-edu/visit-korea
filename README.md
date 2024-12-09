@@ -12,8 +12,10 @@ https://github.com/user-attachments/assets/8152ece2-1317-4b32-b1ea-04c3aae5cbdb
 https://github.com/user-attachments/assets/528773cb-244d-47db-94c9-8804ec512a92
 
 ## 3. 행사
+https://github.com/user-attachments/assets/44618909-0e19-4607-be61-6fb40ee2b160
 
 ## 4. 검색
+https://github.com/user-attachments/assets/3e050459-18dd-4b2b-8cd0-781ae25086bd
 
 ## 5. 즐겨찾기
 
