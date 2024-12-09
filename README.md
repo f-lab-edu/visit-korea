@@ -18,6 +18,7 @@ https://github.com/user-attachments/assets/44618909-0e19-4607-be61-6fb40ee2b160
 https://github.com/user-attachments/assets/3e050459-18dd-4b2b-8cd0-781ae25086bd
 
 ## 5. 즐겨찾기
+https://github.com/user-attachments/assets/fcf6ae5b-ce35-4125-a81e-b4e0030623e6
 
 # 설계
 - Google App 권장 아키텍처 (Layer 기준)
